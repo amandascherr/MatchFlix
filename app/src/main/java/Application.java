@@ -1,8 +1,9 @@
 import javax.swing.SwingUtilities;
-import io.github.cdimascio.dotenv.Dotenv;
 
+import controller.HomeController;
+import io.github.cdimascio.dotenv.Dotenv;
 import service.TMDBService;
-import model.Movie;
+import view.HomeScreen;
 
 public class Application {
 
@@ -13,10 +14,16 @@ public class Application {
             try {
 
                 Dotenv dotenv = Dotenv.load();
-
+                
                 String apiKey = dotenv.get("TMDB_API_KEY");
-
+                
                 TMDBService tmdb = new TMDBService(apiKey);
+
+                HomeScreen homeScreen = new HomeScreen();
+
+                HomeController homeController = new HomeController(homeScreen, tmdb);
+
+                homeScreen.setVisible(true);
 
             } catch (Exception e) {
 
