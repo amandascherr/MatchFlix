@@ -56,9 +56,7 @@ public class HomeScreen extends JFrame {
         // Botões
         buttons = new LikeDislikeButtons();
 
-        centerPanel.add(
-                Box.createVerticalStrut(20)
-        );
+        centerPanel.add(Box.createVerticalStrut(20));
 
         centerPanel.add(buttons);
 

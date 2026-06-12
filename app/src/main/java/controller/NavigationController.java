@@ -21,14 +21,12 @@ public class NavigationController {
         loginScreen.setOnLogin(() -> {
 
             loginScreen.dispose();
-
             showHome();
         });
 
         loginScreen.setOnRegister(() -> {
 
             loginScreen.dispose();
-
             showRegister();
         });
 
@@ -38,18 +36,15 @@ public class NavigationController {
     // Tela de cadastro
     public void showRegister() {
         RegisterScreen registerScreen = new RegisterScreen();
+        RegisterController registerController = new RegisterController(registerScreen, () -> {
+                registerScreen.dispose(); 
+                showLogin();
+            }
+        );
 
         registerScreen.setOnLogin(() -> {
 
             registerScreen.dispose();
-
-            showLogin();
-        });
-
-        registerScreen.setOnRegister(() -> {
-
-            registerScreen.dispose();
-
             showLogin();
         });
 

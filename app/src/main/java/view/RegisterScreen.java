@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -48,11 +49,8 @@ public class RegisterScreen extends JFrame {
 
         // Logo
         JLabel titleLabel = new JLabel("MATCHFLIX");
-
         titleLabel.setFont(new Font("Arial", Font.BOLD, 42));
-
         titleLabel.setForeground(new Color(229, 9, 20));
-
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Campos
@@ -63,53 +61,33 @@ public class RegisterScreen extends JFrame {
 
         // Botão Cadastro
         registerButton = new JButton("Cadastrar");
-
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botão Login
         loginButton = new JButton("Já possui uma conta? Faça login");
-
         loginButton.setBorderPainted(false);
-
         loginButton.setContentAreaFilled(false);
-
         loginButton.setForeground(Color.BLUE);
-
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Composição
         mainPanel.add(Box.createVerticalGlue());
-
         mainPanel.add(titleLabel);
-
         mainPanel.add(Box.createVerticalStrut(40));
 
         // Nome
-        mainPanel.add(nameField);
-        mainPanel.add(Box.createVerticalStrut(5));
-
         mainPanel.add(nameField);
         mainPanel.add(Box.createVerticalStrut(15));
 
         // Email
         mainPanel.add(emailField);
-        mainPanel.add(Box.createVerticalStrut(5));
-
-        mainPanel.add(emailField);
         mainPanel.add(Box.createVerticalStrut(15));
 
         // Senha
         mainPanel.add(passwordField);
-        mainPanel.add(Box.createVerticalStrut(5));
-
-        mainPanel.add(passwordField);
-
         mainPanel.add(Box.createVerticalStrut(15));
 
         // Confirmar senha
-        mainPanel.add(confirmPasswordField);
-        mainPanel.add(Box.createVerticalStrut(5));
-
         mainPanel.add(confirmPasswordField);
         mainPanel.add(Box.createVerticalStrut(30));
 
@@ -134,15 +112,11 @@ public class RegisterScreen extends JFrame {
     }
 
     public String getPassword() {
-        return new String(
-                passwordField.getText()
-        );
+        return new String(passwordField.getText());
     }
 
     public String getConfirmPassword() {
-        return new String(
-                confirmPasswordField.getText()
-        );
+        return new String(confirmPasswordField.getText());
     }
 
     // Eventos
@@ -156,5 +130,9 @@ public class RegisterScreen extends JFrame {
         loginButton.addActionListener(
                 e -> action.run()
         );
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

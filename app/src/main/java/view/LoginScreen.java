@@ -111,9 +111,7 @@ public class LoginScreen extends JFrame {
     }
 
     public String getPassword() {
-        return new String(
-                passwordField.getText()
-        );
+        return new String(passwordField.getText());
     }
 
     // Eventos
