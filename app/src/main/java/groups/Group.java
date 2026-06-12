@@ -11,5 +11,4 @@ public class Group extends Subscriber {
     }
   }
   
-
 }
