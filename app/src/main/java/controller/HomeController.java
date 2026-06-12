@@ -57,8 +57,7 @@ public class HomeController {
     // Curte um filme
     private void handleLike() throws Exception {
 
-        Movie currentMovie =
-                homeScreen.getCurrentMovie();
+        Movie currentMovie = homeScreen.getCurrentMovie();
 
         if (currentMovie == null) {
             return;
