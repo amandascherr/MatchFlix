@@ -1,9 +1,8 @@
 import javax.swing.SwingUtilities;
 
-import controller.HomeController;
+import controller.NavigationController;
 import io.github.cdimascio.dotenv.Dotenv;
 import service.TMDBService;
-import view.HomeScreen;
 
 public class Application {
 
@@ -19,11 +18,8 @@ public class Application {
                 
                 TMDBService tmdb = new TMDBService(apiKey);
 
-                HomeScreen homeScreen = new HomeScreen();
-
-                HomeController homeController = new HomeController(homeScreen, tmdb);
-
-                homeScreen.setVisible(true);
+                NavigationController navigation = new NavigationController(tmdb);
+                navigation.showLogin();
 
             } catch (Exception e) {
 
