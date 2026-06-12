@@ -3,6 +3,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import service.TMDBService;
 import model.Movie;
+import view.HomeScreen;
 
 public class Application {
 
@@ -11,6 +12,10 @@ public class Application {
         SwingUtilities.invokeLater(() -> {
 
             try {
+
+                HomeScreen homeScreen = new HomeScreen();
+
+                homeScreen.setVisible(true);
 
                 Dotenv dotenv = Dotenv.load();
 
