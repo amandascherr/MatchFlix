@@ -14,19 +14,22 @@ import javax.swing.border.EmptyBorder;
 
 import view.components.FormField;
 
-public class LoginScreen extends JFrame {
+public class RegisterScreen extends JFrame {
 
+    private FormField nameField;
     private FormField emailField;
+
     private FormField passwordField;
+    private FormField confirmPasswordField;
 
-    private JButton loginButton;
     private JButton registerButton;
+    private JButton loginButton;
 
-    public LoginScreen() {
+    public RegisterScreen() {
 
         setTitle("MatchFlix");
 
-        setSize(500, 650);
+        setSize(500, 750);
 
         setLocationRelativeTo(null);
 
@@ -53,59 +56,79 @@ public class LoginScreen extends JFrame {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Campos
-        emailField = new FormField("E-mail", false);
+        nameField = new FormField("Nome", false);
+        emailField = new FormField("Email", false);
         passwordField = new FormField("Senha", true);
+        confirmPasswordField = new FormField("Confirmar senha", true);
 
-        // Login Button
-        loginButton = new JButton("Entrar");
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Cadastrar Button
-        registerButton = new JButton("Não tem login? Faça seu cadastro");
-
-        registerButton.setBorderPainted(false);
-
-        registerButton.setContentAreaFilled(false);
-
-        registerButton.setForeground(Color.BLUE);
+        // Botão Cadastro
+        registerButton = new JButton("Cadastrar");
 
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Botão Login
+        loginButton = new JButton("Já possui uma conta? Faça login");
+
+        loginButton.setBorderPainted(false);
+
+        loginButton.setContentAreaFilled(false);
+
+        loginButton.setForeground(Color.BLUE);
+
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Composição
         mainPanel.add(Box.createVerticalGlue());
 
         mainPanel.add(titleLabel);
 
-        mainPanel.add(Box.createVerticalStrut(50));
+        mainPanel.add(Box.createVerticalStrut(40));
 
+        // Nome
+        mainPanel.add(nameField);
+        mainPanel.add(Box.createVerticalStrut(5));
+
+        mainPanel.add(nameField);
+        mainPanel.add(Box.createVerticalStrut(15));
+
+        // Email
         mainPanel.add(emailField);
-
         mainPanel.add(Box.createVerticalStrut(5));
 
         mainPanel.add(emailField);
+        mainPanel.add(Box.createVerticalStrut(15));
 
-        mainPanel.add(Box.createVerticalStrut(20));
-
+        // Senha
         mainPanel.add(passwordField);
-
         mainPanel.add(Box.createVerticalStrut(5));
 
         mainPanel.add(passwordField);
 
+        mainPanel.add(Box.createVerticalStrut(15));
+
+        // Confirmar senha
+        mainPanel.add(confirmPasswordField);
+        mainPanel.add(Box.createVerticalStrut(5));
+
+        mainPanel.add(confirmPasswordField);
         mainPanel.add(Box.createVerticalStrut(30));
 
-        mainPanel.add(loginButton);
-
+        // Botão cadastrar
+        mainPanel.add(registerButton);
         mainPanel.add(Box.createVerticalStrut(20));
 
-        mainPanel.add(registerButton);
-
+        // Botão login
+        mainPanel.add(loginButton);
         mainPanel.add(Box.createVerticalGlue());
 
         add(mainPanel);
     }
 
     // Getters
+    public String getNameInput() {
+        return nameField.getText();
+    }
+
     public String getEmail() {
         return emailField.getText();
     }
@@ -116,15 +139,21 @@ public class LoginScreen extends JFrame {
         );
     }
 
+    public String getConfirmPassword() {
+        return new String(
+                confirmPasswordField.getText()
+        );
+    }
+
     // Eventos
-    public void setOnLogin(Runnable action) {
-        loginButton.addActionListener(
+    public void setOnRegister(Runnable action) {
+        registerButton.addActionListener(
                 e -> action.run()
         );
     }
 
-    public void setOnRegister(Runnable action) {
-        registerButton.addActionListener(
+    public void setOnLogin(Runnable action) {
+        loginButton.addActionListener(
                 e -> action.run()
         );
     }
