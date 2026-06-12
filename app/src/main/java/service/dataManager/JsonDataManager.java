@@ -22,16 +22,35 @@ public class JsonDataManager implements DataManager {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Cria (ou sobrescreve) o arquivo {@code <id>.json} com o corpo do DTO.
+     *
+     * @param data dado a ser salvo; o {@code id} define o nome do arquivo e o
+     *             {@code body} o conteudo gravado.
+     */
     @Override
     public void createData(DataDTO<?> data) {
         write(data.id(), data.body());
     }
 
+    /**
+     * Remove o arquivo JSON correspondente ao {@code id} do DTO.
+     *
+     * @param data dado cujo {@code id} indica o arquivo a ser apagado.
+     */
     @Override
     public void deleteData(DataDTO<?> data) {
         fileFor(data.id()).delete();
     }
 
+    /**
+     * Le o arquivo {@code <id>.json} e reconstroi o DTO, usando o tipo salvo no
+     * arquivo para desserializar o corpo no {@code Record} original.
+     *
+     * @param id identificador do dado (nome do arquivo sem extensao).
+     * @return o {@link DataDTO} lido, ou {@code null} se o arquivo nao existir
+     *         ou ocorrer falha na leitura.
+     */
     @Override
     public DataDTO<?> readData(String id) {
         try {
@@ -45,6 +64,14 @@ public class JsonDataManager implements DataManager {
         }
     }
 
+    /**
+     * Concatena um novo corpo a um arquivo existente, transformando o conteudo
+     * em uma lista. Se o arquivo ainda nao existir, cria com um unico item.
+     * A operacao so ocorre se o tipo do corpo recebido for igual ao ja gravado.
+     *
+     * @param id         identificador do dado (nome do arquivo sem extensao).
+     * @param appendData dado cujo {@code body} sera adicionado a lista.
+     */
     @Override
     public void appendData(String id, DataDTO<?> appendData) {
         File file = fileFor(id);
@@ -74,10 +101,24 @@ public class JsonDataManager implements DataManager {
         }
     }
 
+    /**
+     * Grava um corpo unico, usando o nome da classe do {@code Record} como tipo.
+     *
+     * @param id   identificador do dado (nome do arquivo sem extensao).
+     * @param body corpo a ser gravado.
+     */
     private void write(String id, Record body) {
         write(id, body.getClass().getName(), body);
     }
 
+    /**
+     * Grava o conteudo no arquivo {@code <id>.json} no formato
+     * {@code {"type": ..., "body": ...}}, criando o diretorio base se preciso.
+     *
+     * @param id   identificador do dado (nome do arquivo sem extensao).
+     * @param type nome da classe do corpo, usado depois para desserializar.
+     * @param body corpo a ser gravado (item unico ou lista).
+     */
     private void write(String id, String type, Object body) {
         try {
             Files.createDirectories(BASE_DIR);
@@ -91,6 +132,12 @@ public class JsonDataManager implements DataManager {
         }
     }
 
+    /**
+     * Resolve o {@link File} correspondente a um {@code id} dentro do diretorio base.
+     *
+     * @param id identificador do dado (nome do arquivo sem extensao).
+     * @return o arquivo {@code <BASE_DIR>/<id>.json}.
+     */
     private File fileFor(String id) {
         return BASE_DIR.resolve(id + ".json").toFile();
     }
