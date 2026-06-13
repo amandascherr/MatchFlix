@@ -1,5 +1,7 @@
 package service.dataManager;
 
+import java.util.List;
+
 /**
  * Contrato para persistencia de dados em formato chave/valor, onde cada
  * {@link DataDTO} e identificado pelo seu {@code id}. Implementacoes definem
@@ -22,19 +24,22 @@ public interface DataManager {
     public void deleteData(DataDTO<?> data);
 
     /**
-     * Le o registro identificado pelo {@code id}.
+     * Le o registro identificado pelo {@code id} e devolve seu corpo como uma
+     * lista do tipo informado.
      *
-     * @param id identificador do registro.
-     * @return o {@link DataDTO} encontrado, ou {@code null} se nao existir.
+     * @param <T>  tipo dos itens (um {@code Record}).
+     * @param id   identificador do registro.
+     * @param type classe dos itens, usada para desserializar o corpo.
+     * @return a lista de itens, ou {@code null} se nao existir.
      */
-    public DataDTO<?> readData(String id);
+    public <T extends Record> List<T> readData(String id, Class<T> type);
 
     /**
      * Adiciona um novo conteudo a um registro existente, sem substituir o que
-     * ja foi gravado.
+     * ja foi gravado. O registro alvo e identificado pelo {@code id} do proprio
+     * DTO.
      *
-     * @param id         identificador do registro.
      * @param appendData dado a ser concatenado ao registro.
      */
-    public void appendData(String id, DataDTO<?> appendData);
+    public void appendData(DataDTO<?> appendData);
 }
