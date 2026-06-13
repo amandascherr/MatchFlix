@@ -1,7 +1,6 @@
 package controller;
 
 import service.TMDBService;
-import service.dataManager.JsonDataManager;
 import view.HomeScreen;
 import view.LoginScreen;
 import view.RegisterScreen;
@@ -9,7 +8,6 @@ import view.RegisterScreen;
 public class NavigationController {
 
     private final TMDBService tmdbService;
-    private JsonDataManager manager = new JsonDataManager();
 
     public NavigationController(TMDBService tmdbService) {
 
@@ -20,9 +18,9 @@ public class NavigationController {
     public void showLogin() {
         LoginScreen loginScreen = new LoginScreen();
         LoginController loginController = new LoginController(loginScreen, () -> {
-                loginScreen.dispose(); 
+                loginScreen.dispose();
                 showHome();
-            }, manager
+            }
         );
 
         loginScreen.setOnRegister(() -> {
@@ -38,9 +36,9 @@ public class NavigationController {
     public void showRegister() {
         RegisterScreen registerScreen = new RegisterScreen();
         RegisterController registerController = new RegisterController(registerScreen, () -> {
-                registerScreen.dispose(); 
+                registerScreen.dispose();
                 showLogin();
-            }, manager
+            }
         );
 
         registerScreen.setOnLogin(() -> {
@@ -54,7 +52,7 @@ public class NavigationController {
 
     // Home
     public void showHome() {
-        HomeScreen homeScreen = new HomeScreen(manager);
+        HomeScreen homeScreen = new HomeScreen();
         HomeController homeController = new HomeController(homeScreen, tmdbService);
 
         homeScreen.setVisible(true);

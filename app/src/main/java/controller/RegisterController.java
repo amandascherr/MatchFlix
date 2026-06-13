@@ -1,5 +1,6 @@
 package controller;
 
+import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 
@@ -13,12 +14,11 @@ public class RegisterController {
 
     private final RegisterScreen screen;
     private final Runnable onSuccess;
-    private DataManager manager;
+    private final DataManager manager = Services.getManager();
 
-    public RegisterController(RegisterScreen screen, Runnable onSuccess, DataManager manager) {
+    public RegisterController(RegisterScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
-        this.manager = manager;
 
         screen.setOnRegister(this::register);
     }
