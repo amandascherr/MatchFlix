@@ -101,12 +101,16 @@ public class ProfileScreen extends JFrame {
                     onImageUpdated.run();
                 }
 
-                List<UserProfileDTO> users = manager.readData(user.getEmail(), UserProfileDTO.class);
-                if (users != null) {
+                UserProfileDTO userData = manager.readData(user.getEmail(), UserProfileDTO.class).get(0);
+                
+                if (userData != null) {
                     UserProfileDTO userDTO = new UserProfileDTO(
+                        userData.name(),
+                        userData.email(),
+                        userData.password(),
                         copy.getPath(),
-                        users.get(0).likedMovies(),
-                        users.get(0).groups()
+                        userData.likedMovies(),
+                        userData.groups()
                     );      
 
                     manager.createData(new DataDTO<>(user.getEmail(), userDTO));

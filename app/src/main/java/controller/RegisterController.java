@@ -43,12 +43,16 @@ public class RegisterController {
             return;
         }
 
-        LoginDTO bodyLogin = new LoginDTO(screen.getNameInput(), screen.getEmail(), screen.getPassword());
-        DataDTO<LoginDTO> loginPayload = new DataDTO<LoginDTO>("loginInfo", bodyLogin);
-        manager.appendData(loginPayload);
-
-        UserProfileDTO bodyProfile = new UserProfileDTO("", new ArrayList<>(), new ArrayList<>());
-        DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyLogin.email(), bodyProfile);
+        UserProfileDTO bodyProfile = new UserProfileDTO(
+            screen.getNameInput(),
+            screen.getPassword(),
+            screen.getEmail(),
+            "",
+            new ArrayList<>(),
+            new ArrayList<>()
+        );
+        
+        DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyProfile.email(), bodyProfile);
         manager.createData(profilePayload);
 
         onSuccess.run();
