@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.User;
 import model.UserProfileDTO;
+import service.Services;
 import service.dataManager.DataManager;
 import view.LoginScreen;
 
@@ -11,13 +12,12 @@ public class LoginController {
 
     private final LoginScreen screen;
     private final Runnable onSuccess;
-    private DataManager manager;
+    private final DataManager manager = Services.getManager();
 
 
-    public LoginController(LoginScreen screen, Runnable onSuccess, DataManager manager) {
+    public LoginController(LoginScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
-        this.manager = manager;
 
         screen.setOnLogin(this::login);
     }

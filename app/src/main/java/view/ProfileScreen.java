@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import model.User;
 import model.UserProfileDTO;
+import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 import view.components.ProfileAvatar;
@@ -27,12 +28,11 @@ public class ProfileScreen extends JFrame {
     private User user;
     private ProfileAvatar profileAvatar;
     private Runnable onImageUpdated;
-    private DataManager manager;
+    private final DataManager manager = Services.getManager();
 
-    public ProfileScreen(User user, Runnable onImageUpdated, DataManager manager) {
+    public ProfileScreen(User user, Runnable onImageUpdated) {
         this.user = user;
         this.onImageUpdated = onImageUpdated;
-        this.manager = manager;
 
         setTitle("Perfil do Usuário");
         setSize(400, 400);

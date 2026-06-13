@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 import controller.Session;
 import model.Movie;
-import service.dataManager.DataManager;
 import view.components.LikeDislikeButtons;
 import view.components.MovieCard;
 import view.components.ProfileButton;
@@ -25,14 +24,10 @@ public class HomeScreen extends JFrame {
     private LikeDislikeButtons buttons;
     private ProfileButton profileButton;
 
-    private DataManager manager;
-
     private Movie currentMovie;
 
-    public HomeScreen(DataManager manager) {
+    public HomeScreen() {
 
-        this.manager = manager;
-        
         movieCard = new MovieCard();
 
         setTitle("MatchFlix");
@@ -76,7 +71,7 @@ public class HomeScreen extends JFrame {
         profileButton = new ProfileButton(
             () -> new ProfileScreen(Session.getLoggedUser(), () -> {
                 profileButton.setIcon(Session.getLoggedUser().getProfileImage());
-            }, manager).setVisible(true),
+            }).setVisible(true),
             Session.getLoggedUser().getProfileImage()
         );
 
