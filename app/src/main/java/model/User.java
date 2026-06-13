@@ -11,12 +11,20 @@ public class User implements Subscriber{
   private String name;
   private String email;
   private ImageIcon profileImage;
+  private String[] likedMovies;
+  private String[] groups;
 
   public User(String name, String email){
     this.name = name;
     this.email = email;
 
     publisher = new Publisher();
+  }
+
+  public User(String name, String email, String[] likedMovies, String[] groups){
+    this(name, email);
+    this.likedMovies = likedMovies;
+    this.groups = groups;
   }
 
   public String getName() {

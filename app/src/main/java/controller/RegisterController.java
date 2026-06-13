@@ -2,6 +2,11 @@ package controller;
 
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import model.UserProfileDTO;
 import view.RegisterScreen;
 
 public class RegisterController {
@@ -38,9 +43,13 @@ public class RegisterController {
             return;
         }
 
-        LoginDTO body = new LoginDTO(screen.getNameInput(), screen.getEmail(), screen.getPassword());
-        DataDTO loginPayload = new DataDTO("loginInfo", body);
+        LoginDTO bodyLogin = new LoginDTO(screen.getNameInput(), screen.getEmail(), screen.getPassword());
+        DataDTO<LoginDTO> loginPayload = new DataDTO<LoginDTO>("loginInfo", bodyLogin);
         manager.appendData(loginPayload);
+
+        UserProfileDTO bodyProfile = new UserProfileDTO("", new ArrayList<>(), new ArrayList<>());
+        DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyLogin.email(), bodyProfile);
+        manager.createData(profilePayload);
 
         onSuccess.run();
     }
