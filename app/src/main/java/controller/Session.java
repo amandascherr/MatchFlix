@@ -5,6 +5,7 @@ import model.User;
 public class Session {
 
     private static User loggedUser;
+    public static String logAction = "";
 
     public static User getLoggedUser() {
         return loggedUser;

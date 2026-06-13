@@ -1,6 +1,7 @@
 plugins {
     java
     application
+    jacoco
 }
 
 group = "com.matchflix"
@@ -11,21 +12,26 @@ repositories {
 }
 
 dependencies {
-
-    // Ler .env
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
-
-    // JSON (users.json)
     implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
-
-    // Conexão RestTemplate
     implementation("org.springframework:spring-web:6.2.7")
-}
 
-application {
-    mainClass.set("Application")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        html.required.set(true)
+    }
+}
+
+application {
+    mainClass.set("Application")
 }

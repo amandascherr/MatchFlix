@@ -3,8 +3,9 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.observer.Subscriber;
+import controller.Session;
 import model.observer.Publisher;
+import model.observer.Subscriber;
 
 public class Group implements Subscriber {
 
@@ -25,10 +26,10 @@ public class Group implements Subscriber {
     if (action.equals("like")){
       if(likedMovies.containsKey(movie.getTitle())){
         likedMovies.put(movie.getTitle(), likedMovies.get(movie.getTitle()) + 1);
-        checkMatch(movie);
       } else {
         likedMovies.put(movie.getTitle(), 1);
       }
+      checkMatch(movie);
     } else if(action.equals("dislike")){
       System.out.println("disliked");
     }
@@ -40,6 +41,10 @@ public class Group implements Subscriber {
       // Passar o filme no match
       Match match = new Match(movie, this);
       publisher.toNotify("match", match);
+      Session.logAction = "match";
+    } else {
+      Session.logAction = "check_match";
+
     }
   }
 
@@ -51,5 +56,19 @@ public class Group implements Subscriber {
   public String getName(){
     return this.name;
   }
+
+  public int getNumOfUsers(){
+    return this.numOfUsers;
+  }
   
+
+  public int getSubsSize(){
+    return publisher.getSubsSize();
+  }
+
+  public Map<String, Integer> getLikedMovies()
+  {
+  return likedMovies;
+  }
+
 }
