@@ -10,3 +10,6 @@ build
 # Ignore API key
 app/.env
 app/src/resources/application.properties
+
+# Ignore
+.DS_Store
