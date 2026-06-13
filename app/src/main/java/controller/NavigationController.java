@@ -54,7 +54,7 @@ public class NavigationController {
 
     // Home
     public void showHome() {
-        HomeScreen homeScreen = new HomeScreen();
+        HomeScreen homeScreen = new HomeScreen(manager);
         HomeController homeController = new HomeController(homeScreen, tmdbService);
 
         homeScreen.setVisible(true);

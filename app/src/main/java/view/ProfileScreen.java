@@ -3,19 +3,23 @@ package view;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.User;
+import model.UserProfileDTO;
+import service.dataManager.DataDTO;
+import service.dataManager.DataManager;
 import view.components.ProfileAvatar;
 
 public class ProfileScreen extends JFrame {
@@ -23,10 +27,12 @@ public class ProfileScreen extends JFrame {
     private User user;
     private ProfileAvatar profileAvatar;
     private Runnable onImageUpdated;
+    private DataManager manager;
 
-    public ProfileScreen(User user, Runnable onImageUpdated) {
+    public ProfileScreen(User user, Runnable onImageUpdated, DataManager manager) {
         this.user = user;
         this.onImageUpdated = onImageUpdated;
+        this.manager = manager;
 
         setTitle("Perfil do Usuário");
         setSize(400, 400);
@@ -76,16 +82,38 @@ public class ProfileScreen extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
-            ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
-            
-            Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            try {
+                File destinationFolder = new File("src/main/resources/uploads");
+                if (!destinationFolder.exists()) {
+                    destinationFolder.mkdirs();
+                }
 
-            user.setProfileImage(scaledIcon);
-            profileAvatar.setIcon(scaledIcon);
-            
-            if (onImageUpdated != null) {
-                onImageUpdated.run();
+                String format = file.getName().substring(file.getName().lastIndexOf("."));
+                String fileName = "profile_" + user.getName().toLowerCase().replaceAll("\\s+", "_") + "_" + System.currentTimeMillis() + format;
+                File copy = new File(destinationFolder, fileName);
+
+                Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                user.loadProfileImage(copy.getPath());
+
+                profileAvatar.setIcon(user.getProfileImage());
+                if (onImageUpdated != null) {
+                    onImageUpdated.run();
+                }
+
+                List<UserProfileDTO> users = manager.readData(user.getEmail(), UserProfileDTO.class);
+                if (users != null) {
+                    UserProfileDTO userDTO = new UserProfileDTO(
+                        copy.getPath(),
+                        users.get(0).likedMovies(),
+                        users.get(0).groups()
+                    );      
+
+                    manager.createData(new DataDTO<>(user.getEmail(), userDTO));
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }
