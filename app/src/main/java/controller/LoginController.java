@@ -30,23 +30,21 @@ public class LoginController {
             return;
         }
 
-        List<LoginDTO> info = manager.readData("loginInfo", LoginDTO.class);
+        UserProfileDTO info = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
 
         if (info == null) {
-            screen.showError("Não há cadastros no sistema.");
+            screen.showError("Email inválido ou sistema sem cadastros");
             return;
         }
 
-        for (int i = 0; i < info.size(); i++) {
-            if (info.get(i).email().equals(screen.getEmail()) && info.get(i).password().equals(screen.getPassword())) {
+        if (info.password().equals(screen.getPassword())) {
 
-                UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
+            UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
 
-                User currentUser = new User(info.get(i).name(), info.get(i).email(), userInfo);
-                Session.setLoggedUser(currentUser);
-                onSuccess.run();
-                return;
-            }
+            User currentUser = new User(userInfo);
+            Session.setLoggedUser(currentUser);
+            onSuccess.run();
+            return;
         }
 
         screen.showError("Login não existe ou a senha está incorreta.");

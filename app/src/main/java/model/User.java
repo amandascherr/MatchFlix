@@ -20,20 +20,21 @@ public class User implements Subscriber{
   private ArrayList<String> groups;
 
   public User(String name, String email){
-    this.name = name;
-    this.email = email;
-
-    publisher = new Publisher();
+    
   }
 
-  public User(String name, String email, UserProfileDTO userInfo){
-    this(name, email);
+  public User(UserProfileDTO userInfo){
+    this.name = userInfo.name();
+    this.email = userInfo.email();
     this.likedMovies = userInfo.likedMovies();
     this.groups = userInfo.groups();
-  
+    
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
       loadProfileImage(userInfo.pathPhotoFile());
     }
+    
+    publisher = new Publisher();
+  
   }
 
   public String getName() {

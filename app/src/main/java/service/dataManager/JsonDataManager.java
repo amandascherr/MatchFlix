@@ -127,6 +127,20 @@ public class JsonDataManager implements DataManager {
      * @return o arquivo {@code <BASE_DIR>/<id>.json}.
      */
     private File fileFor(String id) {
-        return BASE_DIR.resolve(id + ".json").toFile();
+        return BASE_DIR.resolve(formatId(id) + ".json").toFile();
+    }
+
+    /**
+     * Formata um {@code id} para que seja valido como nome de arquivo,
+     * substituindo caracteres especiais invalidos por {@code '_'}. Sao
+     * considerados validos letras, digitos, {@code '-'} e {@code '.'}; qualquer
+     * outro caractere (incluindo separadores de diretorio como {@code '/'} e
+     * {@code '\'}) e substituido.
+     *
+     * @param id identificador a ser formatado.
+     * @return o {@code id} seguro para uso como nome de arquivo.
+     */
+    private String formatId(String id) {
+        return id.replaceAll("[^a-zA-Z0-9-.]", "_");
     }
 }
