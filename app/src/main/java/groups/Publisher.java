@@ -2,6 +2,8 @@ package groups;
 
 import java.util.ArrayList;
 
+import model.Movie;
+
 /**
  * Representa um publicador (Publisher) no padrão Observer.
  * <p>
@@ -25,11 +27,12 @@ public class Publisher {
      *
      * @param action descrição da ação ou evento que será enviado
      *               aos inscritos
+     * @param object pode ser tanto um filme como um Match
      */
-    public void toNotify(String action) {
+    public void toNotify(String action, Object movie) {
         for (Subscriber subscriber : subscribers) {
             // Utilizar lógica Strategy possivelmente
-            subscriber.beNoitified(action);
+            subscriber.beNoitified(action, movie);
         }
     }
     /**
