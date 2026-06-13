@@ -1,14 +1,39 @@
 package model;
 
+import javax.swing.ImageIcon;
+
 import model.observer.Publisher;
 import model.observer.Subscriber;
  
 public class User implements Subscriber{
   
   private Publisher publisher;
+  private String name;
+  private String email;
+  private ImageIcon profileImage;
 
-  public User(){
+  public User(String name, String email){
+    this.name = name;
+    this.email = email;
+
     publisher = new Publisher();
+  }
+
+  public String getName() {
+      return name;
+  }
+
+  public String getEmail() {
+      return email;
+  }
+
+  public ImageIcon getProfileImage() {
+    return profileImage;
+  }
+
+  public void setProfileImage(ImageIcon profileImage) {
+      this.profileImage = profileImage;
+      publisher.toNotify("profileUpdate", this);
   }
 
   public void userLike(Movie movie){

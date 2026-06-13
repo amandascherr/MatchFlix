@@ -9,9 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.Session;
 import model.Movie;
 import view.components.LikeDislikeButtons;
 import view.components.MovieCard;
+import view.components.ProfileButton;
 
 public class HomeScreen extends JFrame {
 
@@ -20,6 +22,7 @@ public class HomeScreen extends JFrame {
     private DefaultListModel<String> likedMoviesModel;
 
     private LikeDislikeButtons buttons;
+    private ProfileButton profileButton;
 
     private Movie currentMovie;
 
@@ -59,6 +62,20 @@ public class HomeScreen extends JFrame {
         centerPanel.add(Box.createVerticalStrut(20));
 
         centerPanel.add(buttons);
+
+        // Menu do Topo
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Botão de Perfil
+        profileButton = new ProfileButton(
+                () -> new ProfileScreen(Session.getLoggedUser()).setVisible(true),
+                Session.getLoggedUser().getProfileImage()
+        );
+
+        topPanel.add(profileButton, BorderLayout.EAST);
+
+        add(topPanel, BorderLayout.NORTH);
 
         add(centerPanel, BorderLayout.CENTER);
     }
