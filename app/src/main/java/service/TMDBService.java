@@ -39,13 +39,9 @@ public class TMDBService {
         JsonNode movieNode = movies.get(randomIndex);
 
         Movie movie = new Movie();
-
         movie.setId(movieNode.get("id").asInt());
-
         movie.setTitle(movieNode.get("title").asText());
-
         movie.setDescription(movieNode.get("overview").asText());
-
         movie.setPosterPath(movieNode.get("poster_path").asText());
 
         return movie;

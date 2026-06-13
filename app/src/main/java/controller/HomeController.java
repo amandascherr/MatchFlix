@@ -65,6 +65,8 @@ public class HomeController {
 
         System.out.println("Curtiu: " + currentMovie.getTitle());
 
+        // logica de curtida
+
         loadMovie();
     }
 
