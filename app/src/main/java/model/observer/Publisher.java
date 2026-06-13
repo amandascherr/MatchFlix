@@ -1,8 +1,6 @@
-package groups;
+package model.observer;
 
 import java.util.ArrayList;
-
-import model.Movie;
 
 /**
  * Representa um publicador (Publisher) no padrão Observer.
@@ -32,7 +30,7 @@ public class Publisher {
     public void toNotify(String action, Object movie) {
         for (Subscriber subscriber : subscribers) {
             // Utilizar lógica Strategy possivelmente
-            subscriber.beNoitified(action, movie);
+            subscriber.beNotified(action, movie);
         }
     }
     /**

@@ -1,10 +1,8 @@
-package groups;
-
-import model.Movie;
+package model;
 
 public class Match {
-  Movie movie;
-  Group group;
+  private Movie movie;
+  private Group group;
 
   public Match(Movie movie, Group group){
     this.movie = movie;

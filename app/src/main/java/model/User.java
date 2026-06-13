@@ -1,15 +1,15 @@
-package groups;
- 
-import model.Movie;
+package model;
 
-public class User extends Subscriber{
+import model.observer.Publisher;
+import model.observer.Subscriber;
+ 
+public class User implements Subscriber{
   
-  Publisher publisher;
+  private Publisher publisher;
 
   public User(){
     publisher = new Publisher();
   }
-
 
   public void userLike(Movie movie){
     publisher.toNotify("like", movie);
@@ -24,12 +24,9 @@ public class User extends Subscriber{
     group.addUser(this);
   } 
 
-  @Override
-  public void beNoitified(String action, Object object) {
+  public void beNotified(String action, Object object) {
     Match match = (Match) object;
     System.out.println("Título do filme: " + match.getMovie().getTitle());
     System.out.println("Nome do grupo: " + match.getGroup().getName());
-
   }
-
 }

@@ -1,4 +1,4 @@
-import groups.User;
+import model.User;
 
 public class Session {
 

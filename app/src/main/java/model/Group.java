@@ -1,16 +1,17 @@
-package groups;
+package model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import model.Movie;
+import model.observer.Subscriber;
+import model.observer.Publisher;
 
-public class Group extends Subscriber {
+public class Group implements Subscriber {
 
-  Publisher publisher;
-  int numOfUsers;
-  Map<String, Integer> likedMovies = new HashMap<>();
-  String name;
+  private Publisher publisher;
+  private int numOfUsers;
+  private Map<String, Integer> likedMovies = new HashMap<>();
+  private String name;
   
 
   public Group(String name){
@@ -19,8 +20,7 @@ public class Group extends Subscriber {
     this.name = name;
   }
 
-  @Override
-  public void beNoitified(String action, Object object) {
+  public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
     if (action.equals("like")){
       if(likedMovies.containsKey(movie.getTitle())){
