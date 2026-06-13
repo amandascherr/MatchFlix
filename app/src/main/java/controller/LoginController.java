@@ -1,8 +1,8 @@
 package controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import service.dataManager.DataDTO;
+import model.User;
 import service.dataManager.DataManager;
 import view.LoginScreen;
 
@@ -23,26 +23,28 @@ public class LoginController {
     
     private void login() {
 
-        String password = screen.getPassword();
-
         if (screen.getEmail().isBlank() || screen.getPassword().isBlank()) {
 
             screen.showError("Todos os campos são obrigatórios.");
             return;
         }
 
-        DataDTO info = manager.readData("loginInfo");
+        List<LoginDTO> info = manager.readData("loginInfo", LoginDTO.class);
 
-        ArrayList<LoginDTO> logins = info.body();
+        if (info == null) {
+            screen.showError("Não há cadastros no sistema.");
+            return;
+        }
 
+        for (int i = 0; i < info.size(); i++) {
+            if (info.get(i).email().equals(screen.getEmail()) && info.get(i).password().equals(screen.getPassword())) {
+                User currentUser = new User(info.get(i).name(), info.get(i).email());
+                Session.setLoggedUser(currentUser);
+                onSuccess.run();
+                return;
+            }
+        }
 
-        // if (!password.equals(confirmPassword)) {
-
-        //     screen.showError("As senhas não coincidem.");
-        //     return;
-        // }
-
-        onSuccess.run();
+        screen.showError("Login não existe ou a senha está incorreta.");
     }
-
 }

@@ -13,3 +13,6 @@ app/src/resources/application.properties
 
 # Ignore
 .DS_Store
+
+# User Data
+app/src/main/resources/data

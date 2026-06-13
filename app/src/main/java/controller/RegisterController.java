@@ -29,7 +29,6 @@ public class RegisterController {
             || screen.getConfirmPassword().isBlank()) {
 
             screen.showError("Todos os campos são obrigatórios.");
-
             return;
         }
 

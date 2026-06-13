@@ -21,15 +21,9 @@ public class NavigationController {
         LoginScreen loginScreen = new LoginScreen();
         LoginController loginController = new LoginController(loginScreen, () -> {
                 loginScreen.dispose(); 
-                showLogin();
+                showHome();
             }, manager
         );
-
-        loginScreen.setOnLogin(() -> {
-
-            loginScreen.dispose();
-            showHome();
-        });
 
         loginScreen.setOnRegister(() -> {
 
