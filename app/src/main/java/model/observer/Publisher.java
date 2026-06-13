@@ -49,5 +49,8 @@ public class Publisher {
       subscribers.remove(subscriber);
     }
 
+    public int getSubsSize(){
+      return subscribers.size();
+    }
 
 }
