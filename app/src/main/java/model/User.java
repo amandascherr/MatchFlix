@@ -1,18 +1,23 @@
 package model;
 
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 import model.observer.Publisher;
 import model.observer.Subscriber;
  
+
 public class User implements Subscriber{
   
   private Publisher publisher;
   private String name;
   private String email;
   private ImageIcon profileImage;
-  private String[] likedMovies;
-  private String[] groups;
+  private ArrayList<String> likedMovies;
+  private ArrayList<String> groups;
 
   public User(String name, String email){
     this.name = name;
@@ -21,10 +26,14 @@ public class User implements Subscriber{
     publisher = new Publisher();
   }
 
-  public User(String name, String email, String[] likedMovies, String[] groups){
+  public User(String name, String email, UserProfileDTO userInfo){
     this(name, email);
-    this.likedMovies = likedMovies;
-    this.groups = groups;
+    this.likedMovies = userInfo.likedMovies();
+    this.groups = userInfo.groups();
+  
+    if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
+      loadProfileImage(userInfo.pathPhotoFile());
+    }
   }
 
   public String getName() {
@@ -41,7 +50,16 @@ public class User implements Subscriber{
 
   public void setProfileImage(ImageIcon profileImage) {
       this.profileImage = profileImage;
-      publisher.toNotify("profileUpdate", this);
+  }
+
+  public void loadProfileImage(String path) {
+    File file = new File(path);
+    
+    if (file.exists()) {
+        ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+        Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+        this.profileImage = new ImageIcon(scaledImage);
+    }
   }
 
   public void userLike(Movie movie){

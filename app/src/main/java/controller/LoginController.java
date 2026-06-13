@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 
 import model.User;
+import model.UserProfileDTO;
 import service.dataManager.DataManager;
 import view.LoginScreen;
 
@@ -38,7 +39,10 @@ public class LoginController {
 
         for (int i = 0; i < info.size(); i++) {
             if (info.get(i).email().equals(screen.getEmail()) && info.get(i).password().equals(screen.getPassword())) {
-                User currentUser = new User(info.get(i).name(), info.get(i).email());
+
+                UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
+
+                User currentUser = new User(info.get(i).name(), info.get(i).email(), userInfo);
                 Session.setLoggedUser(currentUser);
                 onSuccess.run();
                 return;

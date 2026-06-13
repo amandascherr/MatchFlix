@@ -3,27 +3,36 @@ package view;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.User;
+import model.UserProfileDTO;
+import service.dataManager.DataDTO;
+import service.dataManager.DataManager;
+import view.components.ProfileAvatar;
 
 public class ProfileScreen extends JFrame {
 
     private User user;
-    private JLabel imageLabel;
+    private ProfileAvatar profileAvatar;
+    private Runnable onImageUpdated;
+    private DataManager manager;
 
-    public ProfileScreen(User user) {
+    public ProfileScreen(User user, Runnable onImageUpdated, DataManager manager) {
         this.user = user;
+        this.onImageUpdated = onImageUpdated;
+        this.manager = manager;
 
         setTitle("Perfil do Usuário");
         setSize(400, 400);
@@ -34,27 +43,23 @@ public class ProfileScreen extends JFrame {
     }
 
     private void buildUI() {
-
         JPanel root = new JPanel();
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
         root.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // ===== FOTO =====
-        imageLabel = new JLabel();
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Foto
+        profileAvatar = new ProfileAvatar(user.getProfileImage(), 120);
+        profileAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileAvatar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        updateImage(user.getProfileImage());
-
-        imageLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        imageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        profileAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 uploadImage();
             }
         });
 
-        // ===== TEXTO =====
+        // Texto
         JLabel nameLabel = new JLabel(user.getName());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,8 +67,8 @@ public class ProfileScreen extends JFrame {
         JLabel emailLabel = new JLabel(user.getEmail());
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        root.add(imageLabel);
-        root.add(Box.createVerticalStrut(10));
+        root.add(profileAvatar);
+        root.add(Box.createVerticalStrut(15));
         root.add(nameLabel);
         root.add(emailLabel);
 
@@ -77,26 +82,39 @@ public class ProfileScreen extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
-            ImageIcon icon = new ImageIcon(
-                    new ImageIcon(file.getAbsolutePath())
-                            .getImage()
-                            .getScaledInstance(120, 120, Image.SCALE_SMOOTH)
-            );
+            try {
+                File destinationFolder = new File("src/main/resources/uploads");
+                if (!destinationFolder.exists()) {
+                    destinationFolder.mkdirs();
+                }
 
-            user.setProfileImage(icon);
-            updateImage(icon);
+                String format = file.getName().substring(file.getName().lastIndexOf("."));
+                String fileName = "profile_" + user.getName().toLowerCase().replaceAll("\\s+", "_") + "_" + System.currentTimeMillis() + format;
+                File copy = new File(destinationFolder, fileName);
+
+                Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                user.loadProfileImage(copy.getPath());
+
+                profileAvatar.setIcon(user.getProfileImage());
+                if (onImageUpdated != null) {
+                    onImageUpdated.run();
+                }
+
+                List<UserProfileDTO> users = manager.readData(user.getEmail(), UserProfileDTO.class);
+                if (users != null) {
+                    UserProfileDTO userDTO = new UserProfileDTO(
+                        copy.getPath(),
+                        users.get(0).likedMovies(),
+                        users.get(0).groups()
+                    );      
+
+                    manager.createData(new DataDTO<>(user.getEmail(), userDTO));
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-    }
-
-    private void updateImage(ImageIcon icon) {
-        if (icon == null) {
-            icon = new ImageIcon(
-                    new ImageIcon("assets/default.png")
-                            .getImage()
-                            .getScaledInstance(120, 120, Image.SCALE_SMOOTH)
-            );
-        }
-
-        imageLabel.setIcon(icon);
     }
 }
