@@ -16,14 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.User;
+import view.components.ProfileAvatar;
 
 public class ProfileScreen extends JFrame {
 
     private User user;
-    private JLabel imageLabel;
+    private ProfileAvatar profileAvatar;
+    private Runnable onImageUpdated;
 
-    public ProfileScreen(User user) {
+    public ProfileScreen(User user, Runnable onImageUpdated) {
         this.user = user;
+        this.onImageUpdated = onImageUpdated;
 
         setTitle("Perfil do Usuário");
         setSize(400, 400);
@@ -34,27 +37,23 @@ public class ProfileScreen extends JFrame {
     }
 
     private void buildUI() {
-
         JPanel root = new JPanel();
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
         root.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // ===== FOTO =====
-        imageLabel = new JLabel();
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Foto
+        profileAvatar = new ProfileAvatar(user.getProfileImage(), 120);
+        profileAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileAvatar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        updateImage(user.getProfileImage());
-
-        imageLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        imageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        profileAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 uploadImage();
             }
         });
 
-        // ===== TEXTO =====
+        // Texto
         JLabel nameLabel = new JLabel(user.getName());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,8 +61,8 @@ public class ProfileScreen extends JFrame {
         JLabel emailLabel = new JLabel(user.getEmail());
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        root.add(imageLabel);
-        root.add(Box.createVerticalStrut(10));
+        root.add(profileAvatar);
+        root.add(Box.createVerticalStrut(15));
         root.add(nameLabel);
         root.add(emailLabel);
 
@@ -77,26 +76,17 @@ public class ProfileScreen extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
-            ImageIcon icon = new ImageIcon(
-                    new ImageIcon(file.getAbsolutePath())
-                            .getImage()
-                            .getScaledInstance(120, 120, Image.SCALE_SMOOTH)
-            );
+            ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+            
+            Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-            user.setProfileImage(icon);
-            updateImage(icon);
+            user.setProfileImage(scaledIcon);
+            profileAvatar.setIcon(scaledIcon);
+            
+            if (onImageUpdated != null) {
+                onImageUpdated.run();
+            }
         }
-    }
-
-    private void updateImage(ImageIcon icon) {
-        if (icon == null) {
-            icon = new ImageIcon(
-                    new ImageIcon("assets/default.png")
-                            .getImage()
-                            .getScaledInstance(120, 120, Image.SCALE_SMOOTH)
-            );
-        }
-
-        imageLabel.setIcon(icon);
     }
 }

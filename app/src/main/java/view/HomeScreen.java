@@ -69,8 +69,10 @@ public class HomeScreen extends JFrame {
 
         // Botão de Perfil
         profileButton = new ProfileButton(
-                () -> new ProfileScreen(Session.getLoggedUser()).setVisible(true),
-                Session.getLoggedUser().getProfileImage()
+            () -> new ProfileScreen(Session.getLoggedUser(), () -> {
+                profileButton.setIcon(Session.getLoggedUser().getProfileImage());
+            }).setVisible(true),
+            Session.getLoggedUser().getProfileImage()
         );
 
         topPanel.add(profileButton, BorderLayout.EAST);
