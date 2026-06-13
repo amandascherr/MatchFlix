@@ -45,13 +45,13 @@ public class RegisterController {
 
         UserProfileDTO bodyProfile = new UserProfileDTO(
             screen.getNameInput(),
-            screen.getPassword(),
             screen.getEmail(),
+            screen.getPassword(),
             "",
             new ArrayList<>(),
             new ArrayList<>()
         );
-        
+
         DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyProfile.email(), bodyProfile);
         manager.createData(profilePayload);
 
