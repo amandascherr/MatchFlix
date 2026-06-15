@@ -64,8 +64,7 @@ public class HomeController {
         }
 
         System.out.println("Curtiu: " + currentMovie.getTitle());
-
-        // logica de curtida
+        Session.getLoggedUser().userLike(currentMovie);
 
         loadMovie();
     }
@@ -80,6 +79,7 @@ public class HomeController {
         }
 
         System.out.println("Descurtiu: " + currentMovie.getTitle());
+        Session.getLoggedUser().userDislike(currentMovie);
 
         loadMovie();
     }

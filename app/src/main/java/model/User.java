@@ -16,7 +16,7 @@ public class User implements Subscriber{
   private String name;
   private String email;
   private ImageIcon profileImage;
-  private ArrayList<String> likedMovies;
+  private ArrayList<Movie> likedMovies;
   private ArrayList<String> groups;
 
   public User(String name, String email){
@@ -26,7 +26,8 @@ public class User implements Subscriber{
   public User(UserProfileDTO userInfo){
     this.name = userInfo.name();
     this.email = userInfo.email();
-    this.likedMovies = userInfo.likedMovies();
+    this.likedMovies = new ArrayList<>();
+    // this.likedMovies = userInfo.likedMovies();
     this.groups = userInfo.groups();
     
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
@@ -43,6 +44,10 @@ public class User implements Subscriber{
 
   public String getEmail() {
       return email;
+  }
+
+  public ArrayList<Movie> getLikedMovies() {
+    return likedMovies;
   }
 
   public ImageIcon getProfileImage() {
@@ -64,6 +69,7 @@ public class User implements Subscriber{
   }
 
   public void userLike(Movie movie){
+    likedMovies.add(movie);
     publisher.toNotify("like", movie);
   }
 
