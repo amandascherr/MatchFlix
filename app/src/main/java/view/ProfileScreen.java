@@ -21,7 +21,7 @@ import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
-import view.components.LikedMoviesPanel;
+import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
 
 public class ProfileScreen extends JFrame {
@@ -83,7 +83,7 @@ public class ProfileScreen extends JFrame {
         root.add(likedMoviesTitle);
         root.add(Box.createVerticalStrut(10));
 
-        root.add(new LikedMoviesPanel(user.getLikedMovies()));
+        root.add(new MoviesPanel(user.getLikedMovies()));
 
         JScrollPane scrollPane = new JScrollPane(root);
 

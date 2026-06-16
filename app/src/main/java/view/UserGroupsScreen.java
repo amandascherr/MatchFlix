@@ -59,12 +59,10 @@ public class UserGroupsScreen extends JFrame {
 
                 groupButton.addActionListener(e -> {
 
-                    System.out.println(
-                        "Abrir grupo: "
-                        + group.getName()
-                    );
+                    ViewGroupDetailsScreen groupScreen = new ViewGroupDetailsScreen(group);
 
-                    // abrir GroupScreen futuramente
+                    groupScreen.setVisible(true);
+                    dispose();
                 });
 
                 content.add(groupButton);
