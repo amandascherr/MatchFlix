@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,12 +14,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import model.User;
 import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import view.components.LikedMoviesPanel;
 import view.components.ProfileAvatar;
 
 public class ProfileScreen extends JFrame {
@@ -43,11 +44,12 @@ public class ProfileScreen extends JFrame {
     }
 
     private void buildUI() {
+
         JPanel root = new JPanel();
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
         root.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Foto
+        // Foto de perfil
         profileAvatar = new ProfileAvatar(user.getProfileImage(), 120);
         profileAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
         profileAvatar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -59,11 +61,10 @@ public class ProfileScreen extends JFrame {
             }
         });
 
-        // Texto
+        // Infos
         JLabel nameLabel = new JLabel(user.getName());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         JLabel emailLabel = new JLabel(user.getEmail());
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -72,7 +73,27 @@ public class ProfileScreen extends JFrame {
         root.add(nameLabel);
         root.add(emailLabel);
 
-        add(root);
+        // Filmes curtidos
+        root.add(Box.createVerticalStrut(30));
+
+        JLabel likedMoviesTitle = new JLabel("Filmes Curtidos");
+        likedMoviesTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        likedMoviesTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        root.add(likedMoviesTitle);
+        root.add(Box.createVerticalStrut(10));
+
+        root.add(new LikedMoviesPanel(user.getLikedMovies()));
+
+        JScrollPane scrollPane = new JScrollPane(root);
+
+        scrollPane.setHorizontalScrollBarPolicy(
+            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+        );
+
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        setContentPane(scrollPane);
     }
 
     private void uploadImage() {
