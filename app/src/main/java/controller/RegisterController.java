@@ -7,6 +7,7 @@ import service.dataManager.DataManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.DTO.UserTableDTO;
 import model.UserProfileDTO;
 import view.RegisterScreen;
 
@@ -43,6 +44,13 @@ public class RegisterController {
             return;
         }
 
+        List<UserProfileDTO> existing = manager.readData(screen.getEmail(), UserProfileDTO.class);
+        if (existing != null && !existing.isEmpty()) {
+
+            screen.showError("Já existe um usuário com esse email.");
+            return;
+        }
+
         UserProfileDTO bodyProfile = new UserProfileDTO(
             screen.getNameInput(),
             screen.getEmail(),
@@ -54,6 +62,9 @@ public class RegisterController {
 
         DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyProfile.email(), bodyProfile);
         manager.createData(profilePayload);
+
+        UserTableDTO tableEntry = new UserTableDTO(bodyProfile.name(), bodyProfile.email());
+        manager.appendData(new DataDTO<UserTableDTO>("users", tableEntry));
 
         onSuccess.run();
     }
