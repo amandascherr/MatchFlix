@@ -17,7 +17,7 @@ public class User implements Subscriber{
   private String email;
   private ImageIcon profileImage;
   private ArrayList<Movie> likedMovies;
-  private ArrayList<String> groups;
+  private ArrayList<Group> groups;
 
   public User(String name, String email){
     
@@ -28,7 +28,12 @@ public class User implements Subscriber{
     this.email = userInfo.email();
     this.likedMovies = new ArrayList<>();
     // this.likedMovies = userInfo.likedMovies();
-    this.groups = userInfo.groups();
+    this.groups = new ArrayList<>();
+    if (userInfo.groups() != null) {
+      for (GroupDTO groupInfo : userInfo.groups()) {
+        this.groups.add(new Group(groupInfo));
+      }
+    }
     
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
       loadProfileImage(userInfo.pathPhotoFile());
@@ -80,7 +85,12 @@ public class User implements Subscriber{
   public void joinGroup(Group group){
     publisher.addSubscriber(group);
     group.addUser(this);
-  } 
+    groups.add(group);
+  }
+
+  public ArrayList<Group> getGroups(){
+    return groups;
+  }
 
   public void beNotified(String action, Object object) {
     Match match = (Match) object;
