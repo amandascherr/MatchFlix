@@ -17,3 +17,7 @@ app/src/resources/application.properties
 # User Data
 app/src/main/resources/data
 app/src/main/resources/uploads
+
+# Arquivos compilados Java
+*.class
+app/bin
