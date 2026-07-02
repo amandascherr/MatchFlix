@@ -1,7 +1,12 @@
 package model;
 
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 import controller.Session;
 import model.observer.Publisher;
@@ -12,7 +17,9 @@ public class Group implements Subscriber {
   private Publisher publisher;
   private int numOfUsers;
   private Map<String, Integer> likedMovies = new HashMap<>();
+  private ArrayList<Movie> groupMatches = new ArrayList<>();
   private String name;
+  private ImageIcon profileImage;
   
 
   public Group(String name){
@@ -71,7 +78,6 @@ public class Group implements Subscriber {
       Session.logAction = "match";
     } else {
       Session.logAction = "check_match";
-
     }
   }
 
@@ -84,6 +90,10 @@ public class Group implements Subscriber {
     return this.name;
   }
 
+  public ArrayList<Movie> getMatches() {
+    return groupMatches;
+  }
+
   public int getNumOfUsers(){
     return this.numOfUsers;
   }
@@ -93,9 +103,26 @@ public class Group implements Subscriber {
     return publisher.getSubsSize();
   }
 
-  public Map<String, Integer> getLikedMovies()
-  {
-  return likedMovies;
+  public Map<String, Integer> getLikedMovies() {
+    return likedMovies;
+  }
+
+  public ImageIcon getProfileImage() {
+    return profileImage;
+  }
+
+  public void setProfileImage(ImageIcon profileImage) {
+      this.profileImage = profileImage;
+  }
+
+  public void loadProfileImage(String path) {
+    File file = new File(path);
+    
+    if (file.exists()) {
+        ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+        Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+        this.profileImage = new ImageIcon(scaledImage);
+    }
   }
 
 }

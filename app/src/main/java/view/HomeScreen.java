@@ -10,10 +10,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.Session;
+import controller.CreateGroupController;
 import model.Movie;
-import view.components.LikeDislikeButtons;
 import view.components.MovieCard;
-import view.components.ProfileButton;
+import view.components.button.AddGroupButton;
+import view.components.button.LikeDislikeButtons;
+import view.components.button.ProfileButton;
+import view.components.button.ViewGroupsButton;
 
 public class HomeScreen extends JFrame {
 
@@ -74,6 +77,28 @@ public class HomeScreen extends JFrame {
             }).setVisible(true),
             Session.getLoggedUser().getProfileImage()
         );
+
+        // Botões à esquerda
+        JPanel leftButtons = new JPanel();
+        AddGroupButton addGroupButton = new AddGroupButton(() -> {
+                CreateGroupScreen screen = new CreateGroupScreen();
+
+                new CreateGroupController(screen,
+                    () -> screen.dispose()
+                );
+
+                screen.setVisible(true);
+            });
+
+        leftButtons.add(addGroupButton);
+
+        ViewGroupsButton viewGroupsButton = new ViewGroupsButton(() -> {
+                new UserGroupsScreen(Session.getLoggedUser().getGroups()).setVisible(true);});
+
+        leftButtons.add(addGroupButton);
+        leftButtons.add(viewGroupsButton);
+
+        topPanel.add(leftButtons, BorderLayout.WEST);
 
         topPanel.add(profileButton, BorderLayout.EAST);
 

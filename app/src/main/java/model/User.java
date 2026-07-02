@@ -55,6 +55,10 @@ public class User implements Subscriber{
     return likedMovies;
   }
 
+  public ArrayList<Group> getGroups() {
+    return groups;
+  }
+
   public ImageIcon getProfileImage() {
     return profileImage;
   }
@@ -83,13 +87,10 @@ public class User implements Subscriber{
   }
 
   public void joinGroup(Group group){
+    groups.add(group);
     publisher.addSubscriber(group);
     group.addUser(this);
     groups.add(group);
-  }
-
-  public ArrayList<Group> getGroups(){
-    return groups;
   }
 
   public void beNotified(String action, Object object) {

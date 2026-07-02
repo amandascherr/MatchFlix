@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 
 import model.Movie;
 
-public class LikedMovieCard extends JPanel {
+public class SmallMovieCard extends JPanel {
 
-    public LikedMovieCard(Movie movie) {
+    public SmallMovieCard(Movie movie) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         setOpaque(false);

@@ -1,4 +1,4 @@
-package view.components;
+package view.components.button;
 
 import java.awt.Dimension;
 import java.awt.Font;

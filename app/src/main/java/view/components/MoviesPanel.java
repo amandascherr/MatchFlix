@@ -2,7 +2,7 @@ package view.components;
 
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import model.Movie;
 
-public class LikedMoviesPanel extends JPanel {
+public class MoviesPanel extends JPanel {
 
-    public LikedMoviesPanel(List<Movie> movies) {
+    public MoviesPanel(ArrayList<Movie> movies) {
         if (movies == null || movies.isEmpty()) {
 
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -28,7 +28,7 @@ public class LikedMoviesPanel extends JPanel {
 
         setLayout(new GridLayout(0, 2, 15, 15));
         for (Movie movie : movies) {
-            add(new LikedMovieCard(movie));
+            add(new SmallMovieCard(movie));
         }
     }
 }
