@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Salva cada {@link DataDTO} como um arquivo JSON na pasta de resources.
@@ -21,6 +22,10 @@ public class JsonDataManager implements DataManager {
     private static final Path BASE_DIR = Path.of("src", "main", "resources", "data");
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    public JsonDataManager(){
+        mapper.registerModule(new JavaTimeModule());
+    }
 
     /**
      * Cria (ou sobrescreve) o arquivo {@code <id>.json} guardando o corpo do DTO

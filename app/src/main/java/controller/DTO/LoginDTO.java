@@ -1,4 +1,4 @@
-package controller;
+package controller.DTO;
 
 public record LoginDTO (
     String name,
