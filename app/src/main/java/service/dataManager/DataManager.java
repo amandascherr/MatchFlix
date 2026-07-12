@@ -2,6 +2,9 @@ package service.dataManager;
 
 import java.util.List;
 
+import exception.UserNotFoundException;
+import model.UserProfileDTO;
+
 /**
  * Contrato para persistencia de dados em formato chave/valor, onde cada
  * {@link DataDTO} e identificado pelo seu {@code id}. Implementacoes definem
@@ -39,7 +42,16 @@ public interface DataManager {
      * ja foi gravado. O registro alvo e identificado pelo {@code id} do proprio
      * DTO.
      *
-     * @param appendData dado a ser concatenado ao registro.
+     * @param appendData dado a ser concatenado ao registro.;
      */
     public void appendData(DataDTO<?> appendData);
+
+    /**
+     * Procura um usuário pelo identificador (nome do arquivo JSON).
+     *
+     * @param id identificador do usuário.
+     * @return o UserProfileDTO encontrado.
+     * @throws UserNotFoundException caso o usuário não exista.
+     */
+    public UserProfileDTO findUser(String id) throws UserNotFoundException;
 }

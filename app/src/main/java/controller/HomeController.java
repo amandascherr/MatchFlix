@@ -2,7 +2,7 @@ package controller;
 
 import model.Movie;
 import service.TMDBService;
-import view.HomeScreen;
+import view.screens.HomeScreen;
 
 public class HomeController {
 

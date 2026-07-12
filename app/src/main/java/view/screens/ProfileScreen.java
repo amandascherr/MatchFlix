@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -23,6 +23,7 @@ import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
+
 
 public class ProfileScreen extends JFrame {
 

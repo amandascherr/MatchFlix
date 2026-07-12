@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -9,7 +9,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -130,9 +129,5 @@ public class RegisterScreen extends JFrame {
         loginButton.addActionListener(
                 e -> action.run()
         );
-    }
-
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.Component;
 import java.awt.Cursor;

@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -78,14 +78,5 @@ public class CreateGroupScreen extends JFrame {
     // É a ação do botão, que é definida pelo CreateGruopController, chamado em HomeScreen.
     public void setOnCreate(Runnable action) {
         createButton.addActionListener(e -> action.run());
-    }
-
-    public void showError(String message) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            message,
-            "Erro",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
     }
 }

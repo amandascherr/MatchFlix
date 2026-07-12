@@ -3,7 +3,8 @@ package controller;
 import model.Group;
 import service.Services;
 import service.dataManager.DataManager;
-import view.CreateGroupScreen;
+import view.screens.CreateGroupScreen;
+import view.util.Dialogs;
 
 public class CreateGroupController {
 
@@ -26,7 +27,7 @@ public class CreateGroupController {
         String groupName = screen.getGroupName();
 
         if (groupName.isBlank()) {
-            screen.showError("O nome do grupo é obrigatório.");
+            Dialogs.showError(screen, "O nome do grupo é obrigatório.");
 
             return;
         }

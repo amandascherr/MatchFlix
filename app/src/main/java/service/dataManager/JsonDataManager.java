@@ -11,6 +11,9 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import exception.UserNotFoundException;
+import model.UserProfileDTO;
+
 /**
  * Salva cada {@link DataDTO} como um arquivo JSON na pasta de resources.
  * O campo {@code id} vira o nome do arquivo ({@code <id>.json}) e o {@code body}
@@ -147,5 +150,23 @@ public class JsonDataManager implements DataManager {
      */
     private String formatId(String id) {
         return id.replaceAll("[^a-zA-Z0-9-.]", "_");
+    }
+
+    /**
+     * Procura um usuário pelo identificador (nome do arquivo JSON).
+     *
+     * @param id identificador do usuário.
+     * @return o UserProfileDTO encontrado.
+     * @throws UserNotFoundException caso o usuário não exista.
+     */
+    public UserProfileDTO findUser(String id) throws UserNotFoundException {
+
+        List<UserProfileDTO> users = readData(id, UserProfileDTO.class);
+
+        if (users == null || users.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+
+        return users.get(0);
     }
 }

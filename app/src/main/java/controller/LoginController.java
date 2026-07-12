@@ -1,10 +1,13 @@
 package controller;
 
+import exception.EmptyFieldException;
+import exception.UserNotFoundException;
 import model.User;
 import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
-import view.LoginScreen;
+import view.screens.LoginScreen;
+import view.util.Dialogs;
 
 public class LoginController {
 
@@ -12,39 +15,51 @@ public class LoginController {
     private final Runnable onSuccess;
     private final DataManager manager = Services.getManager();
 
-
     public LoginController(LoginScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
 
         screen.setOnLogin(this::login);
     }
+
+    private void validateFields() throws EmptyFieldException {
+        if (screen.getEmail().isBlank()) {
+            throw new EmptyFieldException("Email");
+        }
+
+        if (screen.getPassword().isBlank()) {
+            throw new EmptyFieldException("Senha");
+        }
+    }
     
     private void login() {
 
-        if (screen.getEmail().isBlank() || screen.getPassword().isBlank()) {
-
-            screen.showError("Todos os campos são obrigatórios.");
+        try {
+            validateFields();
+        } 
+        catch(EmptyFieldException e) {
+            Dialogs.showError(screen, e.getMessage());
             return;
         }
 
-        UserProfileDTO info = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
+        try {
+            UserProfileDTO info = manager.findUser(screen.getEmail());
 
-        if (info == null) {
-            screen.showError("Email inválido ou sistema sem cadastros");
-            return;
+            if (info.password().equals(screen.getPassword())) {
+
+                UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
+
+                User currentUser = new User(userInfo);
+                Session.setLoggedUser(currentUser);
+                onSuccess.run();
+                
+            } else {
+                Dialogs.showError(screen, "A senha está incorreta.");
+            }
+
         }
-
-        if (info.password().equals(screen.getPassword())) {
-
-            UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
-
-            User currentUser = new User(userInfo);
-            Session.setLoggedUser(currentUser);
-            onSuccess.run();
-            return;
+        catch(UserNotFoundException e){
+            Dialogs.showError(screen, e.getMessage());
         }
-
-        screen.showError("Login não existe ou a senha está incorreta.");
     }
 }
