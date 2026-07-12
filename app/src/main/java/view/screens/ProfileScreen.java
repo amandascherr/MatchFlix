@@ -21,6 +21,7 @@ import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import view.Utils;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
 

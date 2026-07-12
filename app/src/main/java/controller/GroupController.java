@@ -10,6 +10,7 @@ import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import view.Utils;
 
 /**
  * Coordena as acoes de grupo de um usuario e a persistencia do perfil.
@@ -40,13 +41,7 @@ public class GroupController {
      */
     private static void saveGroups(User user) {
         DataManager manager = Services.getManager();
-        List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
-        if (existing == null || existing.isEmpty()) {
-            System.out.println("[ERROR] Perfil nao encontrado para: " + user.getEmail());
-            return;
-        }
-
-        UserProfileDTO current = existing.get(0);
+        UserProfileDTO current = Utils.getUserProfile(user.getEmail());
 
         ArrayList<GroupDTO> groupsDTO = new ArrayList<>();
         for (Group group : user.getGroups()) {

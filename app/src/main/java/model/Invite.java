@@ -7,28 +7,28 @@ import service.dataManager.DataManager;
 
 public class Invite extends Notification {
 
-    private User receiver;
-    private String sender;
+    private User sender;
+    private String receiver;
     private Group group;
 
-    public Invite(User receiver, String sender, Group group) {
+    public Invite(User sender, String receiver, Group group) {
         this.sender = sender;
         this.receiver = receiver;
         this.group = group;
     }
 
     public Invite(InviteDTO inviteInfo){
-        this.receiver = new User(inviteInfo.receiver());
-        this.sender = inviteInfo.sender();
+        this.sender = new User(inviteInfo.sender());
+        this.receiver = inviteInfo.receiver();
         this.group = new Group(inviteInfo.groupDTO());
     }
 
-    public User getReceiver() {
-        return receiver;
+    public User getSender() {
+        return sender;
     }
 
-    public String getSender() {
-        return sender;
+    public String getReceiver() {
+        return receiver;
     }
 
     public Group getGroup() {
@@ -43,7 +43,7 @@ public class Invite extends Notification {
     @Override
     public InviteDTO toDTO() {
         DataManager manager = Services.getManager();
-        User user = receiver;
+        User user = sender;
         List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
 
         if (existing == null || existing.isEmpty()) {
@@ -63,6 +63,6 @@ public class Invite extends Notification {
             current.notifications()
         );
 
-        return new InviteDTO(userDTO, sender, new GroupDTO(group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
+        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
         }
 }

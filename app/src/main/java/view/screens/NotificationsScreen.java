@@ -61,7 +61,6 @@ public class NotificationsScreen extends JFrame {
                     dispose();
                     new NotificationsScreen().setVisible(true);
 
-
                 });
 
                 panel.setOnDeny(() -> {
@@ -96,4 +95,5 @@ public class NotificationsScreen extends JFrame {
 
         setContentPane(scrollPane);
     }
+
 }

@@ -1,7 +1,7 @@
 package model;
 
 public record InviteDTO (
-  UserProfileDTO receiver,
-  String sender,
+  UserProfileDTO sender,
+  String receiver,
   GroupDTO groupDTO
  ) implements NotificationDTO{}
