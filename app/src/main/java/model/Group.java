@@ -1,5 +1,7 @@
 package model;
 
+import model.dto.GroupDTO;
+
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;

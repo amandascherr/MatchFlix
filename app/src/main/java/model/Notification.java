@@ -1,5 +1,7 @@
 package model;
 
+import model.dto.NotificationDTO;
+
 public abstract class Notification {
 
     private boolean read;

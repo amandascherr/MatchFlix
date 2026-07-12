@@ -4,7 +4,7 @@ import exception.UserNotFoundException;
 import model.Group;
 import model.Invite;
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.InvitationService;
 import service.Services;
 import service.dataManager.DataManager;

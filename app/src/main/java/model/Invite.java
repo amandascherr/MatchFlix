@@ -1,5 +1,9 @@
 package model;
 
+import model.dto.GroupDTO;
+import model.dto.InviteDTO;
+import model.dto.UserProfileDTO;
+
 import java.util.List;
 
 import service.Services;

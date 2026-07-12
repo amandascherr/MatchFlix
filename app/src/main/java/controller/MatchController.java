@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Notification;
-import model.NotificationDTO;
+import model.dto.NotificationDTO;
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 

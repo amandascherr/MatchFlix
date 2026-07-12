@@ -1,5 +1,8 @@
 package model;
 
+import model.dto.GroupDTO;
+import model.dto.MatchDTO;
+
 public class Match extends Notification {
 
     private String movie;

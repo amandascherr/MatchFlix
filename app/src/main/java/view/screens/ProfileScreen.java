@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 import view.Utils;

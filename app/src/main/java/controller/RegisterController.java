@@ -5,7 +5,7 @@ import java.util.List;
 
 import controller.DTO.UserTableDTO;
 import exception.EmptyFieldException;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;

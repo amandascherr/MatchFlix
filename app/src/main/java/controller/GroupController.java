@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import model.Group;
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 import view.Utils;

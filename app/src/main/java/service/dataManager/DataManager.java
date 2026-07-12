@@ -3,7 +3,7 @@ package service.dataManager;
 import java.util.List;
 
 import exception.UserNotFoundException;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 
 /**
  * Contrato para persistencia de dados em formato chave/valor, onde cada

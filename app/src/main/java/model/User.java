@@ -1,5 +1,11 @@
 package model;
 
+import model.dto.GroupDTO;
+import model.dto.InviteDTO;
+import model.dto.MatchDTO;
+import model.dto.NotificationDTO;
+import model.dto.UserProfileDTO;
+
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;

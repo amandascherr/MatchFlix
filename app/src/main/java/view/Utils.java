@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 
