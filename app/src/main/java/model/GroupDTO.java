@@ -12,6 +12,7 @@ import java.util.Map;
  * </p>
  */
 public record GroupDTO(
+    String id,
     String name,
     int numOfUsers,
     Map<String, Integer> likedMovies

@@ -44,7 +44,7 @@ public class Invite extends Notification {
     public InviteDTO toDTO() {
         DataManager manager = Services.getManager();
         User user = sender;
-        List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
+        List<UserProfileDTO> existing = manager.readData("user", user.getEmail(), UserProfileDTO.class);
 
         if (existing == null || existing.isEmpty()) {
             System.out.println("[ERROR] Perfil nao encontrado para: " + user.getEmail());
@@ -63,6 +63,6 @@ public class Invite extends Notification {
             current.notifications()
         );
 
-        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
+        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getId(), group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
         }
 }

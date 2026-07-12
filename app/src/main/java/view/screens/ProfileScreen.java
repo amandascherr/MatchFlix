@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import model.User;
 import model.UserProfileDTO;
 import service.Services;
-import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 import view.Utils;
 import view.components.MoviesPanel;
@@ -124,7 +123,7 @@ public class ProfileScreen extends JFrame {
                     onImageUpdated.run();
                 }
 
-                UserProfileDTO userData = manager.readData(user.getEmail(), UserProfileDTO.class).get(0);
+                UserProfileDTO userData = manager.readData("user", user.getEmail(), UserProfileDTO.class).get(0);
                 
                 if (userData != null) {
                     UserProfileDTO userDTO = new UserProfileDTO(
@@ -137,7 +136,7 @@ public class ProfileScreen extends JFrame {
                         userData.notifications()
                     );      
 
-                    manager.createData(new DataDTO<>(user.getEmail(), userDTO));
+                    manager.createData("user", user.getEmail(), userDTO);
                 }
 
             } catch (Exception ex) {

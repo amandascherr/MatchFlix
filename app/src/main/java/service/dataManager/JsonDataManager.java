@@ -43,6 +43,36 @@ public class JsonDataManager implements DataManager {
     }
 
     /**
+     * Sobrecarga que instancia o {@link DataDTO} internamente a partir do
+     * {@code id} e do {@code body} informados e delega para
+     * {@link #createData(DataDTO)}. Usa a tabela padrao {@code "default"}.
+     *
+     * @param <T>  tipo do corpo (um {@code Record}).
+     * @param id   identificador do registro.
+     * @param body corpo do dado a ser persistido.
+     */
+    @Override
+    public <T extends Record> void createData(String id, T body) {
+        createData("default", id, body);
+    }
+
+    /**
+     * Sobrecarga que monta o nome do arquivo no formato
+     * {@code <table>%<id>}, instancia o {@link DataDTO} internamente e delega
+     * para {@link #createData(DataDTO)}.
+     *
+     * @param <T>   tipo do corpo (um {@code Record}).
+     * @param table nome da tabela, usado como prefixo do nome do arquivo.
+     * @param id    identificador do registro dentro da tabela.
+     * @param body  corpo do dado a ser persistido.
+     */
+    @Override
+    public <T extends Record> void createData(String table, String id, T body) {
+        String fileName = table + "%" + id;
+        createData(new DataDTO<>(fileName, body));
+    }
+
+    /**
      * Remove o arquivo JSON correspondente ao {@code id} do DTO.
      *
      * @param data dado cujo {@code id} indica o arquivo a ser apagado.
@@ -64,12 +94,29 @@ public class JsonDataManager implements DataManager {
      */
     @Override
     public <T extends Record> List<T> readData(String id, Class<T> type) {
+        return readData("default", id, type);
+    }
+
+    /**
+     * Sobrecarga que le o arquivo cujo nome segue o formato
+     * {@code <table>%<id>} e devolve seu corpo como uma lista do tipo informado.
+     *
+     * @param <T>   tipo dos itens (um {@code Record}).
+     * @param table nome da tabela, usado como prefixo do nome do arquivo.
+     * @param id    identificador do dado dentro da tabela.
+     * @param type  classe dos itens, usada para desserializar o corpo.
+     * @return a lista de itens lida, ou {@code null} se o arquivo nao existir ou
+     *         ocorrer falha na leitura.
+     */
+    @Override
+    public <T extends Record> List<T> readData(String table, String id, Class<T> type) {
+        String fileName = table + "%" + id;
         try {
-            Map<?, ?> file = mapper.readValue(fileFor(id), Map.class);
+            Map<?, ?> file = mapper.readValue(fileFor(fileName), Map.class);
             var listType = mapper.getTypeFactory().constructCollectionType(List.class, type);
             return mapper.convertValue(file.get("body"), listType);
         } catch (IOException e) {
-            System.out.println("[ERROR] Falha ao ler o dado com id: " + id);
+            System.out.println("[ERROR] Falha ao ler o dado com id: " + fileName);
             return null;
         }
     }
@@ -141,15 +188,17 @@ public class JsonDataManager implements DataManager {
     /**
      * Formata um {@code id} para que seja valido como nome de arquivo,
      * substituindo caracteres especiais invalidos por {@code '_'}. Sao
-     * considerados validos letras, digitos, {@code '-'} e {@code '.'}; qualquer
-     * outro caractere (incluindo separadores de diretorio como {@code '/'} e
-     * {@code '\'}) e substituido.
+     * considerados validos letras, digitos, {@code '-'}, {@code '.'} e
+     * {@code '%'} (usado como separador no formato {@code [tipo]%[id].json},
+     * aceito por todos os sistemas operacionais); qualquer outro caractere
+     * (incluindo separadores de diretorio como {@code '/'} e {@code '\'}) e
+     * substituido.
      *
      * @param id identificador a ser formatado.
      * @return o {@code id} seguro para uso como nome de arquivo.
      */
     private String formatId(String id) {
-        return id.replaceAll("[^a-zA-Z0-9-.]", "_");
+        return id.replaceAll("[^a-zA-Z0-9-.%]", "_");
     }
 
     /**
@@ -160,8 +209,22 @@ public class JsonDataManager implements DataManager {
      * @throws UserNotFoundException caso o usuário não exista.
      */
     public UserProfileDTO findUser(String id) throws UserNotFoundException {
+        return findUser("default", id);
+    }
 
-        List<UserProfileDTO> users = readData(id, UserProfileDTO.class);
+    /**
+     * Procura um usuário pelo identificador dentro da tabela informada,
+     * lendo o arquivo cujo nome segue o formato {@code <table>%<id>}.
+     *
+     * @param table nome da tabela, usado como prefixo do nome do arquivo.
+     * @param id    identificador do usuário dentro da tabela.
+     * @return o UserProfileDTO encontrado.
+     * @throws UserNotFoundException caso o usuário não exista.
+     */
+    @Override
+    public UserProfileDTO findUser(String table, String id) throws UserNotFoundException {
+
+        List<UserProfileDTO> users = readData(table, id, UserProfileDTO.class);
 
         if (users == null || users.isEmpty()) {
             throw new UserNotFoundException(id);

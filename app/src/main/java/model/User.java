@@ -4,9 +4,13 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import java.util.List;
+
 import controller.MatchController;
 import model.observer.Publisher;
 import model.observer.Subscriber;
+import service.Services;
+import service.dataManager.DataManager;
 import view.Utils;
  
 
@@ -38,8 +42,12 @@ public class User implements Subscriber{
     this.groups = new ArrayList<>();
     this.notifications = new ArrayList<>();
     if (userInfo.groups() != null) {
-      for (GroupDTO groupInfo : userInfo.groups()) {
-        this.groups.add(new Group(groupInfo));
+      DataManager manager = Services.getManager();
+      for (String groupId : userInfo.groups()) {
+        List<GroupDTO> groupData = manager.readData("group", groupId, GroupDTO.class);
+        if (groupData != null && !groupData.isEmpty()) {
+          this.groups.add(new Group(groupData.get(0)));
+        }
       }
     }
 
@@ -97,6 +105,11 @@ public class User implements Subscriber{
   }
 
   public void joinGroup(Group group){
+    for (Group existing : groups) {
+      if (existing.getId().equals(group.getId())) {
+        return;
+      }
+    }
     groups.add(group);
     publisher.addSubscriber(group);
     group.addUser(this);

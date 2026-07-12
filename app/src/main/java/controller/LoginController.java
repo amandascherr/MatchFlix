@@ -43,11 +43,11 @@ public class LoginController {
         }
 
         try {
-            UserProfileDTO info = manager.findUser(screen.getEmail());
+            UserProfileDTO info = manager.findUser("user", screen.getEmail());
 
             if (info.password().equals(screen.getPassword())) {
 
-                UserProfileDTO userInfo = manager.readData(screen.getEmail(), UserProfileDTO.class).get(0);
+                UserProfileDTO userInfo = manager.readData("user", screen.getEmail(), UserProfileDTO.class).get(0);
 
                 User currentUser = new User(userInfo);
                 Session.setLoggedUser(currentUser);

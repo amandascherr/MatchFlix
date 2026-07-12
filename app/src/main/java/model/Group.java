@@ -18,14 +18,16 @@ public class Group implements Subscriber {
   private int numOfUsers;
   private Map<String, Integer> likedMovies = new HashMap<>();
   private ArrayList<Movie> groupMatches = new ArrayList<>();
+  private String id;
   private String name;
   private ImageIcon profileImage;
-  
+
 
   public Group(String name){
     publisher = new Publisher();
     numOfUsers = 0;
     this.name = name;
+    this.id = name + "_" + System.currentTimeMillis();
   }
 
   /**
@@ -41,6 +43,7 @@ public class Group implements Subscriber {
    */
   public Group(GroupDTO dto){
     publisher = new Publisher();
+    this.id = dto.id();
     this.name = dto.name();
     this.numOfUsers = dto.numOfUsers();
     this.likedMovies = new HashMap<>(dto.likedMovies());
@@ -52,7 +55,7 @@ public class Group implements Subscriber {
    * @return um {@link GroupDTO} com o estado persistivel deste grupo.
    */
   public GroupDTO toDTO(){
-    return new GroupDTO(name, numOfUsers, new HashMap<>(likedMovies));
+    return new GroupDTO(id, name, numOfUsers, new HashMap<>(likedMovies));
   }
 
   public void beNotified(String action, Object object) {
@@ -84,6 +87,10 @@ public class Group implements Subscriber {
   public void addUser(User user){
     publisher.addSubscriber(user);
     numOfUsers += 1;
+  }
+
+  public String getId(){
+    return this.id;
   }
 
   public String getName(){

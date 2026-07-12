@@ -33,7 +33,7 @@ public class InviteController {
             }
 
             try {
-                UserProfileDTO receiver = manager.findUser(screen.getTypedUsername());
+                UserProfileDTO receiver = manager.findUser("user", screen.getTypedUsername());
 
                 User user = new User(receiver);
                 Invite invite = new Invite(Session.getLoggedUser(), user.getName(), group);

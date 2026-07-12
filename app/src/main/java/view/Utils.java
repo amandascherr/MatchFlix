@@ -25,7 +25,7 @@ public class Utils {
 
   public static UserProfileDTO getUserProfile(String email){
     DataManager manager = Services.getManager();
-        List<UserProfileDTO> existing = manager.readData(email, UserProfileDTO.class);
+        List<UserProfileDTO> existing = manager.readData("user", email, UserProfileDTO.class);
         if (existing == null || existing.isEmpty()) {
             System.out.println("[ERROR] Perfil nao encontrado para: " + email);
             return null;
