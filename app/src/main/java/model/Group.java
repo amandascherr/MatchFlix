@@ -73,7 +73,7 @@ public class Group implements Subscriber {
     int numOfLikes = likedMovies.get(movie.getTitle());
     if (numOfLikes == numOfUsers){
       // Passar o filme no match
-      Match match = new Match(movie, this);
+      Match match = new Match(movie.getTitle(), this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
     } else {

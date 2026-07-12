@@ -13,4 +13,7 @@ public abstract class Notification {
     }
 
     public abstract String getMessage();
+
+    public abstract NotificationDTO toDTO();
+ 
 }

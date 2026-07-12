@@ -36,7 +36,13 @@ public class InviteController {
                 UserProfileDTO receiver = manager.findUser(screen.getTypedUsername());
 
                 User user = new User(receiver);
-                Invite invite = new Invite(Session.getLoggedUser(), user, group);
+                Invite invite = new Invite(user, Session.getLoggedUser().getName(), group);
+
+                InvitationService.sendInvitation(invite);
+
+                user.getNotifications().add(invite);
+
+                MatchController.saveMatch(user);
 
                 InvitationService.sendInvitation(invite);
                 Dialogs.showMessage(screen, "Convite enviado!");

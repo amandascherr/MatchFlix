@@ -3,30 +3,16 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Group;
-import model.GroupDTO;
+import model.Notification;
+import model.NotificationDTO;
 import model.User;
 import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 
-/**
- * Coordena as acoes de grupo de um usuario e a persistencia do perfil.
- */
-public class GroupController {
+public class MatchController {
 
-
-    /**
-     * Faz o usuario entrar no grupo (em memoria) e regrava o perfil no arquivo.
-     *
-     * @param user  usuario logado.
-     * @param group grupo a ser ingressadso.
-     */
-    public static void joinGroup(User user, Group group) {
-        user.joinGroup(group);
-        saveGroups(user);
-    }
 
     /**
      * Regrava o {@code <email>.json} do usuario atualizando apenas os grupos.
@@ -38,7 +24,7 @@ public class GroupController {
      *
      * @param user usuario cujo perfil sera atualizado.
      */
-    private static void saveGroups(User user) {
+    public static void saveMatch(User user) {
         DataManager manager = Services.getManager();
         List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
         if (existing == null || existing.isEmpty()) {
@@ -48,9 +34,9 @@ public class GroupController {
 
         UserProfileDTO current = existing.get(0);
 
-        ArrayList<GroupDTO> groupsDTO = new ArrayList<>();
-        for (Group group : user.getGroups()) {
-            groupsDTO.add(group.toDTO());
+        ArrayList<NotificationDTO> notDTO = new ArrayList<>();
+        for (Notification not :  user.getNotifications()) {
+            notDTO.add(not.toDTO());
         }
 
         UserProfileDTO updated = new UserProfileDTO(
@@ -59,10 +45,11 @@ public class GroupController {
             current.password(),
             current.pathPhotoFile(),
             current.likedMovies(),
-            groupsDTO,
-            current.notifications()
+            current.groups(),
+            notDTO
         );
 
         manager.createData(new DataDTO<>(user.getEmail(), updated));
     }
+  
 }

@@ -74,6 +74,7 @@ public class RegisterController {
             screen.getPassword(),
             "",
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
 
