@@ -13,9 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controller.InviteController;
 import model.Group;
-import view.components.ProfileAvatar;
 import view.components.MoviesPanel;
+import view.components.ProfileAvatar;
 
 public class ViewGroupDetailsScreen extends JFrame {
 
@@ -46,45 +47,35 @@ public class ViewGroupDetailsScreen extends JFrame {
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
         root.setBorder(
-            BorderFactory.createEmptyBorder(
-                20,
-                20,
-                20,
-                20
-            )
-        );
+                BorderFactory.createEmptyBorder(
+                        20,
+                        20,
+                        20,
+                        20));
 
         // Foto
-
         groupAvatar = new ProfileAvatar(
-            group.getProfileImage(),
-            120
-        );
+                group.getProfileImage(),
+                120);
 
-        groupAvatar.setAlignmentX(
-            Component.CENTER_ALIGNMENT
-        );
+        groupAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         groupAvatar.setCursor(
-            new Cursor(Cursor.HAND_CURSOR)
-        );
+                new Cursor(Cursor.HAND_CURSOR));
 
         // Nome
-
         JLabel nameLabel =
-            new JLabel(group.getName());
+                new JLabel(group.getName());
 
         nameLabel.setFont(
-            new Font("Arial", Font.BOLD, 18)
-        );
+                new Font("Arial", Font.BOLD, 18));
 
         nameLabel.setAlignmentX(
-            Component.CENTER_ALIGNMENT
-        );
+                Component.CENTER_ALIGNMENT);
 
         // Participantes
-
-        JLabel membersLabel = new JLabel(group.getNumOfUsers() + " participantes");
+        JLabel membersLabel =
+                new JLabel(group.getNumOfUsers() + " participantes");
 
         membersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -92,6 +83,18 @@ public class ViewGroupDetailsScreen extends JFrame {
         inviteButton = new JButton("Convidar usuário");
 
         inviteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Quando clicar no botão
+        inviteButton.addActionListener(e -> {
+
+            InviteScreen inviteScreen =
+                    new InviteScreen(this);
+
+            new InviteController(group, inviteScreen);
+
+            inviteScreen.setVisible(true);
+
+        });
 
         root.add(groupAvatar);
         root.add(Box.createVerticalStrut(15));
@@ -106,7 +109,6 @@ public class ViewGroupDetailsScreen extends JFrame {
 
         root.add(Box.createVerticalStrut(30));
 
-        // Matches
         JLabel matchesTitle = new JLabel("Matches");
 
         matchesTitle.setFont(new Font("Arial", Font.BOLD, 16));
@@ -114,23 +116,18 @@ public class ViewGroupDetailsScreen extends JFrame {
         matchesTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         root.add(matchesTitle);
+
         root.add(Box.createVerticalStrut(10));
 
         root.add(new MoviesPanel(group.getMatches()));
 
         JScrollPane scrollPane = new JScrollPane(root);
 
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         setContentPane(scrollPane);
-    }
-
-    public void setOnInvite(Runnable action) {
-
-        inviteButton.addActionListener(
-            e -> action.run()
-        );
     }
 }
