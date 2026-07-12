@@ -18,6 +18,7 @@ public class CreateGroupScreen extends JFrame {
     private FormField groupNameField;
     private JButton createButton;
 
+    // CHamado em HomeScreen
     public CreateGroupScreen() {
 
         setTitle("Criar Grupo");
@@ -74,7 +75,7 @@ public class CreateGroupScreen extends JFrame {
     public String getGroupName() {
         return groupNameField.getText();
     }
-
+    // É a ação do botão, que é definida pelo CreateGruopController, chamado em HomeScreen.
     public void setOnCreate(Runnable action) {
         createButton.addActionListener(e -> action.run());
     }

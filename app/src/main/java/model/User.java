@@ -90,7 +90,6 @@ public class User implements Subscriber{
     groups.add(group);
     publisher.addSubscriber(group);
     group.addUser(this);
-    groups.add(group);
   }
 
   public void beNotified(String action, Object object) {

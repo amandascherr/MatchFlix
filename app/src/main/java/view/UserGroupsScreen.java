@@ -44,9 +44,7 @@ public class UserGroupsScreen extends JFrame {
             content.add(emptyButton);
 
         } else {
-
             for (Group group : groups) {
-
                 JButton groupButton =
                     new JButton(group.getName());
 

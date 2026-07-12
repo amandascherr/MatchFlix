@@ -1,10 +1,7 @@
 package controller;
 
-import java.util.ArrayList;
-
 import model.Group;
 import service.Services;
-import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 import view.CreateGroupScreen;
 
@@ -15,6 +12,7 @@ public class CreateGroupController {
 
     private final DataManager manager = Services.getManager();
 
+    // É chamado em HomeScreen enquanto está criando grupo
     public CreateGroupController(CreateGroupScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
@@ -22,6 +20,7 @@ public class CreateGroupController {
         screen.setOnCreate(this::createGroup);
     }
 
+    // É chamado ao apertar o botão de criar grupo.
     private void createGroup() {
 
         String groupName = screen.getGroupName();
