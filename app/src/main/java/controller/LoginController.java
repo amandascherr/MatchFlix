@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.List;
-
 import model.User;
 import model.UserProfileDTO;
 import service.Services;

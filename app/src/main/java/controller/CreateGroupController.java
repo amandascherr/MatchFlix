@@ -32,7 +32,7 @@ public class CreateGroupController {
         }
 
         Group newGroup = new Group(groupName);
-        Session.getLoggedUser().joinGroup(newGroup);
+        GroupController.joinGroup(Session.getLoggedUser(), newGroup);
 
         onSuccess.run();
     }

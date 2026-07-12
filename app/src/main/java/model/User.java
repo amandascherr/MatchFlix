@@ -20,8 +20,14 @@ public class User implements Subscriber{
   private ArrayList<Group> groups;
 
   public User(String name, String email){
+    this.name = name;
+    this.email = email;
+    this.likedMovies = new ArrayList<>();
+    // this.likedMovies = userInfo.likedMovies();
+    this.groups = new ArrayList<>();
+  
     
-  }
+    publisher = new Publisher();  }
 
   public User(UserProfileDTO userInfo){
     this.name = userInfo.name();
