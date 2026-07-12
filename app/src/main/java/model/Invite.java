@@ -1,36 +1,31 @@
 package model;
 
-public class Invite {
+public class Invite extends Notification {
 
     private User sender;
-    private String invitedUsername;
+    private User receiver;
     private Group group;
-    private boolean accepted;
 
-    public Invite(User sender, String invitedUsername, Group group) {
+    public Invite(User sender, User receiver, Group group) {
         this.sender = sender;
-        this.invitedUsername = invitedUsername;
+        this.receiver = receiver;
         this.group = group;
-        this.accepted = false;
     }
 
     public User getSender() {
         return sender;
     }
 
-    public String getInvitedUsername() {
-        return invitedUsername;
+    public User getReceiver() {
+        return receiver;
     }
 
     public Group getGroup() {
         return group;
     }
 
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void accept() {
-        accepted = true;
+    @Override
+    public String getMessage() {
+        return "Convite para participar de \"" + group.getName() + "\"";
     }
 }

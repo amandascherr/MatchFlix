@@ -9,14 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controller.Session;
 import controller.CreateGroupController;
+import controller.Session;
 import model.Movie;
 import view.components.MovieCard;
 import view.components.button.AddGroupButton;
 import view.components.button.LikeDislikeButtons;
+import view.components.button.NotificationButton;
 import view.components.button.ProfileButton;
 import view.components.button.ViewGroupsButton;
+
 
 public class HomeScreen extends JFrame {
 
@@ -95,8 +97,11 @@ public class HomeScreen extends JFrame {
         ViewGroupsButton viewGroupsButton = new ViewGroupsButton(() -> {
                 new UserGroupsScreen(Session.getLoggedUser().getGroups()).setVisible(true);});
 
+        NotificationButton notificationButton = new NotificationButton(() -> { new NotificationsScreen().setVisible(true);});
+
         leftButtons.add(addGroupButton);
         leftButtons.add(viewGroupsButton);
+        leftButtons.add(notificationButton);
 
         topPanel.add(leftButtons, BorderLayout.WEST);
 
