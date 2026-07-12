@@ -8,5 +8,6 @@ public record UserProfileDTO(
     String password,
     String pathPhotoFile,
     ArrayList<String> likedMovies,
-    ArrayList<GroupDTO> groups
+    ArrayList<GroupDTO> groups,
+    ArrayList<NotificationDTO> notifications
 ) {}

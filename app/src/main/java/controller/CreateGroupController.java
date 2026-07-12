@@ -35,6 +35,8 @@ public class CreateGroupController {
         Group newGroup = new Group(groupName);
         GroupController.joinGroup(Session.getLoggedUser(), newGroup);
 
+
+
         onSuccess.run();
     }
 }

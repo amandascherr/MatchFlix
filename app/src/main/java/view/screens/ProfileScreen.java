@@ -116,7 +116,7 @@ public class ProfileScreen extends JFrame {
 
                 Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                user.loadProfileImage(copy.getPath());
+                user.setProfileImage(Utils.loadProfileImage(copy.getPath()));
 
                 profileAvatar.setIcon(user.getProfileImage());
                 if (onImageUpdated != null) {
@@ -132,7 +132,8 @@ public class ProfileScreen extends JFrame {
                         userData.password(),
                         copy.getPath(),
                         userData.likedMovies(),
-                        userData.groups()
+                        userData.groups(),
+                        userData.notifications()
                     );      
 
                     manager.createData(new DataDTO<>(user.getEmail(), userDTO));

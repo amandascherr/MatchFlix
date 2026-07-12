@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controller.GroupController;
 import controller.Session;
 import model.Invite;
 import model.Match;
@@ -45,7 +46,7 @@ public class NotificationsScreen extends JFrame {
                 15));
 
         for (Notification notification :
-                NotificationService.getNotifications(Session.getLoggedUser())) {
+                Session.getLoggedUser().getNotifications()) {
 
             if (notification instanceof Invite invite) {
 
@@ -55,10 +56,7 @@ public class NotificationsScreen extends JFrame {
                 panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
                 panel.setOnAccept(() -> {
-
-                    invite.getGroup().addUser(invite.getReceiver());
-                    System.out.println("Convite aceito");
-
+                    GroupController.joinGroup(Session.getLoggedUser(), invite.getGroup());
                     NotificationService.remove(invite);
                     dispose();
                     new NotificationsScreen().setVisible(true);
