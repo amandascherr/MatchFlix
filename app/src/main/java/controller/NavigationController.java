@@ -1,9 +1,9 @@
 package controller;
 
 import service.TMDBService;
-import view.HomeScreen;
-import view.LoginScreen;
-import view.RegisterScreen;
+import view.screens.HomeScreen;
+import view.screens.LoginScreen;
+import view.screens.RegisterScreen;
 
 public class NavigationController {
 

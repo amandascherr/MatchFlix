@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.BorderLayout;
 
@@ -18,7 +18,6 @@ import view.components.button.LikeDislikeButtons;
 import view.components.button.NotificationButton;
 import view.components.button.ProfileButton;
 import view.components.button.ViewGroupsButton;
-
 
 public class HomeScreen extends JFrame {
 

@@ -2,6 +2,7 @@ package controller;
 
 import javax.swing.JOptionPane;
 
+import exception.UserNotFoundException;
 import model.Group;
 import model.Invite;
 import model.User;
@@ -9,7 +10,8 @@ import model.UserProfileDTO;
 import service.InvitationService;
 import service.Services;
 import service.dataManager.DataManager;
-import view.InviteScreen;
+import view.screens.InviteScreen;
+import view.util.Dialogs;
 
 public class InviteController {
 
@@ -29,30 +31,25 @@ public class InviteController {
 
         screen.setOnSend(() -> {
 
-            UserProfileDTO info = manager.readData(screen.getTypedUsername(), UserProfileDTO.class).get(0);
-
             if(screen.getTypedUsername().isBlank()){
-                JOptionPane.showMessageDialog(screen,"Digite um usuário.");
+                Dialogs.showError(screen, "Digite um usuário.");
                 return;
             }
 
-            if (info == null) {
-                JOptionPane.showMessageDialog(screen, "Usuário não encontrado.");
-                return;
+            try {
+                UserProfileDTO receiver = manager.findUser(screen.getTypedUsername());
+
+                User user = new User(receiver);
+                Invite invite = new Invite(Session.getLoggedUser(), user, group);
+
+                InvitationService.sendInvitation(invite);
+                JOptionPane.showMessageDialog(screen, "Convite enviado!");
+
+                screen.dispose();
             }
-
-            User user = new User(info);
-
-            Invite invite = new Invite(Session.getLoggedUser(), user, group);
-
-            InvitationService.sendInvitation(invite);
-
-            JOptionPane.showMessageDialog(
-                    screen,
-                    "Convite enviado!");
-
-            screen.dispose();
-
+            catch(UserNotFoundException e){
+                Dialogs.showError(screen, e.getMessage());
+            }
         });
 
     }

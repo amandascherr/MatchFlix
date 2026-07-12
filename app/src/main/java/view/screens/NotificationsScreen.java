@@ -1,4 +1,4 @@
-package view;
+package view.screens;
 
 import java.awt.Component;
 
@@ -97,7 +97,5 @@ public class NotificationsScreen extends JFrame {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         setContentPane(scrollPane);
-
     }
-
 }

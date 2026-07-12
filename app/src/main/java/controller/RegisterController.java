@@ -3,13 +3,14 @@ package controller;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import view.screens.RegisterScreen;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import controller.DTO.UserTableDTO;
 import model.UserProfileDTO;
-import view.RegisterScreen;
+import view.util.Dialogs;
 
 public class RegisterController {
 
@@ -34,20 +35,20 @@ public class RegisterController {
             || screen.getPassword().isBlank()
             || screen.getConfirmPassword().isBlank()) {
 
-            screen.showError("Todos os campos são obrigatórios.");
+            Dialogs.showError(screen, "Todos os campos são obrigatórios.");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
 
-            screen.showError("As senhas não coincidem.");
+            Dialogs.showError(screen, "As senhas não coincidem.");
             return;
         }
 
         List<UserProfileDTO> existing = manager.readData(screen.getEmail(), UserProfileDTO.class);
         if (existing != null && !existing.isEmpty()) {
 
-            screen.showError("Já existe um usuário com esse email.");
+            Dialogs.showError(screen, "Já existe um usuário com esse email.");
             return;
         }
 

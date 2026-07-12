@@ -5,7 +5,8 @@ import model.User;
 import model.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
-import view.LoginScreen;
+import view.screens.LoginScreen;
+import view.util.Dialogs;
 
 public class LoginController {
 
@@ -23,7 +24,7 @@ public class LoginController {
     private void login() {
 
         if (screen.getEmail().isBlank() || screen.getPassword().isBlank()) {
-            screen.showError("Todos os campos são obrigatórios.");
+            Dialogs.showError(screen, "Todos os campos são obrigatórios.");
             return;
         }
 
@@ -39,12 +40,12 @@ public class LoginController {
                 onSuccess.run();
                 
             } else {
-                screen.showError("A senha está incorreta.");
+                Dialogs.showError(screen, "A senha está incorreta.");
             }
 
         }
         catch(UserNotFoundException e){
-            screen.showError(e.getMessage());
+            Dialogs.showError(screen, e.getMessage());
         }
     }
 }
