@@ -79,13 +79,4 @@ public class CreateGroupScreen extends JFrame {
     public void setOnCreate(Runnable action) {
         createButton.addActionListener(e -> action.run());
     }
-
-    public void showError(String message) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            message,
-            "Erro",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
 }

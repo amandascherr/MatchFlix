@@ -1,5 +1,6 @@
 package controller;
 
+import exception.EmptyFieldException;
 import exception.UserNotFoundException;
 import model.User;
 import model.UserProfileDTO;
@@ -20,11 +21,24 @@ public class LoginController {
 
         screen.setOnLogin(this::login);
     }
+
+    private void validateFields() throws EmptyFieldException {
+        if (screen.getEmail().isBlank()) {
+            throw new EmptyFieldException("Email");
+        }
+
+        if (screen.getPassword().isBlank()) {
+            throw new EmptyFieldException("Senha");
+        }
+    }
     
     private void login() {
 
-        if (screen.getEmail().isBlank() || screen.getPassword().isBlank()) {
-            Dialogs.showError(screen, "Todos os campos são obrigatórios.");
+        try {
+            validateFields();
+        } 
+        catch(EmptyFieldException e) {
+            Dialogs.showError(screen, e.getMessage());
             return;
         }
 

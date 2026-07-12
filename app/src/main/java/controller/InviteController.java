@@ -1,7 +1,5 @@
 package controller;
 
-import javax.swing.JOptionPane;
-
 import exception.UserNotFoundException;
 import model.Group;
 import model.Invite;
@@ -20,7 +18,6 @@ public class InviteController {
     private final DataManager manager = Services.getManager();
 
     public InviteController(Group group, InviteScreen screen){
-
         this.group = group;
         this.screen = screen;
 
@@ -30,7 +27,6 @@ public class InviteController {
     private void configureActions(){
 
         screen.setOnSend(() -> {
-
             if(screen.getTypedUsername().isBlank()){
                 Dialogs.showError(screen, "Digite um usuário.");
                 return;
@@ -43,7 +39,7 @@ public class InviteController {
                 Invite invite = new Invite(Session.getLoggedUser(), user, group);
 
                 InvitationService.sendInvitation(invite);
-                JOptionPane.showMessageDialog(screen, "Convite enviado!");
+                Dialogs.showMessage(screen, "Convite enviado!");
 
                 screen.dispose();
             }
