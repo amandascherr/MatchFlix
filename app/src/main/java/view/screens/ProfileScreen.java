@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import dto.UserProfileDTO;
+import model.Movie;
 import model.User;
 import service.Services;
 import service.dataManager.DataManager;
@@ -96,7 +98,10 @@ public class ProfileScreen extends JFrame {
         root.add(likedMoviesTitle);
         root.add(Box.createVerticalStrut(16));
 
-        MoviesPanel moviesPanel = new MoviesPanel(user.getLikedMovies());
+        ArrayList<Movie> likedMovies = user.getLikedMovies();
+        int limitMovies = Math.min(likedMovies.size(), 15);
+
+        MoviesPanel moviesPanel = new MoviesPanel(likedMovies.subList(0, limitMovies));
         moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         root.add(moviesPanel);
 
