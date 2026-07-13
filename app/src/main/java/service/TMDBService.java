@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.Movie;
 import controller.Session;
+import model.Movie;
 
 public class TMDBService {
 
@@ -23,7 +23,7 @@ public class TMDBService {
     private Set<Integer> shownMoviesId = new HashSet<>();
     private List<JsonNode> currentPage = new ArrayList<>();
     private int page = 0;
-
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public TMDBService(String apiKey) {
         this.apiKey = apiKey;
@@ -38,7 +38,6 @@ public class TMDBService {
 
         String url = "https://api.themoviedb.org/3/movie/popular" + "?api_key=" + apiKey + "&page=" + this.page;
 
-        RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(url, String.class);
         JsonNode root = mapper.readTree(response);
 
@@ -47,6 +46,16 @@ public class TMDBService {
         }
 
         this.currentPage = filterMovies(currentPage);
+    }
+
+    public Movie getMovieById(int id) throws Exception {
+
+        String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey;
+
+        String response = restTemplate.getForObject(url, String.class);
+        JsonNode movieNode = mapper.readTree(response);
+
+        return buildMovie(movieNode);
     }
 
     private List<JsonNode> filterMovies(List<JsonNode> movies) {
@@ -84,9 +93,10 @@ public class TMDBService {
         int randomIndex = random.nextInt(this.currentPage.size());
         JsonNode movieNode = this.currentPage.remove(randomIndex);
         shownMoviesId.add(movieNode.get("id").asInt());
-
+        
         Movie currentMovie = buildMovie(movieNode);
-        if (Session.getLoggedUser().getLikedMovies().contains(currentMovie)) {
+        boolean alreadyLiked = Session.getLoggedUser().getLikedMovies().stream().anyMatch(movie -> movie.getId() == currentMovie.getId());
+        if (alreadyLiked) {
             return getRandomMovie();
         }
 

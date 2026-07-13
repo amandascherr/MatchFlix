@@ -14,6 +14,7 @@ import dto.UserProfileDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;
+import service.TMDBService;
 import service.dataManager.DataManager;
 import util.Loader;
  
@@ -33,7 +34,6 @@ public class User implements Subscriber{
     this.name = name;
     this.email = email;
     this.likedMovies = new ArrayList<>();
-    // this.likedMovies = userInfo.likedMovies();
     this.groups = new ArrayList<>();
     this.notifications = new ArrayList<>();
     
@@ -42,6 +42,19 @@ public class User implements Subscriber{
 
   public User(UserProfileDTO userInfo){
     this(userInfo.name(), userInfo.email());
+
+    TMDBService service = Services.getTMDBService();
+
+    if (userInfo.likedMovies() != null) {
+      for (int id : userInfo.likedMovies()) {
+        try {
+          likedMovies.add(service.getMovieById(id));
+        }
+        catch(Exception e) {
+          return;
+        }
+      }
+    }
 
     if (userInfo.groups() != null) {
       DataManager manager = Services.getManager();
@@ -58,6 +71,8 @@ public class User implements Subscriber{
         }
       }
     }
+
+
 
     if (userInfo.notifications() != null){
       for (NotificationDTO matchInfo : userInfo.notifications()){
@@ -141,7 +156,7 @@ public class User implements Subscriber{
       email,
       actualUserInfo.password(),
       actualUserInfo.pathPhotoFile(),
-      new ArrayList<>(likedMovies.stream().map(Movie::getTitle).toList()),
+      new ArrayList<>(likedMovies.stream().map(Movie::getId).toList()),
       new ArrayList<>(groups.stream().map(Group::getId).toList()),
       new ArrayList<>(notifications.stream().map(Notification::toDTO).toList())
     );

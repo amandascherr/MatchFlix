@@ -1,5 +1,6 @@
 package controller;
 
+import service.Services;
 import service.TMDBService;
 import view.screens.HomeScreen;
 import view.screens.LoginScreen;
@@ -9,9 +10,8 @@ public class NavigationController {
 
     private final TMDBService tmdbService;
 
-    public NavigationController(TMDBService tmdbService) {
-
-        this.tmdbService = tmdbService;
+    public NavigationController() {
+        this.tmdbService = Services.getTMDBService();
     }
 
     // Tela de login

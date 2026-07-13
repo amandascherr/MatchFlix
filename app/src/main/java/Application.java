@@ -2,13 +2,12 @@ import javax.swing.SwingUtilities;
 
 import controller.NavigationController;
 import io.github.cdimascio.dotenv.Dotenv;
-import service.TMDBService;
+import service.Services;
 
 public class Application {
 
     public static void main(String[] args) {
 
-        // Suaviza a renderização de texto (importante no Linux)
         System.setProperty("awt.useSystemAAFontSettings", "on");
         System.setProperty("swing.aatext", "true");
 
@@ -19,10 +18,10 @@ public class Application {
                 Dotenv dotenv = Dotenv.load();
                 
                 String apiKey = dotenv.get("TMDB_API_KEY");
-                
-                TMDBService tmdb = new TMDBService(apiKey);
 
-                NavigationController navigation = new NavigationController(tmdb);
+                Services.initializeTMDB(apiKey);
+                
+                NavigationController navigation = new NavigationController();
                 navigation.showLogin();
 
             } catch (Exception e) {
