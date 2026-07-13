@@ -14,7 +14,7 @@ public class Publisher {
     /**
      * Lista de inscritos que receberão notificações.
      */
-    private ArrayList<Subscriber> subscribers = new ArrayList<>();
+    private final ArrayList<Subscriber> subscribers = new ArrayList<>();
 
     /**
      * Notifica todos os inscritos sobre uma ação ocorrida.
@@ -27,10 +27,10 @@ public class Publisher {
      *               aos inscritos
      * @param object pode ser tanto um filme como um Match
      */
-    public void toNotify(String action, Object movie) {
+    public void toNotify(String action, Object object) {
         for (Subscriber subscriber : subscribers) {
             // Utilizar lógica Strategy possivelmente
-            subscriber.beNotified(action, movie);
+            subscriber.beNotified(action, object);
         }
     }
     /**

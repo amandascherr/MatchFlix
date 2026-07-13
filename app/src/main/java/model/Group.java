@@ -1,7 +1,5 @@
 package model;
 
-import model.dto.GroupDTO;
-
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import controller.Session;
+import model.dto.GroupDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;
@@ -18,12 +17,12 @@ import service.dataManager.DataManager;
 
 public class Group implements Subscriber {
 
-  private Publisher publisher;
+  private final Publisher publisher;
   private int numOfUsers;
   private Map<String, Integer> likedMovies = new HashMap<>();
-  private ArrayList<Movie> groupMatches = new ArrayList<>();
-  private String id;
-  private String name;
+  private final ArrayList<Movie> groupMatches = new ArrayList<>();
+  private final String id;
+  private final String name;
   private ImageIcon profileImage;
 
   public Group(String name) {
@@ -70,6 +69,7 @@ public class Group implements Subscriber {
     manager.createData("group", this.id, this.toDTO());
   }
 
+  @Override
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
     if (action.equals("like")) {
@@ -78,18 +78,18 @@ public class Group implements Subscriber {
       } else {
         likedMovies.put(movie.getTitle(), 1);
       }
-      checkMatch(movie);
+      checkMatch(movie.getTitle());
     } else if (action.equals("dislike")) {
       System.out.println("disliked");
     }
     saveGroup();
   }
 
-  private void checkMatch(Movie movie) {
-    int numOfLikes = likedMovies.get(movie.getTitle());
+  public void checkMatch(String movieTitle) {
+    int numOfLikes = likedMovies.get(movieTitle);
     if (numOfLikes == numOfUsers) {
       // Passar o filme no match
-      Match match = new Match(movie.getTitle(), this.getName());
+      Match match = new Match(movieTitle, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
     } else {
@@ -98,8 +98,12 @@ public class Group implements Subscriber {
   }
 
   public void addUser(User user) {
-    publisher.addSubscriber(user);
+    addToPublisher(user);
     numOfUsers += 1;
+  }
+
+  public void addToPublisher(User user){
+    publisher.addSubscriber(user);
   }
 
   public String getId() {

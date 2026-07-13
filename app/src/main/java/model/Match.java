@@ -5,8 +5,8 @@ import model.dto.MatchDTO;
 
 public class Match extends Notification {
 
-    private String movie;
-    private String group;
+    private final String movie;
+    private final String group;
 
     public Match(String movie, String group) {
         this.movie = movie;
@@ -28,7 +28,7 @@ public class Match extends Notification {
 
     @Override
     public String getMessage() {
-        return "\""  +
+        return "\""  + movie +
                 "\" foi um match para \"" +
                 group + "\"!";
     }

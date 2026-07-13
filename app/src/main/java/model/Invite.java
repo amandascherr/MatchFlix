@@ -1,19 +1,18 @@
 package model;
 
+import java.util.List;
+
 import model.dto.GroupDTO;
 import model.dto.InviteDTO;
 import model.dto.UserProfileDTO;
-
-import java.util.List;
-
 import service.Services;
 import service.dataManager.DataManager;
 
 public class Invite extends Notification {
 
-    private User sender;
-    private String receiver;
-    private Group group;
+    private final User sender;
+    private final String receiver;
+    private final Group group;
 
     public Invite(User sender, String receiver, Group group) {
         this.sender = sender;

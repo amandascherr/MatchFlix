@@ -1,18 +1,16 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+
+import controller.MatchController;
 import model.dto.GroupDTO;
 import model.dto.InviteDTO;
 import model.dto.MatchDTO;
 import model.dto.NotificationDTO;
 import model.dto.UserProfileDTO;
-
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-
-import java.util.List;
-
-import controller.MatchController;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;
@@ -38,7 +36,8 @@ public class User implements Subscriber{
     this.groups = new ArrayList<>();
     this.notifications = new ArrayList<>();
     
-    publisher = new Publisher();  }
+    publisher = new Publisher();  
+  }
 
   public User(UserProfileDTO userInfo){
     this(userInfo.name(), userInfo.email());
@@ -49,8 +48,12 @@ public class User implements Subscriber{
         List<GroupDTO> groupData = manager.readData("group", groupId, GroupDTO.class);
         if (groupData != null && !groupData.isEmpty()) {
           Group group = new Group(groupData.get(0));
+          group.addToPublisher(this);
           this.groups.add(group);
           this.publisher.addSubscriber(group);
+          for (String movieTitle : group.getLikedMovies().keySet()){
+            group.checkMatch(movieTitle);
+          }
         }
       }
     }
