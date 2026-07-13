@@ -99,9 +99,9 @@ public class ProfileScreen extends JFrame {
         root.add(Box.createVerticalStrut(16));
 
         ArrayList<Movie> likedMovies = user.getLikedMovies();
-        int limitMovies = Math.min(likedMovies.size(), 15);
+        int limitMovies = Math.max(likedMovies.size() - 15, 0);
 
-        MoviesPanel moviesPanel = new MoviesPanel(likedMovies.subList(0, limitMovies));
+        MoviesPanel moviesPanel = new MoviesPanel(likedMovies.subList(limitMovies, likedMovies.size()));
         moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         root.add(moviesPanel);
 
