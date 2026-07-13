@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Notification;
-import model.NotificationDTO;
+import model.dto.NotificationDTO;
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
-import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
 
 public class MatchController {
@@ -26,7 +25,7 @@ public class MatchController {
      */
     public static void saveMatch(User user) {
         DataManager manager = Services.getManager();
-        List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
+        List<UserProfileDTO> existing = manager.readData("user", user.getEmail(), UserProfileDTO.class);
         if (existing == null || existing.isEmpty()) {
             System.out.println("[ERROR] Perfil nao encontrado para: " + user.getEmail());
             return;
@@ -49,7 +48,7 @@ public class MatchController {
             notDTO
         );
 
-        manager.createData(new DataDTO<>(user.getEmail(), updated));
+        manager.createData("user", user.getEmail(), updated);
     }
   
 }

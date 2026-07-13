@@ -1,12 +1,20 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import controller.MatchController;
+import model.dto.GroupDTO;
+import model.dto.InviteDTO;
+import model.dto.MatchDTO;
+import model.dto.NotificationDTO;
+import model.dto.UserProfileDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
+import service.Services;
+import service.dataManager.DataManager;
 import view.Utils;
  
 
@@ -28,18 +36,25 @@ public class User implements Subscriber{
     this.groups = new ArrayList<>();
     this.notifications = new ArrayList<>();
     
-    publisher = new Publisher();  }
+    publisher = new Publisher();  
+  }
 
   public User(UserProfileDTO userInfo){
-    this.name = userInfo.name();
-    this.email = userInfo.email();
-    this.likedMovies = new ArrayList<>();
-    // this.likedMovies = userInfo.likedMovies();
-    this.groups = new ArrayList<>();
-    this.notifications = new ArrayList<>();
+    this(userInfo.name(), userInfo.email());
+
     if (userInfo.groups() != null) {
-      for (GroupDTO groupInfo : userInfo.groups()) {
-        this.groups.add(new Group(groupInfo));
+      DataManager manager = Services.getManager();
+      for (String groupId : userInfo.groups()) {
+        List<GroupDTO> groupData = manager.readData("group", groupId, GroupDTO.class);
+        if (groupData != null && !groupData.isEmpty()) {
+          Group group = new Group(groupData.get(0));
+          group.addToPublisher(this);
+          this.groups.add(group);
+          this.publisher.addSubscriber(group);
+          for (String movieTitle : group.getLikedMovies().keySet()){
+            group.checkMatch(movieTitle);
+          }
+        }
       }
     }
 
@@ -56,9 +71,6 @@ public class User implements Subscriber{
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
       this.profileImage = Utils.loadProfileImage(userInfo.pathPhotoFile());
     }
-    
-    publisher = new Publisher();
-  
   }
 
   public String getName() {
@@ -97,6 +109,11 @@ public class User implements Subscriber{
   }
 
   public void joinGroup(Group group){
+    for (Group existing : groups) {
+      if (existing.getId().equals(group.getId())) {
+        return;
+      }
+    }
     groups.add(group);
     publisher.addSubscriber(group);
     group.addUser(this);

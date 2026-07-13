@@ -2,33 +2,36 @@ package model;
 
 import java.util.List;
 
+import model.dto.GroupDTO;
+import model.dto.InviteDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 
 public class Invite extends Notification {
 
-    private User receiver;
-    private String sender;
-    private Group group;
+    private final User sender;
+    private final String receiver;
+    private final Group group;
 
-    public Invite(User receiver, String sender, Group group) {
+    public Invite(User sender, String receiver, Group group) {
         this.sender = sender;
         this.receiver = receiver;
         this.group = group;
     }
 
     public Invite(InviteDTO inviteInfo){
-        this.receiver = new User(inviteInfo.receiver());
-        this.sender = inviteInfo.sender();
+        this.sender = new User(inviteInfo.sender());
+        this.receiver = inviteInfo.receiver();
         this.group = new Group(inviteInfo.groupDTO());
     }
 
-    public User getReceiver() {
-        return receiver;
+    public User getSender() {
+        return sender;
     }
 
-    public String getSender() {
-        return sender;
+    public String getReceiver() {
+        return receiver;
     }
 
     public Group getGroup() {
@@ -43,8 +46,8 @@ public class Invite extends Notification {
     @Override
     public InviteDTO toDTO() {
         DataManager manager = Services.getManager();
-        User user = receiver;
-        List<UserProfileDTO> existing = manager.readData(user.getEmail(), UserProfileDTO.class);
+        User user = sender;
+        List<UserProfileDTO> existing = manager.readData("user", user.getEmail(), UserProfileDTO.class);
 
         if (existing == null || existing.isEmpty()) {
             System.out.println("[ERROR] Perfil nao encontrado para: " + user.getEmail());
@@ -63,6 +66,6 @@ public class Invite extends Notification {
             current.notifications()
         );
 
-        return new InviteDTO(userDTO, sender, new GroupDTO(group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
+        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getId(), group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
         }
 }

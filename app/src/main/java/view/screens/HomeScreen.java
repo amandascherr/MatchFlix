@@ -1,9 +1,10 @@
 package view.screens;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import controller.CreateGroupController;
 import controller.Session;
 import model.Movie;
+import view.Theme;
 import view.components.MovieCard;
 import view.components.button.AddGroupButton;
 import view.components.button.LikeDislikeButtons;
@@ -36,7 +38,8 @@ public class HomeScreen extends JFrame {
 
         setTitle("MatchFlix");
 
-        setSize(1200, 800);
+        setSize(1280, 800);
+        setMinimumSize(new Dimension(720, 560));
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -49,27 +52,16 @@ public class HomeScreen extends JFrame {
     private void buildUI() {
 
         setLayout(new BorderLayout());
+        getContentPane().setBackground(Theme.BG);
 
-        // Centro
-        JPanel centerPanel = new JPanel();
-
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-
-        centerPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
-
-        // Filme
-        centerPanel.add(movieCard);
-
-        // Botões
-        buttons = new LikeDislikeButtons();
-
-        centerPanel.add(Box.createVerticalStrut(20));
-
-        centerPanel.add(buttons);
-
-        // Menu do Topo
+        // Barra superior: logo à esquerda, ações à direita
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        topPanel.setBackground(Theme.BG);
+        topPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.SURFACE),
+                new EmptyBorder(14, 24, 14, 24)));
+
+        topPanel.add(Theme.logo(28), BorderLayout.WEST);
 
         // Botão de Perfil
         profileButton = new ProfileButton(
@@ -79,8 +71,6 @@ public class HomeScreen extends JFrame {
             Session.getLoggedUser().getProfileImage()
         );
 
-        // Botões à esquerda
-        JPanel leftButtons = new JPanel();
         AddGroupButton addGroupButton = new AddGroupButton(() -> {
                 CreateGroupScreen screen = new CreateGroupScreen();
 
@@ -91,22 +81,35 @@ public class HomeScreen extends JFrame {
                 screen.setVisible(true);
             });
 
-        leftButtons.add(addGroupButton);
-
         ViewGroupsButton viewGroupsButton = new ViewGroupsButton(() -> {
                 new UserGroupsScreen(Session.getLoggedUser().getGroups()).setVisible(true);});
 
         NotificationButton notificationButton = new NotificationButton(() -> { new NotificationsScreen().setVisible(true);});
 
-        leftButtons.add(addGroupButton);
-        leftButtons.add(viewGroupsButton);
-        leftButtons.add(notificationButton);
+        JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
+        rightButtons.setOpaque(false);
 
-        topPanel.add(leftButtons, BorderLayout.WEST);
+        rightButtons.add(addGroupButton);
+        rightButtons.add(viewGroupsButton);
+        rightButtons.add(notificationButton);
+        rightButtons.add(profileButton);
 
-        topPanel.add(profileButton, BorderLayout.EAST);
+        topPanel.add(rightButtons, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
+
+        // Centro: o cartão do filme ocupa todo o espaço disponível e os
+        // botões ficam ancorados embaixo, sempre visíveis
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(Theme.BG);
+        centerPanel.setBorder(new EmptyBorder(20, 24, 20, 24));
+
+        centerPanel.add(movieCard, BorderLayout.CENTER);
+
+        buttons = new LikeDislikeButtons();
+        buttons.setBorder(new EmptyBorder(16, 0, 0, 0));
+
+        centerPanel.add(buttons, BorderLayout.SOUTH);
 
         add(centerPanel, BorderLayout.CENTER);
     }

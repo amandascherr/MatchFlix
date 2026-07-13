@@ -1,4 +1,4 @@
-package model;
+package model.dto;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,6 @@ public record UserProfileDTO(
     String password,
     String pathPhotoFile,
     ArrayList<String> likedMovies,
-    ArrayList<GroupDTO> groups,
+    ArrayList<String> groups,
     ArrayList<NotificationDTO> notifications
 ) {}

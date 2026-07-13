@@ -1,52 +1,28 @@
 package view.components.button;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.geom.Path2D;
 
-import javax.swing.JPanel;
-
-public class NotificationButton extends JPanel {
-
-    private final Runnable onClick;
+public class NotificationButton extends CircleIconButton {
 
     public NotificationButton(Runnable onClick) {
-
-        this.onClick = onClick;
-
-        setPreferredSize(new Dimension(45, 45));
-        setOpaque(false);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (NotificationButton.this.onClick != null) {
-                    NotificationButton.this.onClick.run();
-                }
-            }
-        });
+        super(onClick);
+        setToolTipText("Notificações");
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintIcon(Graphics2D g2, int size) {
+        // Corpo do sino
+        Path2D bell = new Path2D.Float();
+        bell.moveTo(size * 0.30f, size * 0.60f);
+        bell.lineTo(size * 0.30f, size * 0.44f);
+        bell.curveTo(size * 0.30f, size * 0.28f, size * 0.70f, size * 0.28f, size * 0.70f, size * 0.44f);
+        bell.lineTo(size * 0.70f, size * 0.60f);
+        bell.closePath();
+        g2.draw(bell);
 
-        super.paintComponent(g);
-
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2.setColor(new Color(240, 20, 20));
-        g2.fillOval(0, 0, 45, 45);
-
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 18));
-
-        g2.drawString("🔔", 10, 29);
+        // Badalo
+        g2.drawArc(Math.round(size * 0.44f), Math.round(size * 0.60f),
+                Math.round(size * 0.12f), Math.round(size * 0.12f), 180, 180);
     }
 }

@@ -2,6 +2,7 @@ package view.screens;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 import java.nio.file.Files;
@@ -17,10 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
-import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import view.Theme;
+import view.Utils;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
 
@@ -37,7 +39,8 @@ public class ProfileScreen extends JFrame {
         this.onImageUpdated = onImageUpdated;
 
         setTitle("Perfil do Usuário");
-        setSize(400, 400);
+        setSize(580, 680);
+        setMinimumSize(new Dimension(520, 480));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -47,13 +50,15 @@ public class ProfileScreen extends JFrame {
     private void buildUI() {
 
         JPanel root = new JPanel();
+        root.setBackground(Theme.BG);
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-        root.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        root.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
 
         // Foto de perfil
         profileAvatar = new ProfileAvatar(user.getProfileImage(), 120);
         profileAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
         profileAvatar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        profileAvatar.setToolTipText("Clique para alterar a foto");
 
         profileAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -63,28 +68,37 @@ public class ProfileScreen extends JFrame {
         });
 
         // Infos
-        JLabel nameLabel = new JLabel(user.getName());
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel nameLabel = Theme.title(user.getName(), 20);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         JLabel emailLabel = new JLabel(user.getEmail());
+        emailLabel.setFont(Theme.font(Font.PLAIN, 14));
+        emailLabel.setForeground(Theme.TEXT_SECONDARY);
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JLabel hintLabel = Theme.muted("Clique na foto para alterá-la", 12);
+        hintLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         root.add(profileAvatar);
-        root.add(Box.createVerticalStrut(15));
+        root.add(Box.createVerticalStrut(8));
+        root.add(hintLabel);
+        root.add(Box.createVerticalStrut(16));
         root.add(nameLabel);
+        root.add(Box.createVerticalStrut(4));
         root.add(emailLabel);
 
         // Filmes curtidos
-        root.add(Box.createVerticalStrut(30));
+        root.add(Box.createVerticalStrut(36));
 
-        JLabel likedMoviesTitle = new JLabel("Filmes Curtidos");
-        likedMoviesTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel likedMoviesTitle = Theme.title("Filmes Curtidos", 17);
         likedMoviesTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         root.add(likedMoviesTitle);
-        root.add(Box.createVerticalStrut(10));
+        root.add(Box.createVerticalStrut(16));
 
-        root.add(new MoviesPanel(user.getLikedMovies()));
+        MoviesPanel moviesPanel = new MoviesPanel(user.getLikedMovies());
+        moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        root.add(moviesPanel);
 
         JScrollPane scrollPane = new JScrollPane(root);
 
@@ -92,7 +106,7 @@ public class ProfileScreen extends JFrame {
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
 
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        Theme.styleScrollPane(scrollPane);
 
         setContentPane(scrollPane);
     }
@@ -123,8 +137,8 @@ public class ProfileScreen extends JFrame {
                     onImageUpdated.run();
                 }
 
-                UserProfileDTO userData = manager.readData(user.getEmail(), UserProfileDTO.class).get(0);
-                
+                UserProfileDTO userData = manager.readData("user", user.getEmail(), UserProfileDTO.class).get(0);
+
                 if (userData != null) {
                     UserProfileDTO userDTO = new UserProfileDTO(
                         userData.name(),
@@ -134,9 +148,9 @@ public class ProfileScreen extends JFrame {
                         userData.likedMovies(),
                         userData.groups(),
                         userData.notifications()
-                    );      
+                    );
 
-                    manager.createData(new DataDTO<>(user.getEmail(), userDTO));
+                    manager.createData("user", user.getEmail(), userDTO);
                 }
 
             } catch (Exception ex) {

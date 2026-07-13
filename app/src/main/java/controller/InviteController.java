@@ -4,7 +4,7 @@ import exception.UserNotFoundException;
 import model.Group;
 import model.Invite;
 import model.User;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.InvitationService;
 import service.Services;
 import service.dataManager.DataManager;
@@ -33,10 +33,10 @@ public class InviteController {
             }
 
             try {
-                UserProfileDTO receiver = manager.findUser(screen.getTypedUsername());
+                UserProfileDTO receiver = manager.findUser("user", screen.getTypedUsername());
 
                 User user = new User(receiver);
-                Invite invite = new Invite(user, Session.getLoggedUser().getName(), group);
+                Invite invite = new Invite(Session.getLoggedUser(), user.getName(), group);
 
                 InvitationService.sendInvitation(invite);
 

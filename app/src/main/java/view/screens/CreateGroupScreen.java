@@ -1,17 +1,19 @@
 package view.screens;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
+import view.Theme;
 import view.components.FormField;
+import view.components.button.PrimaryButton;
 
 public class CreateGroupScreen extends JFrame {
 
@@ -22,7 +24,8 @@ public class CreateGroupScreen extends JFrame {
     public CreateGroupScreen() {
 
         setTitle("Criar Grupo");
-        setSize(400, 300);
+        setSize(440, 340);
+        setMinimumSize(new Dimension(380, 300));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -32,44 +35,36 @@ public class CreateGroupScreen extends JFrame {
     private void buildUI() {
 
         JPanel root = new JPanel();
+        root.setBackground(Theme.BG);
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-
-        root.add(Box.createVerticalStrut(30));
+        root.setBorder(new EmptyBorder(36, 40, 36, 40));
 
         // Título
-        javax.swing.JLabel title = new javax.swing.JLabel("Crie um novo grupo");
-        title.setFont(new Font("Arial", Font.BOLD, 22));
+        JLabel title = Theme.title("Crie um novo grupo", 22);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         root.add(title);
 
-        root.add(Box.createVerticalStrut(30));
+        root.add(Box.createVerticalStrut(28));
 
         // Campo nome do grupo
         groupNameField = new FormField("Nome do grupo", false);
-
-        groupNameField.setMaximumSize(
-            new Dimension(300, 50)
-        );
-
         groupNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         root.add(groupNameField);
 
-        root.add(Box.createVerticalStrut(30));
+        root.add(Box.createVerticalStrut(28));
 
         // Botão criar
-        createButton = new JButton("Criar");
-
+        createButton = new PrimaryButton("Criar grupo");
         createButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        createButton.setMaximumSize(
-            new Dimension(200, 40)
-        );
+        createButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
 
         root.add(createButton);
 
-        add(root, BorderLayout.CENTER);
+        root.add(Box.createVerticalGlue());
+
+        setContentPane(root);
     }
 
     public String getGroupName() {

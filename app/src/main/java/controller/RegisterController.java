@@ -5,7 +5,7 @@ import java.util.List;
 
 import controller.DTO.UserTableDTO;
 import exception.EmptyFieldException;
-import model.UserProfileDTO;
+import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
@@ -61,7 +61,7 @@ public class RegisterController {
             return;
         }
 
-        List<UserProfileDTO> existing = manager.readData(screen.getEmail(), UserProfileDTO.class);
+        List<UserProfileDTO> existing = manager.readData("user", screen.getEmail(), UserProfileDTO.class);
         if (existing != null && !existing.isEmpty()) {
 
             Dialogs.showError(screen, "Já existe um usuário com esse email.");
@@ -78,8 +78,7 @@ public class RegisterController {
             new ArrayList<>()
         );
 
-        DataDTO<UserProfileDTO> profilePayload = new DataDTO<UserProfileDTO>(bodyProfile.email(), bodyProfile);
-        manager.createData(profilePayload);
+        manager.createData("user", bodyProfile.email(), bodyProfile);
 
         UserTableDTO tableEntry = new UserTableDTO(bodyProfile.name(), bodyProfile.email());
         manager.appendData(new DataDTO<UserTableDTO>("users", tableEntry));
