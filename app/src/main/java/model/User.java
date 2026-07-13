@@ -2,8 +2,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import controller.MatchController;
 import dto.GroupDTO;
@@ -29,6 +31,7 @@ public class User implements Subscriber{
   private final ArrayList<Group> groups;
   private final ArrayList<Notification> notifications;
   private final DataManager manager = Services.getManager();
+  private CompletableFuture<Void> loadMoviesFuture;
 
   public User(String name, String email){
     this.name = name;
@@ -43,18 +46,9 @@ public class User implements Subscriber{
   public User(UserProfileDTO userInfo){
     this(userInfo.name(), userInfo.email());
 
-    TMDBService service = Services.getTMDBService();
-
-    if (userInfo.likedMovies() != null) {
-      for (int id : userInfo.likedMovies()) {
-        try {
-          likedMovies.add(service.getMovieById(id));
-        }
-        catch(Exception e) {
-          return;
-        }
-      }
-    }
+    loadMoviesFuture = loadMoviesByAPI(userInfo.likedMovies()).thenAccept(r -> {
+      System.out.println("Filmes curtidos carredados");
+    });
 
     if (userInfo.groups() != null) {
       DataManager manager = Services.getManager();
@@ -89,6 +83,21 @@ public class User implements Subscriber{
     }
   }
 
+  private CompletableFuture<Void> loadMoviesByAPI(List<Integer> likedMoviesIds){
+    TMDBService service = Services.getTMDBService();
+
+    return CompletableFuture.runAsync(() -> {
+      for (int id : likedMoviesIds) {
+        try {
+          this.likedMovies.add(service.getMovieById(id));
+        }
+        catch(Exception e) {
+          return;
+        }
+      }
+    });
+  }
+
   public String getName() {
       return name;
   }
@@ -116,13 +125,16 @@ public class User implements Subscriber{
 
  
   public void userLike(Movie movie){
-    likedMovies.add(movie);
-    saveUser();
-    publisher.toNotify("like", movie);
+    loadMoviesFuture.thenRun( () -> {
+      SwingUtilities.invokeLater(()->{
+        likedMovies.add(movie);
+        saveUser();
+        publisher.toNotify("like", movie);
+      });
+    });
   }
 
   public void userDislike(Movie movie){
-    saveUser();
     publisher.toNotify("dislike", movie);
   }
 
@@ -150,7 +162,7 @@ public class User implements Subscriber{
 
   private void saveUser() {
     UserProfileDTO actualUserInfo = manager.readData("user", email, UserProfileDTO.class).get(0);
-    
+
     UserProfileDTO updatedUserInfo = new UserProfileDTO(
       name,
       email,

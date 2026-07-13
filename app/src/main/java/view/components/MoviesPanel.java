@@ -3,6 +3,7 @@ package view.components;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -13,7 +14,7 @@ import util.Theme;
 
 public class MoviesPanel extends JPanel {
 
-    public MoviesPanel(ArrayList<Movie> movies) {
+    public MoviesPanel(List<Movie> movies) {
         setOpaque(false);
 
         if (movies == null || movies.isEmpty()) {
