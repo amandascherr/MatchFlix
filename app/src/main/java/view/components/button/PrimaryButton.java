@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Botão de ação principal: vermelho Netflix, cantos arredondados.

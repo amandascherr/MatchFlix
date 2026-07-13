@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.Movie;
-import view.Theme;
+import util.Theme;
 
 /**
  * Miniatura de filme com pôster arredondado, usada nas grades

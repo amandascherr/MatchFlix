@@ -1,15 +1,15 @@
 package controller;
 
+import dto.UserProfileDTO;
 import exception.UserNotFoundException;
 import model.Group;
 import model.Invite;
 import model.User;
-import model.dto.UserProfileDTO;
 import service.InvitationService;
 import service.Services;
 import service.dataManager.DataManager;
+import util.Dialogs;
 import view.screens.InviteScreen;
-import view.util.Dialogs;
 
 public class InviteController {
 

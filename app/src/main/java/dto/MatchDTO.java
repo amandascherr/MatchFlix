@@ -1,5 +1,4 @@
-package model.dto;
-
+package dto;
 
 public record MatchDTO(
     String movie,

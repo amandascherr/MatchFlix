@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import controller.Session;
-import model.dto.GroupDTO;
+import dto.GroupDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;

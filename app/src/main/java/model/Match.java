@@ -1,7 +1,7 @@
 package model;
 
-import model.dto.GroupDTO;
-import model.dto.MatchDTO;
+import dto.GroupDTO;
+import dto.MatchDTO;
 
 public class Match extends Notification {
 

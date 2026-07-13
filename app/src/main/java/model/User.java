@@ -6,16 +6,16 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import controller.MatchController;
-import model.dto.GroupDTO;
-import model.dto.InviteDTO;
-import model.dto.MatchDTO;
-import model.dto.NotificationDTO;
-import model.dto.UserProfileDTO;
+import dto.GroupDTO;
+import dto.InviteDTO;
+import dto.MatchDTO;
+import dto.NotificationDTO;
+import dto.UserProfileDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;
 import service.dataManager.DataManager;
-import view.Utils;
+import util.Loader;
  
 
 public class User implements Subscriber{
@@ -69,7 +69,7 @@ public class User implements Subscriber{
     }
     
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
-      this.profileImage = Utils.loadProfileImage(userInfo.pathPhotoFile());
+      this.profileImage = Loader.loadProfileImage(userInfo.pathPhotoFile());
     }
   }
 

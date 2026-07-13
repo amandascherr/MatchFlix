@@ -11,8 +11,8 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import dto.UserProfileDTO;
 import exception.UserNotFoundException;
-import model.dto.UserProfileDTO;
 
 /**
  * Salva cada {@link DataDTO} como um arquivo JSON na pasta de resources.

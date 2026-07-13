@@ -7,7 +7,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Cartão escuro com cantos arredondados e faixa de destaque

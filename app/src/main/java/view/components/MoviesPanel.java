@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Movie;
-import view.Theme;
+import util.Theme;
 
 public class MoviesPanel extends JPanel {
 

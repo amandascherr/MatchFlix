@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Invite;
-import view.Theme;
+import util.Theme;
 import view.components.button.DarkButton;
 import view.components.button.PrimaryButton;
 

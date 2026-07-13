@@ -17,7 +17,7 @@ import model.Invite;
 import model.Match;
 import model.Notification;
 import service.NotificationService;
-import view.Theme;
+import util.Theme;
 import view.components.InviteNotificationPanel;
 import view.components.MatchNotificationPanel;
 
@@ -68,6 +68,7 @@ public class NotificationsScreen extends JFrame {
                 panel.setOnAccept(() -> {
                     GroupController.joinGroup(Session.getLoggedUser(), invite.getGroup());
                     NotificationService.remove(invite);
+                    Session.getLoggedUser().getNotifications().remove(invite);
                     dispose();
                     new NotificationsScreen().setVisible(true);
 
@@ -75,7 +76,7 @@ public class NotificationsScreen extends JFrame {
 
                 panel.setOnDeny(() -> {
                     NotificationService.remove(invite);
-                    System.out.println("Convite recusado");
+                    Session.getLoggedUser().getNotifications().remove(invite);
 
                     dispose();
                     new NotificationsScreen().setVisible(true);

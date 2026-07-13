@@ -2,9 +2,9 @@ package model;
 
 import java.util.List;
 
-import model.dto.GroupDTO;
-import model.dto.InviteDTO;
-import model.dto.UserProfileDTO;
+import dto.GroupDTO;
+import dto.InviteDTO;
+import dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 

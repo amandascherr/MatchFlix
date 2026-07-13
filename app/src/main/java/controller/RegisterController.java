@@ -3,14 +3,14 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.DTO.UserTableDTO;
+import dto.UserProfileDTO;
+import dto.UserTableDTO;
 import exception.EmptyFieldException;
-import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataDTO;
 import service.dataManager.DataManager;
+import util.Dialogs;
 import view.screens.RegisterScreen;
-import view.util.Dialogs;
 
 public class RegisterController {
 

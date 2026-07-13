@@ -3,10 +3,10 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import dto.NotificationDTO;
+import dto.UserProfileDTO;
 import model.Notification;
-import model.dto.NotificationDTO;
 import model.User;
-import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 

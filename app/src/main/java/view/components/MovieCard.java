@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import model.Movie;
-import view.Theme;
+import util.Theme;
 
 /**
  * Cartão principal da Home: pôster que se redimensiona junto com a

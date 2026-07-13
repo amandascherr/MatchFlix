@@ -1,4 +1,4 @@
-package model.dto;
+package dto;
 
 public record InviteDTO (
   UserProfileDTO sender,
