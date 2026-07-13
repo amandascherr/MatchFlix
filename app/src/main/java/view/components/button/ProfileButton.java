@@ -14,7 +14,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Avatar circular do usuário na barra superior; ganha um anel

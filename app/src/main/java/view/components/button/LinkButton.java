@@ -5,7 +5,7 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Botão em estilo de link: texto cinza que clareia no hover.

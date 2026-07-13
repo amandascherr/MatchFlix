@@ -19,7 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Campo de formulário escuro com cantos arredondados e rótulo acima;

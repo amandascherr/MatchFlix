@@ -3,8 +3,8 @@ package controller;
 import model.Group;
 import service.Services;
 import service.dataManager.DataManager;
+import util.Dialogs;
 import view.screens.CreateGroupScreen;
-import view.util.Dialogs;
 
 public class CreateGroupController {
 

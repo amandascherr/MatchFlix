@@ -1,13 +1,13 @@
 package controller;
 
+import dto.UserProfileDTO;
 import exception.EmptyFieldException;
 import exception.UserNotFoundException;
 import model.User;
-import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
+import util.Dialogs;
 import view.screens.LoginScreen;
-import view.util.Dialogs;
 
 public class LoginController {
 

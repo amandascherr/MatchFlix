@@ -6,16 +6,16 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import controller.MatchController;
-import model.dto.GroupDTO;
-import model.dto.InviteDTO;
-import model.dto.MatchDTO;
-import model.dto.NotificationDTO;
-import model.dto.UserProfileDTO;
+import dto.GroupDTO;
+import dto.InviteDTO;
+import dto.MatchDTO;
+import dto.NotificationDTO;
+import dto.UserProfileDTO;
 import model.observer.Publisher;
 import model.observer.Subscriber;
 import service.Services;
 import service.dataManager.DataManager;
-import view.Utils;
+import util.Loader;
  
 
 public class User implements Subscriber{
@@ -27,6 +27,7 @@ public class User implements Subscriber{
   private final ArrayList<Movie> likedMovies;
   private final ArrayList<Group> groups;
   private final ArrayList<Notification> notifications;
+  private final DataManager manager = Services.getManager();
 
   public User(String name, String email){
     this.name = name;
@@ -69,7 +70,7 @@ public class User implements Subscriber{
     }
     
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
-      this.profileImage = Utils.loadProfileImage(userInfo.pathPhotoFile());
+      this.profileImage = Loader.loadProfileImage(userInfo.pathPhotoFile());
     }
   }
 
@@ -101,10 +102,12 @@ public class User implements Subscriber{
  
   public void userLike(Movie movie){
     likedMovies.add(movie);
+    saveUser();
     publisher.toNotify("like", movie);
   }
 
   public void userDislike(Movie movie){
+    saveUser();
     publisher.toNotify("dislike", movie);
   }
 
@@ -130,5 +133,20 @@ public class User implements Subscriber{
     return this.notifications;
   }
 
+  private void saveUser() {
+    UserProfileDTO actualUserInfo = manager.readData("user", email, UserProfileDTO.class).get(0);
+    
+    UserProfileDTO updatedUserInfo = new UserProfileDTO(
+      name,
+      email,
+      actualUserInfo.password(),
+      actualUserInfo.pathPhotoFile(),
+      new ArrayList<>(likedMovies.stream().map(Movie::getTitle).toList()),
+      new ArrayList<>(groups.stream().map(Group::getId).toList()),
+      new ArrayList<>(notifications.stream().map(Notification::toDTO).toList())
+    );
+
+    manager.createData("user", email, updatedUserInfo);
+  }
 }
 

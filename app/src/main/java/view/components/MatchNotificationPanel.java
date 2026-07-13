@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import model.Match;
-import view.Theme;
+import util.Theme;
 
 public class MatchNotificationPanel extends CardPanel {
 

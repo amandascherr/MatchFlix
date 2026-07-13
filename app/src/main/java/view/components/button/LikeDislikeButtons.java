@@ -16,7 +16,7 @@ import java.awt.geom.Path2D;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import view.Theme;
+import util.Theme;
 
 /**
  * Par de botões circulares de curtir/rejeitar, no estilo dos

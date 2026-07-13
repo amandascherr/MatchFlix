@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Movie;
+import controller.Session;
 
 public class TMDBService {
 
@@ -84,6 +85,11 @@ public class TMDBService {
         JsonNode movieNode = this.currentPage.remove(randomIndex);
         shownMoviesId.add(movieNode.get("id").asInt());
 
-        return buildMovie(movieNode);
+        Movie currentMovie = buildMovie(movieNode);
+        if (Session.getLoggedUser().getLikedMovies().contains(currentMovie)) {
+            return getRandomMovie();
+        }
+
+        return currentMovie;
     }
 }

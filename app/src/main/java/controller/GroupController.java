@@ -2,12 +2,12 @@ package controller;
 
 import java.util.ArrayList;
 
+import dto.UserProfileDTO;
 import model.Group;
 import model.User;
-import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
-import view.Utils;
+import util.Loader;
 
 /**
  * Coordena as acoes de grupo de um usuario e a persistencia do perfil.
@@ -66,7 +66,7 @@ public class GroupController {
      */
     private static void saveUserGroups(User user) {
         DataManager manager = Services.getManager();
-        UserProfileDTO current = Utils.getUserProfile(user.getEmail());
+        UserProfileDTO current = Loader.getUserProfile(user.getEmail());
 
         ArrayList<String> groupIds = new ArrayList<>();
         for (Group group : user.getGroups()) {

@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 
 import controller.InviteController;
 import model.Group;
-import view.Theme;
+import util.Theme;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
 import view.components.button.PrimaryButton;

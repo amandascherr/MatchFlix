@@ -1,6 +1,6 @@
 package model;
 
-import model.dto.NotificationDTO;
+import dto.NotificationDTO;
 
 public abstract class Notification {
 

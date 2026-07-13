@@ -1,4 +1,4 @@
-package view;
+package util;
 
 import java.awt.Image;
 import java.io.File;
@@ -6,11 +6,11 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import model.dto.UserProfileDTO;
+import dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 
-public class Utils {
+public class Loader {
   
    public static ImageIcon loadProfileImage(String path) {
     File file = new File(path);
@@ -33,7 +33,5 @@ public class Utils {
 
         UserProfileDTO current = existing.get(0);
         return current;
-
   }
-
 }

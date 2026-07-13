@@ -17,12 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import dto.UserProfileDTO;
 import model.User;
-import model.dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
-import view.Theme;
-import view.Utils;
+import util.Theme;
+import util.Loader;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
 
@@ -130,7 +130,7 @@ public class ProfileScreen extends JFrame {
 
                 Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                user.setProfileImage(Utils.loadProfileImage(copy.getPath()));
+                user.setProfileImage(Loader.loadProfileImage(copy.getPath()));
 
                 profileAvatar.setIcon(user.getProfileImage());
                 if (onImageUpdated != null) {

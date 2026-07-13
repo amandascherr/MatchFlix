@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import controller.CreateGroupController;
 import controller.Session;
 import model.Movie;
-import view.Theme;
+import util.Theme;
 import view.components.MovieCard;
 import view.components.button.AddGroupButton;
 import view.components.button.LikeDislikeButtons;

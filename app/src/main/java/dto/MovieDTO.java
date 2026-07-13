@@ -1,4 +1,4 @@
-package controller.DTO;
+package dto;
 
 import java.time.Duration;
 

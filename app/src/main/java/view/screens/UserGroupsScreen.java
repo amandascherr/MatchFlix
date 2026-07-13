@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import model.Group;
-import view.Theme;
+import util.Theme;
 import view.components.button.DarkButton;
 
 public class UserGroupsScreen extends JFrame {

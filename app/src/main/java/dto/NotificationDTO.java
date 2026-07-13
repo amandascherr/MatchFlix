@@ -1,4 +1,4 @@
-package model.dto;
+package dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

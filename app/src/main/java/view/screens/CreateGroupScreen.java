@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.Theme;
+import util.Theme;
 import view.components.FormField;
 import view.components.button.PrimaryButton;
 
