@@ -11,7 +11,17 @@ public final class Services {
 
     private static final DataManager dataManager = new JsonDataManager();
 
+    private static TMDBService tmdbService;
+
     private Services() {
+    }
+
+    public static void initializeTMDB(String apiKey) {
+        tmdbService = new TMDBService(apiKey);
+    }
+
+    public static TMDBService getTMDBService() {
+        return tmdbService;
     }
 
     /**

@@ -93,9 +93,10 @@ public class TMDBService {
         int randomIndex = random.nextInt(this.currentPage.size());
         JsonNode movieNode = this.currentPage.remove(randomIndex);
         shownMoviesId.add(movieNode.get("id").asInt());
-
+        
         Movie currentMovie = buildMovie(movieNode);
-        if (Session.getLoggedUser().getLikedMovies().contains(currentMovie)) {
+        boolean alreadyLiked = Session.getLoggedUser().getLikedMovies().stream().anyMatch(movie -> movie.getId() == currentMovie.getId());
+        if (alreadyLiked) {
             return getRandomMovie();
         }
 

@@ -43,11 +43,18 @@ public class User implements Subscriber{
   public User(UserProfileDTO userInfo){
     this(userInfo.name(), userInfo.email());
 
-    TMDBService tmdb = new TMDBService(email);
+    TMDBService service = Services.getTMDBService();
 
-    // for (int id : userInfo.likedMovies()) {
-    //   getMovieById(id)
-    // }
+    if (userInfo.likedMovies() != null) {
+      for (int id : userInfo.likedMovies()) {
+        try {
+          likedMovies.add(service.getMovieById(id));
+        }
+        catch(Exception e) {
+          return;
+        }
+      }
+    }
 
     if (userInfo.groups() != null) {
       DataManager manager = Services.getManager();

@@ -13,15 +13,15 @@ import service.dataManager.DataManager;
 public class Loader {
   
    public static ImageIcon loadProfileImage(String path) {
-    File file = new File(path);
+        File file = new File(path);
     
-    if (file.exists()) {
-        ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
-        Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
-        return new ImageIcon(scaledImage);
+        if (file.exists()) {
+            ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+            Image scaledImage = originalIcon.getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImage);
+        }
+        return null;
     }
-    return null;
-  }
 
   public static UserProfileDTO getUserProfile(String email){
     DataManager manager = Services.getManager();
