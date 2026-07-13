@@ -106,7 +106,7 @@ public class User implements Subscriber{
 
   public ArrayList<Movie> getLikedMovies() {
     synchronized(likedMovies){
-      return likedMovies;
+      return new ArrayList<>(likedMovies);
     }
   }
 
