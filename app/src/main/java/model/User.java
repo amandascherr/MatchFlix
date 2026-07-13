@@ -41,18 +41,16 @@ public class User implements Subscriber{
     publisher = new Publisher();  }
 
   public User(UserProfileDTO userInfo){
-    this.name = userInfo.name();
-    this.email = userInfo.email();
-    this.likedMovies = new ArrayList<>();
-    // this.likedMovies = userInfo.likedMovies();
-    this.groups = new ArrayList<>();
-    this.notifications = new ArrayList<>();
+    this(userInfo.name(), userInfo.email());
+
     if (userInfo.groups() != null) {
       DataManager manager = Services.getManager();
       for (String groupId : userInfo.groups()) {
         List<GroupDTO> groupData = manager.readData("group", groupId, GroupDTO.class);
         if (groupData != null && !groupData.isEmpty()) {
-          this.groups.add(new Group(groupData.get(0)));
+          Group group = new Group(groupData.get(0));
+          this.groups.add(group);
+          this.publisher.addSubscriber(group);
         }
       }
     }
@@ -70,9 +68,6 @@ public class User implements Subscriber{
     if (userInfo.pathPhotoFile() != null && !userInfo.pathPhotoFile().equals("")) {
       this.profileImage = Utils.loadProfileImage(userInfo.pathPhotoFile());
     }
-    
-    publisher = new Publisher();
-  
   }
 
   public String getName() {

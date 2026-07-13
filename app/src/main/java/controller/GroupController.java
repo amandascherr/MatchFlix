@@ -32,7 +32,7 @@ public class GroupController {
         }
 
         user.joinGroup(group);
-        saveGroup(group);
+        group.saveGroup();
         saveUserGroups(user);
     }
 
@@ -50,17 +50,6 @@ public class GroupController {
             }
         }
         return false;
-    }
-
-    /**
-     * Grava (ou sobrescreve) o arquivo do grupo na tabela {@code group}, usando
-     * o {@code id} do grupo como nome do arquivo ({@code group%<id>.json}).
-     *
-     * @param group grupo a ser persistido.
-     */
-    public static void saveGroup(Group group) {
-        DataManager manager = Services.getManager();
-        manager.createData("group", group.getId(), group.toDTO());
     }
 
     /**
