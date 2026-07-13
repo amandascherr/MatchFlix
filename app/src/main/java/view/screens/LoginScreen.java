@@ -1,8 +1,11 @@
 package view.screens;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,7 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.Theme;
 import view.components.FormField;
+import view.components.button.LinkButton;
+import view.components.button.PrimaryButton;
 
 public class LoginScreen extends JFrame {
 
@@ -26,7 +32,8 @@ public class LoginScreen extends JFrame {
 
         setTitle("MatchFlix");
 
-        setSize(500, 650);
+        setSize(960, 700);
+        setMinimumSize(new Dimension(520, 620));
 
         setLocationRelativeTo(null);
 
@@ -37,72 +44,65 @@ public class LoginScreen extends JFrame {
 
     private void buildUI() {
 
-        JPanel mainPanel = new JPanel();
+        // Fundo escuro que centraliza o cartão em qualquer tamanho de janela
+        JPanel background = new JPanel(new GridBagLayout());
+        background.setBackground(Theme.BG);
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        // Cartão de login
+        JPanel card = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(Theme.SURFACE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 16, 16);
+                g2.dispose();
+            }
+        };
 
-        mainPanel.setBorder(new EmptyBorder(40, 50, 40, 50));
+        card.setOpaque(false);
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(48, 56, 48, 56));
 
         // Logo
-        JLabel titleLabel = new JLabel("MATCHFLIX");
-
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 42));
-
-        titleLabel.setForeground(new Color(229, 9, 20));
-
+        JLabel titleLabel = Theme.logo(38);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Campos
         emailField = new FormField("E-mail", false);
+        emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         passwordField = new FormField("Senha", true);
+        passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Login Button
-        loginButton = new JButton("Entrar");
+        // Botão de login
+        loginButton = new PrimaryButton("Entrar");
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
 
-        // Cadastrar Button
-        registerButton = new JButton("Não tem login? Faça seu cadastro");
-
-        registerButton.setBorderPainted(false);
-
-        registerButton.setContentAreaFilled(false);
-
-        registerButton.setForeground(Color.BLUE);
-
+        // Link de cadastro
+        registerButton = new LinkButton("Não tem login? Faça seu cadastro");
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Composição
-        mainPanel.add(Box.createVerticalGlue());
+        card.add(titleLabel);
+        card.add(Box.createVerticalStrut(40));
 
-        mainPanel.add(titleLabel);
+        card.add(emailField);
+        card.add(Box.createVerticalStrut(18));
 
-        mainPanel.add(Box.createVerticalStrut(50));
+        card.add(passwordField);
+        card.add(Box.createVerticalStrut(32));
 
-        mainPanel.add(emailField);
+        card.add(loginButton);
+        card.add(Box.createVerticalStrut(18));
 
-        mainPanel.add(Box.createVerticalStrut(5));
+        card.add(registerButton);
 
-        mainPanel.add(emailField);
+        background.add(card);
 
-        mainPanel.add(Box.createVerticalStrut(20));
-
-        mainPanel.add(passwordField);
-
-        mainPanel.add(Box.createVerticalStrut(5));
-
-        mainPanel.add(passwordField);
-
-        mainPanel.add(Box.createVerticalStrut(30));
-
-        mainPanel.add(loginButton);
-
-        mainPanel.add(Box.createVerticalStrut(20));
-
-        mainPanel.add(registerButton);
-
-        mainPanel.add(Box.createVerticalGlue());
-
-        add(mainPanel);
+        setContentPane(background);
     }
 
     // Getters

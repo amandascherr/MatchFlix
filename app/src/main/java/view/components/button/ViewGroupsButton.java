@@ -1,52 +1,26 @@
 package view.components.button;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
-import javax.swing.JPanel;
-
-public class ViewGroupsButton extends JPanel {
-
-    private final Runnable onClick;
+public class ViewGroupsButton extends CircleIconButton {
 
     public ViewGroupsButton(Runnable onClick) {
-
-        this.onClick = onClick;
-
-        setPreferredSize(new Dimension(45, 45));
-        setOpaque(false);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (ViewGroupsButton.this.onClick != null) {
-                    ViewGroupsButton.this.onClick.run();
-                }
-            }
-        });
+        super(onClick);
+        setToolTipText("Meus grupos");
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintIcon(Graphics2D g2, int size) {
+        // Pessoa de trás
+        g2.drawOval(round(size, 0.56f), round(size, 0.28f), round(size, 0.16f), round(size, 0.16f));
+        g2.drawArc(round(size, 0.52f), round(size, 0.50f), round(size, 0.24f), round(size, 0.26f), 0, 180);
 
-        super.paintComponent(g);
+        // Pessoa da frente
+        g2.drawOval(round(size, 0.26f), round(size, 0.26f), round(size, 0.20f), round(size, 0.20f));
+        g2.drawArc(round(size, 0.19f), round(size, 0.52f), round(size, 0.34f), round(size, 0.30f), 0, 180);
+    }
 
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2.setColor(new Color(33, 150, 243));
-        g2.fillOval(0, 0, 45, 45);
-
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 18));
-
-        g2.drawString("👥", 8, 29);
+    private static int round(int size, float fraction) {
+        return Math.round(size * fraction);
     }
 }

@@ -1,6 +1,6 @@
 package view.screens;
 
-import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
 
@@ -8,10 +8,15 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import model.Group;
+import view.Theme;
+import view.components.button.DarkButton;
 
 public class UserGroupsScreen extends JFrame {
 
@@ -19,7 +24,8 @@ public class UserGroupsScreen extends JFrame {
 
         setTitle("Meus Grupos");
 
-        setSize(400, 500);
+        setSize(480, 600);
+        setMinimumSize(new Dimension(380, 400));
 
         setLocationRelativeTo(null);
 
@@ -32,26 +38,38 @@ public class UserGroupsScreen extends JFrame {
 
         JPanel content = new JPanel();
 
+        content.setBackground(Theme.BG);
+
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+
+        content.setBorder(new EmptyBorder(24, 24, 24, 24));
+
+        JLabel title = Theme.title("Meus Grupos", 22);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        content.add(title);
+        content.add(Box.createVerticalStrut(20));
 
         if (groups == null || groups.isEmpty()) {
 
-            JButton emptyButton =
-                new JButton("Você ainda não participa de grupos");
+            JLabel emptyLabel = Theme.muted("Você ainda não participa de grupos.", 14);
 
-            emptyButton.setEnabled(false);
+            emptyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            content.add(emptyButton);
+            content.add(emptyLabel);
 
         } else {
             for (Group group : groups) {
-                JButton groupButton =
-                    new JButton(group.getName());
+                JButton groupButton = new DarkButton(group.getName());
+
+                groupButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+                groupButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
                 groupButton.setMaximumSize(
                     new Dimension(
                         Integer.MAX_VALUE,
-                        50
+                        52
                     )
                 );
 
@@ -68,9 +86,14 @@ public class UserGroupsScreen extends JFrame {
             }
         }
 
-        JScrollPane scrollPane =
-            new JScrollPane(content);
+        content.add(Box.createVerticalGlue());
 
-        add(scrollPane, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(content);
+
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        Theme.styleScrollPane(scrollPane);
+
+        setContentPane(scrollPane);
     }
 }

@@ -1,8 +1,11 @@
 package view.screens;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,7 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.Theme;
 import view.components.FormField;
+import view.components.button.LinkButton;
+import view.components.button.PrimaryButton;
 
 public class RegisterScreen extends JFrame {
 
@@ -29,7 +35,8 @@ public class RegisterScreen extends JFrame {
 
         setTitle("MatchFlix");
 
-        setSize(500, 750);
+        setSize(960, 780);
+        setMinimumSize(new Dimension(520, 740));
 
         setLocationRelativeTo(null);
 
@@ -40,65 +47,75 @@ public class RegisterScreen extends JFrame {
 
     private void buildUI() {
 
-        JPanel mainPanel = new JPanel();
+        // Fundo escuro que centraliza o cartão em qualquer tamanho de janela
+        JPanel background = new JPanel(new GridBagLayout());
+        background.setBackground(Theme.BG);
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        // Cartão de cadastro
+        JPanel card = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(Theme.SURFACE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 16, 16);
+                g2.dispose();
+            }
+        };
 
-        mainPanel.setBorder(new EmptyBorder(40, 50, 40, 50));
+        card.setOpaque(false);
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(44, 56, 44, 56));
 
         // Logo
-        JLabel titleLabel = new JLabel("MATCHFLIX");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 42));
-        titleLabel.setForeground(new Color(229, 9, 20));
+        JLabel titleLabel = Theme.logo(38);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Campos
         nameField = new FormField("Nome", false);
-        emailField = new FormField("Email", false);
+        emailField = new FormField("E-mail", false);
         passwordField = new FormField("Senha", true);
         confirmPasswordField = new FormField("Confirmar senha", true);
 
-        // Botão Cadastro
-        registerButton = new JButton("Cadastrar");
-        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        confirmPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Botão Login
-        loginButton = new JButton("Já possui uma conta? Faça login");
-        loginButton.setBorderPainted(false);
-        loginButton.setContentAreaFilled(false);
-        loginButton.setForeground(Color.BLUE);
+        // Botão de cadastro
+        registerButton = new PrimaryButton("Cadastrar");
+        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        registerButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
+
+        // Link de login
+        loginButton = new LinkButton("Já possui uma conta? Faça login");
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Composição
-        mainPanel.add(Box.createVerticalGlue());
-        mainPanel.add(titleLabel);
-        mainPanel.add(Box.createVerticalStrut(40));
+        card.add(titleLabel);
+        card.add(Box.createVerticalStrut(36));
 
-        // Nome
-        mainPanel.add(nameField);
-        mainPanel.add(Box.createVerticalStrut(15));
+        card.add(nameField);
+        card.add(Box.createVerticalStrut(16));
 
-        // Email
-        mainPanel.add(emailField);
-        mainPanel.add(Box.createVerticalStrut(15));
+        card.add(emailField);
+        card.add(Box.createVerticalStrut(16));
 
-        // Senha
-        mainPanel.add(passwordField);
-        mainPanel.add(Box.createVerticalStrut(15));
+        card.add(passwordField);
+        card.add(Box.createVerticalStrut(16));
 
-        // Confirmar senha
-        mainPanel.add(confirmPasswordField);
-        mainPanel.add(Box.createVerticalStrut(30));
+        card.add(confirmPasswordField);
+        card.add(Box.createVerticalStrut(32));
 
-        // Botão cadastrar
-        mainPanel.add(registerButton);
-        mainPanel.add(Box.createVerticalStrut(20));
+        card.add(registerButton);
+        card.add(Box.createVerticalStrut(18));
 
-        // Botão login
-        mainPanel.add(loginButton);
-        mainPanel.add(Box.createVerticalGlue());
+        card.add(loginButton);
 
-        add(mainPanel);
+        background.add(card);
+
+        setContentPane(background);
     }
 
     // Getters

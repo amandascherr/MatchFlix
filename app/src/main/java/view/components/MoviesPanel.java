@@ -9,16 +9,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Movie;
+import view.Theme;
 
 public class MoviesPanel extends JPanel {
 
     public MoviesPanel(ArrayList<Movie> movies) {
+        setOpaque(false);
+
         if (movies == null || movies.isEmpty()) {
 
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-            JLabel emptyLabel = new JLabel("Nenhum filme curtido ainda.");
-
+            JLabel emptyLabel = Theme.muted("Nenhum filme por aqui ainda.", 14);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             add(emptyLabel);
@@ -26,7 +28,7 @@ public class MoviesPanel extends JPanel {
             return;
         }
 
-        setLayout(new GridLayout(0, 2, 15, 15));
+        setLayout(new GridLayout(0, 3, 14, 18));
         for (Movie movie : movies) {
             add(new SmallMovieCard(movie));
         }

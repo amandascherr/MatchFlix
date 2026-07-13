@@ -1,16 +1,16 @@
 package view.components;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import view.Theme;
 
 public class ProfileAvatar extends JPanel {
 
@@ -37,15 +37,15 @@ public class ProfileAvatar extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
-        
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        g2.setColor(new Color(220, 220, 220));
+        g2.setColor(Theme.FIELD_BG);
         g2.fillOval(0, 0, size, size);
 
         if (icon != null) {
-            g2.setClip(new java.awt.geom.Ellipse2D.Float(0, 0, size, size));
+            g2.setClip(new Ellipse2D.Float(0, 0, size, size));
 
             Image img = icon.getImage();
             int imgWidth = img.getWidth(this);
@@ -60,14 +60,12 @@ public class ProfileAvatar extends JPanel {
 
             g2.drawImage(img, x, y, finalWidth, finalHeight, this);
         } else {
-            g2.setClip(null);
-            g2.setColor(Color.DARK_GRAY);
-            g2.setFont(new Font("Arial", Font.BOLD, size / 2)); 
-            
-            FontMetrics fm = g2.getFontMetrics();
-            int x = (size - fm.stringWidth("👤")) / 2;
-            int y = ((size - fm.getHeight()) / 2) + fm.getAscent();
-            g2.drawString("👤", x, y);
+            // Silhueta de pessoa
+            g2.setColor(Theme.TEXT_MUTED);
+            g2.fillOval(Math.round(size * 0.34f), Math.round(size * 0.18f),
+                    Math.round(size * 0.32f), Math.round(size * 0.32f));
+            g2.fillArc(Math.round(size * 0.16f), Math.round(size * 0.56f),
+                    Math.round(size * 0.68f), Math.round(size * 0.64f), 0, 180);
         }
 
         g2.dispose();

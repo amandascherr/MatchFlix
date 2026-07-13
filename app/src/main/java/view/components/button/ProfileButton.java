@@ -1,31 +1,38 @@
 package view.components.button;
 
-import java.awt.Color;
+import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
-public class ProfileButton extends JPanel {
+import view.Theme;
 
-    private Runnable onClick;
+/**
+ * Avatar circular do usuário na barra superior; ganha um anel
+ * vermelho no hover.
+ */
+public class ProfileButton extends JComponent {
+
+    private final Runnable onClick;
     private ImageIcon icon;
+    private boolean hover;
 
     public ProfileButton(Runnable onClick, ImageIcon icon) {
         this.onClick = onClick;
         this.icon = icon;
 
-        setPreferredSize(new Dimension(50, 50));
-        setOpaque(false);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setPreferredSize(new Dimension(44, 44));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        setToolTipText("Meu perfil");
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -37,11 +44,13 @@ public class ProfileButton extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                hover = true;
                 repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
+                hover = false;
                 repaint();
             }
         });
@@ -60,31 +69,37 @@ public class ProfileButton extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        int buttonSize = 50;
+        int size = Math.min(getWidth(), getHeight());
 
-        g2.setColor(new Color(220, 220, 220));
-        g2.fillOval(0, 0, buttonSize, buttonSize);
+        g2.setColor(Theme.FIELD_BG);
+        g2.fillOval(0, 0, size, size);
 
         if (icon != null) {
-            g2.setClip(new java.awt.geom.Ellipse2D.Float(0, 0, buttonSize, buttonSize));
+            g2.setClip(new Ellipse2D.Float(0, 0, size, size));
 
             Image img = icon.getImage();
             int imgWidth = img.getWidth(this);
             int imgHeight = img.getHeight(this);
 
-            double scale = Math.max((double) buttonSize / imgWidth, (double) buttonSize / imgHeight);
+            double scale = Math.max((double) size / imgWidth, (double) size / imgHeight);
             int finalWidth = (int) (imgWidth * scale);
             int finalHeight = (int) (imgHeight * scale);
 
-            int x = (buttonSize - finalWidth) / 2;
-            int y = (buttonSize - finalHeight) / 2;
-
-            g2.drawImage(img, x, y, finalWidth, finalHeight, this);
-        } else {
+            g2.drawImage(img, (size - finalWidth) / 2, (size - finalHeight) / 2, finalWidth, finalHeight, this);
             g2.setClip(null);
-            g2.setColor(Color.DARK_GRAY);
-            g2.setFont(new Font("Arial", Font.BOLD, 18));
-            g2.drawString("👤", 15, 32);
+        } else {
+            // Silhueta de pessoa
+            g2.setColor(Theme.TEXT_MUTED);
+            g2.fillOval(Math.round(size * 0.34f), Math.round(size * 0.18f),
+                    Math.round(size * 0.32f), Math.round(size * 0.32f));
+            g2.fillArc(Math.round(size * 0.16f), Math.round(size * 0.56f),
+                    Math.round(size * 0.68f), Math.round(size * 0.64f), 0, 180);
+        }
+
+        if (hover) {
+            g2.setColor(Theme.RED);
+            g2.setStroke(new BasicStroke(2f));
+            g2.drawOval(1, 1, size - 3, size - 3);
         }
 
         g2.dispose();
