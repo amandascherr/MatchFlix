@@ -8,7 +8,6 @@ public class Application {
 
     public static void main(String[] args) {
 
-        // Suaviza a renderização de texto (importante no Linux)
         System.setProperty("awt.useSystemAAFontSettings", "on");
         System.setProperty("swing.aatext", "true");
 
