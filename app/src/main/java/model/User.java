@@ -66,8 +66,6 @@ public class User implements Subscriber{
       }
     }
 
-
-
     if (userInfo.notifications() != null){
       for (NotificationDTO matchInfo : userInfo.notifications()){
         if (matchInfo instanceof MatchDTO){
@@ -107,7 +105,9 @@ public class User implements Subscriber{
   }
 
   public ArrayList<Movie> getLikedMovies() {
-    return likedMovies;
+    synchronized(likedMovies){
+      return likedMovies;
+    }
   }
 
   public ArrayList<Group> getGroups() {
