@@ -1,6 +1,6 @@
 package dto;
 
 public record MatchDTO(
-    String movie,
+    Integer movieId,
     String group
 ) implements NotificationDTO{}

@@ -19,7 +19,7 @@ public class Group implements Subscriber {
 
   private final Publisher publisher;
   private int numOfUsers;
-  private Map<String, Integer> likedMovies = new HashMap<>();
+  private Map<Integer, Integer> likedMovies = new HashMap<>();
   private final ArrayList<Movie> groupMatches = new ArrayList<>();
   private final String id;
   private final String name;
@@ -73,23 +73,23 @@ public class Group implements Subscriber {
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
     if (action.equals("like")) {
-      if (likedMovies.containsKey(movie.getTitle())) {
-        likedMovies.put(movie.getTitle(), likedMovies.get(movie.getTitle()) + 1);
+      if (likedMovies.containsKey(movie.getId())) {
+        likedMovies.put(movie.getId(), likedMovies.get(movie.getTitle()) + 1);
       } else {
-        likedMovies.put(movie.getTitle(), 1);
+        likedMovies.put(movie.getId(), 1);
       }
-      checkMatch(movie.getTitle());
+      checkMatch(movie.getId());
     } else if (action.equals("dislike")) {
       System.out.println("disliked");
     }
     saveGroup();
   }
 
-  public void checkMatch(String movieTitle) {
-    int numOfLikes = likedMovies.get(movieTitle);
+  public void checkMatch(Integer movieId) {
+    int numOfLikes = likedMovies.get(movieId);
     if (numOfLikes == numOfUsers) {
       // Passar o filme no match
-      Match match = new Match(movieTitle, this.getName());
+      Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
     } else {
@@ -126,7 +126,7 @@ public class Group implements Subscriber {
     return publisher.getSubsSize();
   }
 
-  public Map<String, Integer> getLikedMovies() {
+  public Map<Integer, Integer> getLikedMovies() {
     return likedMovies;
   }
 

@@ -15,5 +15,5 @@ public record GroupDTO(
     String id,
     String name,
     int numOfUsers,
-    Map<String, Integer> likedMovies
+    Map<Integer, Integer> likedMovies
 ) {}

@@ -59,8 +59,8 @@ public class User implements Subscriber{
           group.addToPublisher(this);
           this.groups.add(group);
           this.publisher.addSubscriber(group);
-          for (String movieTitle : group.getLikedMovies().keySet()){
-            group.checkMatch(movieTitle);
+          for (Integer movieId : group.getLikedMovies().keySet()){
+            group.checkMatch(movieId);
           }
         }
       }
