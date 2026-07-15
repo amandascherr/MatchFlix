@@ -4,6 +4,10 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,9 +17,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import controller.InviteController;
 import model.Group;
+import model.Movie;
+import service.Services;
+import service.TMDBService;
 import util.Theme;
 import view.components.MoviesPanel;
 import view.components.ProfileAvatar;
@@ -114,9 +122,18 @@ public class ViewGroupDetailsScreen extends JFrame {
 
         root.add(Box.createVerticalStrut(16));
 
-        MoviesPanel moviesPanel = new MoviesPanel(group.getMatches());
-        moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        root.add(moviesPanel);
+        ArrayList<Movie> moviesMatch = new ArrayList<>();
+        MoviesPanel moviePanel;
+        loadMoviesByAPI(group.getMatches(), moviesMatch)
+        .thenRun(() -> SwingUtilities.invokeLater(() -> {
+            MoviesPanel moviesPanel = new MoviesPanel(moviesMatch);
+            moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            root.add(moviesPanel);
+
+            root.revalidate();
+            root.repaint();
+        }));        
 
         JScrollPane scrollPane = new JScrollPane(root);
 
@@ -127,4 +144,27 @@ public class ViewGroupDetailsScreen extends JFrame {
 
         setContentPane(scrollPane);
     }
+
+    private CompletableFuture<Void> loadMoviesByAPI(List<Integer> likedMoviesIds, ArrayList<Movie> matchList) {
+    TMDBService service = Services.getTMDBService();
+
+    List<CompletableFuture<Movie>> futures = likedMoviesIds.stream()
+        .map(id -> CompletableFuture.supplyAsync(() -> {
+            try {
+                return service.getMovieById(id);
+            } catch (Exception e) {
+                return null; // falha silenciosa, como no original
+            }
+        }))
+        .collect(Collectors.toList());
+
+    return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+        .thenRun(() -> {
+            for (CompletableFuture<Movie> f : futures) {
+                Movie m = f.join();
+                if (m != null) matchList.add(m);
+            }
+        });
 }
+}
+

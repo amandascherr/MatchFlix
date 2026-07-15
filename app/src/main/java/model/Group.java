@@ -20,7 +20,7 @@ public class Group implements Subscriber {
   private final Publisher publisher;
   private int numOfUsers;
   private Map<Integer, Integer> likedMovies = new HashMap<>();
-  private final ArrayList<Movie> groupMatches = new ArrayList<>();
+  private final ArrayList<Integer> groupMatches = new ArrayList<>();
   private final String id;
   private final String name;
   private ImageIcon profileImage;
@@ -74,7 +74,7 @@ public class Group implements Subscriber {
     Movie movie = (Movie) object;
     if (action.equals("like")) {
       if (likedMovies.containsKey(movie.getId())) {
-        likedMovies.put(movie.getId(), likedMovies.get(movie.getTitle()) + 1);
+        likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);
       } else {
         likedMovies.put(movie.getId(), 1);
       }
@@ -87,11 +87,12 @@ public class Group implements Subscriber {
 
   public void checkMatch(Integer movieId) {
     int numOfLikes = likedMovies.get(movieId);
-    if (numOfLikes == numOfUsers) {
+    if (numOfLikes == numOfUsers && !groupMatches.contains(movieId)) {
       // Passar o filme no match
       Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
+      groupMatches.add(movieId);
     } else {
       Session.logAction = "check_match";
     }
@@ -114,7 +115,7 @@ public class Group implements Subscriber {
     return this.name;
   }
 
-  public ArrayList<Movie> getMatches() {
+  public ArrayList<Integer> getMatches() {
     return groupMatches;
   }
 
