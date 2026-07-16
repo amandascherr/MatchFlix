@@ -1,5 +1,6 @@
 package dto;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -15,5 +16,6 @@ public record GroupDTO(
     String id,
     String name,
     int numOfUsers,
-    Map<Integer, Integer> likedMovies
+    Map<Integer, Integer> likedMovies,
+    ArrayList<Integer> groupMatches
 ) {}

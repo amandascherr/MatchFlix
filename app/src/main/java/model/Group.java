@@ -20,7 +20,7 @@ public class Group implements Subscriber {
   private final Publisher publisher;
   private int numOfUsers;
   private Map<Integer, Integer> likedMovies = new HashMap<>();
-  private final ArrayList<Integer> groupMatches = new ArrayList<>();
+  private final ArrayList<Integer> groupMatches;
   private final String id;
   private final String name;
   private ImageIcon profileImage;
@@ -30,6 +30,7 @@ public class Group implements Subscriber {
     numOfUsers = 0;
     this.name = name;
     this.id = name + "_" + System.currentTimeMillis();
+    this.groupMatches = new ArrayList<>();
   }
 
   /**
@@ -49,6 +50,7 @@ public class Group implements Subscriber {
     this.name = dto.name();
     this.numOfUsers = dto.numOfUsers();
     this.likedMovies = new HashMap<>(dto.likedMovies());
+    this.groupMatches = new ArrayList<>(dto.groupMatches());
   }
 
   /**
@@ -57,7 +59,7 @@ public class Group implements Subscriber {
    * @return um {@link GroupDTO} com o estado persistivel deste grupo.
    */
   public GroupDTO toDTO() {
-    return new GroupDTO(id, name, numOfUsers, new HashMap<>(likedMovies));
+    return new GroupDTO(id, name, numOfUsers, new HashMap<>(likedMovies), new ArrayList<>(groupMatches));
   }
 
   /**
@@ -72,7 +74,7 @@ public class Group implements Subscriber {
   @Override
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
-    if (action.equals("like")) {
+    if (action.equals("like") && !groupMatches.contains(movie.getId())) {
       if (likedMovies.containsKey(movie.getId())) {
         likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);
       } else {
@@ -87,12 +89,14 @@ public class Group implements Subscriber {
 
   public void checkMatch(Integer movieId) {
     int numOfLikes = likedMovies.get(movieId);
-    if (numOfLikes == numOfUsers && !groupMatches.contains(movieId)) {
+    if (numOfLikes == numOfUsers) {
       // Passar o filme no match
       Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
-      groupMatches.add(movieId);
+      if (!groupMatches.contains(movieId)){
+        groupMatches.add(movieId);
+      }
     } else {
       Session.logAction = "check_match";
     }

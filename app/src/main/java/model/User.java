@@ -59,9 +59,7 @@ public class User implements Subscriber{
           group.addToPublisher(this);
           this.groups.add(group);
           this.publisher.addSubscriber(group);
-          for (Integer movieId : group.getLikedMovies().keySet()){
-            group.checkMatch(movieId);
-          }
+          
         }
       }
     }
@@ -160,7 +158,7 @@ public class User implements Subscriber{
     return this.notifications;
   }
 
-  private void saveUser() {
+  public void saveUser() {
     UserProfileDTO actualUserInfo = manager.readData("user", email, UserProfileDTO.class).get(0);
 
     UserProfileDTO updatedUserInfo = new UserProfileDTO(
