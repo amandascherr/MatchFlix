@@ -2,7 +2,6 @@ package view.components;
 
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -31,6 +30,7 @@ public class MoviesPanel extends JPanel {
 
         setLayout(new GridLayout(0, 3, 14, 18));
         for (Movie movie : movies) {
+            System.out.println(movie.getTitle());
             add(new SmallMovieCard(movie));
         }
     }

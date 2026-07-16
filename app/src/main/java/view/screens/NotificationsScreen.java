@@ -69,6 +69,7 @@ public class NotificationsScreen extends JFrame {
                     GroupController.joinGroup(Session.getLoggedUser(), invite.getGroup());
                     NotificationService.remove(invite);
                     Session.getLoggedUser().getNotifications().remove(invite);
+                    Session.getLoggedUser().saveUser();
                     dispose();
                     new NotificationsScreen().setVisible(true);
 
@@ -77,7 +78,7 @@ public class NotificationsScreen extends JFrame {
                 panel.setOnDeny(() -> {
                     NotificationService.remove(invite);
                     Session.getLoggedUser().getNotifications().remove(invite);
-
+                    Session.getLoggedUser().saveUser();
                     dispose();
                     new NotificationsScreen().setVisible(true);
                 });

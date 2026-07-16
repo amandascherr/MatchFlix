@@ -19,8 +19,8 @@ public class Group implements Subscriber {
 
   private final Publisher publisher;
   private int numOfUsers;
-  private Map<String, Integer> likedMovies = new HashMap<>();
-  private final ArrayList<Movie> groupMatches = new ArrayList<>();
+  private Map<Integer, Integer> likedMovies = new HashMap<>();
+  private final ArrayList<Integer> groupMatches;
   private final String id;
   private final String name;
   private ImageIcon profileImage;
@@ -30,6 +30,7 @@ public class Group implements Subscriber {
     numOfUsers = 0;
     this.name = name;
     this.id = name + "_" + System.currentTimeMillis();
+    this.groupMatches = new ArrayList<>();
   }
 
   /**
@@ -49,6 +50,7 @@ public class Group implements Subscriber {
     this.name = dto.name();
     this.numOfUsers = dto.numOfUsers();
     this.likedMovies = new HashMap<>(dto.likedMovies());
+    this.groupMatches = new ArrayList<>(dto.groupMatches());
   }
 
   /**
@@ -57,7 +59,7 @@ public class Group implements Subscriber {
    * @return um {@link GroupDTO} com o estado persistivel deste grupo.
    */
   public GroupDTO toDTO() {
-    return new GroupDTO(id, name, numOfUsers, new HashMap<>(likedMovies));
+    return new GroupDTO(id, name, numOfUsers, new HashMap<>(likedMovies), new ArrayList<>(groupMatches));
   }
 
   /**
@@ -72,26 +74,29 @@ public class Group implements Subscriber {
   @Override
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
-    if (action.equals("like")) {
-      if (likedMovies.containsKey(movie.getTitle())) {
-        likedMovies.put(movie.getTitle(), likedMovies.get(movie.getTitle()) + 1);
+    if (action.equals("like") && !groupMatches.contains(movie.getId())) {
+      if (likedMovies.containsKey(movie.getId())) {
+        likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);
       } else {
-        likedMovies.put(movie.getTitle(), 1);
+        likedMovies.put(movie.getId(), 1);
       }
-      checkMatch(movie.getTitle());
+      checkMatch(movie.getId());
     } else if (action.equals("dislike")) {
       System.out.println("disliked");
     }
     saveGroup();
   }
 
-  public void checkMatch(String movieTitle) {
-    int numOfLikes = likedMovies.get(movieTitle);
+  public void checkMatch(Integer movieId) {
+    int numOfLikes = likedMovies.get(movieId);
     if (numOfLikes == numOfUsers) {
       // Passar o filme no match
-      Match match = new Match(movieTitle, this.getName());
+      Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
+      if (!groupMatches.contains(movieId)){
+        groupMatches.add(movieId);
+      }
     } else {
       Session.logAction = "check_match";
     }
@@ -114,7 +119,7 @@ public class Group implements Subscriber {
     return this.name;
   }
 
-  public ArrayList<Movie> getMatches() {
+  public ArrayList<Integer> getMatches() {
     return groupMatches;
   }
 
@@ -126,7 +131,7 @@ public class Group implements Subscriber {
     return publisher.getSubsSize();
   }
 
-  public Map<String, Integer> getLikedMovies() {
+  public Map<Integer, Integer> getLikedMovies() {
     return likedMovies;
   }
 

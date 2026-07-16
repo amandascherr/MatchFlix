@@ -66,6 +66,6 @@ public class Invite extends Notification {
             current.notifications()
         );
 
-        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getId(), group.getName(), group.getNumOfUsers(), group.getLikedMovies()));
+        return new InviteDTO(userDTO, receiver, new GroupDTO(group.getId(), group.getName(), group.getNumOfUsers(), group.getLikedMovies(), group.getMatches()));
         }
 }

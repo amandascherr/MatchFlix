@@ -5,21 +5,21 @@ import dto.MatchDTO;
 
 public class Match extends Notification {
 
-    private final String movie;
+    private final Integer movieId;
     private final String group;
 
-    public Match(String movie, String group) {
-        this.movie = movie;
+    public Match(Integer movieId, String group) {
+        this.movieId = movieId;
         this.group = group;
     }
 
     public Match(MatchDTO matchDTO){
-        this.movie = matchDTO.movie();
+        this.movieId = matchDTO.movieId();
         this.group = matchDTO.group();
     }
 
-    public String getMovie() {
-        return movie;
+    public Integer getmovieId() {
+        return movieId;
     }
 
     public String getGroup() {
@@ -28,7 +28,7 @@ public class Match extends Notification {
 
     @Override
     public String getMessage() {
-        return "\""  + movie +
+        return "\""  + movieId +
                 "\" foi um match para \"" +
                 group + "\"!";
     }
@@ -40,7 +40,7 @@ public class Match extends Notification {
      */
     @Override
     public MatchDTO toDTO(){
-        return new MatchDTO(movie, group);
+        return new MatchDTO(movieId, group);
     }
 
 }
