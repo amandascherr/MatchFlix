@@ -160,7 +160,7 @@ public class Group implements Subscriber {
     }
 
     if (!groupMatches.contains(movie.getId())){
-        
+        checkMatch(movie.getId());
     }
 
   }
