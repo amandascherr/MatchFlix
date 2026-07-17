@@ -10,7 +10,6 @@ import javax.swing.SwingUtilities;
 import controller.MatchController;
 import dto.GroupDTO;
 import dto.InviteDTO;
-import dto.MatchDTO;
 import dto.NotificationDTO;
 import dto.UserProfileDTO;
 import model.observer.Publisher;
@@ -96,9 +95,7 @@ public class User implements Subscriber{
 
     if (userInfo.notifications() != null){
       for (NotificationDTO matchInfo : userInfo.notifications()){
-        if (matchInfo instanceof MatchDTO){
-          notifications.add(new Match((MatchDTO)matchInfo));
-        } else if (matchInfo instanceof InviteDTO){
+        if (matchInfo instanceof InviteDTO){
           notifications.add(new Invite((InviteDTO) matchInfo));
         }
       }
