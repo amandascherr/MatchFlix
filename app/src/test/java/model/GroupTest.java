@@ -53,10 +53,20 @@ public class GroupTest {
     }
   }
 
+  /**
+   * Cria um filme de teste com o id informado.
+   *
+   * @param id id do filme.
+   * @return um {@link Movie} com titulo e dados ficticios.
+   */
   private Movie movie(int id) {
     return new Movie(id, "Filme " + id, "sinopse", "poster");
   }
 
+  /**
+   * Verifica que ao um usuario entrar no grupo o total de membros e de inscritos
+   * do publisher e incrementado.
+   */
   @Test
   public void addUserIncrementsMembersAndSubscribers() {
     Group group = new Group("Conpecs");
@@ -68,6 +78,9 @@ public class GroupTest {
     assertEquals(1, group.getSubsSize());
   }
 
+  /**
+   * Verifica que entrar duas vezes no mesmo grupo nao gera adesao duplicada.
+   */
   @Test
   public void joinGroupTwiceKeepsSingleMembership() {
     Group group = new Group("Conpecs");
@@ -80,6 +93,10 @@ public class GroupTest {
     assertEquals(1, group.getSubsSize());
   }
 
+  /**
+   * Verifica que o id do grupo e derivado do nome (prefixo {@code nome_}) e que
+   * o nome e preservado.
+   */
   @Test
   public void groupIdIsDerivedFromName() {
     Group group = new Group("Conpecs");
@@ -88,6 +105,10 @@ public class GroupTest {
     assertEquals("Conpecs", group.getName());
   }
 
+  /**
+   * Verifica que a curtida de um filme e contabilizada no mapa do grupo pela
+   * chave correta (o id do filme).
+   */
   @Test
   public void likeCountsPerMovieId() {
     Group group = new Group("Conpecs");
@@ -100,6 +121,10 @@ public class GroupTest {
     assertEquals(1, group.getLikedMovies().get(movie.getId()));
   }
 
+  /**
+   * Verifica a regra central: o match so ocorre quando todos os membros do grupo
+   * curtem o mesmo filme; antes disso o estado permanece {@code check_match}.
+   */
   @Test
   public void matchHappensOnlyWhenAllMembersLike() {
     Group group = new Group("Conpecs");
@@ -122,6 +147,10 @@ public class GroupTest {
     assertTrue(group.getMatches().contains(movie.getId()));
   }
 
+  /**
+   * Verifica que um match e registrado uma unica vez: novas curtidas no mesmo
+   * filme apos o match nao recontam nem duplicam o registro.
+   */
   @Test
   public void matchIsRegisteredOnlyOnce() {
     Group group = new Group("Conpecs");
@@ -141,6 +170,10 @@ public class GroupTest {
     assertEquals(1, group.getLikedMovies().get(movie.getId()));
   }
 
+  /**
+   * Verifica que uma rejeicao ({@code dislike}) nao contabiliza curtida nem gera
+   * match.
+   */
   @Test
   public void dislikeDoesNotCountAsLike() {
     Group group = new Group("Conpecs");

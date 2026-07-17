@@ -33,10 +33,12 @@ public class Match extends Notification {
         this.group = matchDTO.group();
     }
 
+    /** {@return o id do filme que deu match} */
     public Integer getmovieId() {
         return movieId;
     }
 
+    /** {@return o nome do grupo em que o match ocorreu} */
     public String getGroup() {
         return group;
     }

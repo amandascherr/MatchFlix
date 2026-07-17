@@ -23,6 +23,8 @@ public class InvitationService {
     }
 
     /**
+     * Devolve os convites registrados.
+     *
      * @return a lista de convites enviados.
      */
     public static List<Invite> getInvitations() {

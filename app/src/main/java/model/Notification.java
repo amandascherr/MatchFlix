@@ -12,6 +12,14 @@ public abstract class Notification {
     private boolean read;
 
     /**
+     * Construtor padrao usado pelas subclasses.
+     */
+    protected Notification() {
+    }
+
+    /**
+     * Indica se a notificação já foi lida.
+     *
      * @return {@code true} se a notificação já foi lida.
      */
     public boolean isRead() {
@@ -26,11 +34,15 @@ public abstract class Notification {
     }
 
     /**
+     * Devolve o texto a ser exibido ao usuário para esta notificação.
+     *
      * @return o texto a ser exibido ao usuário para esta notificação.
      */
     public abstract String getMessage();
 
     /**
+     * Converte esta notificação na sua representação serializável.
+     *
      * @return a representação serializável desta notificação.
      */
     public abstract NotificationDTO toDTO();

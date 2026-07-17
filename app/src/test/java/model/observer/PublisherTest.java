@@ -19,6 +19,12 @@ public class PublisherTest {
     final List<String> actions = new ArrayList<>();
     Object lastObject;
 
+    /**
+     * Registra a acao recebida e guarda o ultimo objeto notificado.
+     *
+     * @param action acao notificada.
+     * @param object dado associado a acao.
+     */
     @Override
     public void beNotified(String action, Object object) {
       actions.add(action);
@@ -26,6 +32,9 @@ public class PublisherTest {
     }
   }
 
+  /**
+   * Verifica que inscrever subscribers aumenta o tamanho da lista de inscritos.
+   */
   @Test
   public void addSubscriberIncreasesSize() {
     Publisher publisher = new Publisher();
@@ -36,6 +45,9 @@ public class PublisherTest {
     assertEquals(2, publisher.getSubsSize());
   }
 
+  /**
+   * Verifica que remover um inscrito diminui o tamanho da lista de inscritos.
+   */
   @Test
   public void removeSubscriberDecreasesSize() {
     Publisher publisher = new Publisher();
@@ -47,6 +59,10 @@ public class PublisherTest {
     assertEquals(0, publisher.getSubsSize());
   }
 
+  /**
+   * Verifica que uma notificacao alcanca todos os inscritos, repassando a acao e
+   * o objeto corretos.
+   */
   @Test
   public void notifyReachesAllSubscribersWithActionAndObject() {
     Publisher publisher = new Publisher();
@@ -64,6 +80,9 @@ public class PublisherTest {
     assertEquals(payload, second.lastObject);
   }
 
+  /**
+   * Verifica que um inscrito removido nao recebe mais notificacoes.
+   */
   @Test
   public void removedSubscriberIsNotNotified() {
     Publisher publisher = new Publisher();

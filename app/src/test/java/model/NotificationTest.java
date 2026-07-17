@@ -15,6 +15,10 @@ import dto.MatchDTO;
  */
 public class NotificationTest {
 
+  /**
+   * Verifica que o {@link Match} expoe corretamente o id do filme e o nome do
+   * grupo informados.
+   */
   @Test
   public void matchExposesMovieAndGroup() {
     Match match = new Match(42, "Cinefilos");
@@ -23,6 +27,9 @@ public class NotificationTest {
     assertEquals("Cinefilos", match.getGroup());
   }
 
+  /**
+   * Verifica o texto da mensagem exibida para um match.
+   */
   @Test
   public void matchMessageMentionsMovieAndGroup() {
     Match match = new Match(42, "Cinefilos");
@@ -30,6 +37,10 @@ public class NotificationTest {
     assertEquals("\"42\" foi um match para \"Cinefilos\"!", match.getMessage());
   }
 
+  /**
+   * Verifica a conversao de ida e volta entre {@link Match} e {@link MatchDTO},
+   * preservando id do filme e grupo.
+   */
   @Test
   public void matchConvertsToDtoAndBack() {
     Match original = new Match(7, "Selva");
@@ -43,6 +54,10 @@ public class NotificationTest {
     assertEquals(original.getGroup(), restored.getGroup());
   }
 
+  /**
+   * Verifica o estado de leitura comum das notificacoes: comeca como nao lida e
+   * pode ser marcada como lida.
+   */
   @Test
   public void notificationStartsUnreadAndCanBeMarked() {
     Match match = new Match(1, "G");
@@ -52,6 +67,10 @@ public class NotificationTest {
     assertTrue(match.isRead());
   }
 
+  /**
+   * Verifica que a mensagem do {@link Invite} menciona o nome do grupo de
+   * destino.
+   */
   @Test
   public void inviteMessageMentionsGroupName() {
     User sender = new User("Bixao", "nobrega");
@@ -61,6 +80,10 @@ public class NotificationTest {
     assertEquals("Convite para participar de \"Cinefilos\"", invite.getMessage());
   }
 
+  /**
+   * Verifica que o {@link Invite} preserva remetente, destinatario e grupo
+   * informados.
+   */
   @Test
   public void inviteKeepsSenderReceiverAndGroup() {
     User sender = new User("Bixao", "nobrega");

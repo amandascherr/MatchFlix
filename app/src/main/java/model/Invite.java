@@ -43,14 +43,17 @@ public class Invite extends Notification {
         this.group = new Group(inviteInfo.groupDTO());
     }
 
+    /** {@return o usuario que enviou o convite} */
     public User getSender() {
         return sender;
     }
 
+    /** {@return o nome do usuario destinatario do convite} */
     public String getReceiver() {
         return receiver;
     }
 
+    /** {@return o grupo ao qual o destinatario foi convidado} */
     public Group getGroup() {
         return group;
     }

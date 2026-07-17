@@ -28,11 +28,17 @@ public class NotificationServiceTest {
 
   private final List<Notification> added = new ArrayList<>();
 
+  /**
+   * Registra a notificacao no servico e a rastreia para limpeza posterior.
+   *
+   * @param notification notificacao a adicionar.
+   */
   private void addTracked(Notification notification) {
     NotificationService.add(notification);
     added.add(notification);
   }
 
+  /** Remove do servico as notificacoes adicionadas durante o teste. */
   @AfterEach
   public void cleanup() {
     for (Notification notification : added) {
@@ -41,6 +47,10 @@ public class NotificationServiceTest {
     added.clear();
   }
 
+  /**
+   * Verifica que uma notificacao de {@link Match} adicionada e retornada para
+   * qualquer usuario consultado.
+   */
   @Test
   public void matchIsReturnedForAnyUser() {
     User user = new User("Bixao", "nobrega");
@@ -51,6 +61,9 @@ public class NotificationServiceTest {
     assertTrue(NotificationService.getNotifications(user).contains(match));
   }
 
+  /**
+   * Verifica que remover uma notificacao a retira dos resultados da consulta.
+   */
   @Test
   public void removeDropsNotification() {
     User user = new User("Bixao", "nobrega");
@@ -62,6 +75,10 @@ public class NotificationServiceTest {
     assertFalse(NotificationService.getNotifications(user).contains(match));
   }
 
+  /**
+   * Verifica que varias notificacoes de match ficam disponiveis juntas na
+   * consulta.
+   */
   @Test
   public void matchesForAllUsersAreListedTogether() {
     User user = new User("Bixao", "nobrega");

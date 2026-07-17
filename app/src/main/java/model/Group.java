@@ -165,42 +165,66 @@ public class Group implements Subscriber {
 
   }
 
+  /**
+   * Inscreve um usuario no publisher do grupo, para que passe a receber as
+   * notificacoes de match.
+   *
+   * @param user usuario a inscrever.
+   */
   public void addToPublisher(User user){
     publisher.addSubscriber(user);
   }
 
+  /** {@return o identificador unico do grupo} */
   public String getId() {
     return this.id;
   }
 
+  /** {@return o nome do grupo} */
   public String getName() {
     return this.name;
   }
 
+  /** {@return os ids dos filmes que ja deram match no grupo} */
   public ArrayList<Integer> getMatches() {
     return groupMatches;
   }
 
+  /** {@return o numero de membros do grupo} */
   public int getNumOfUsers() {
     return this.numOfUsers;
   }
 
+  /** {@return o numero de inscritos no publisher do grupo} */
   public int getSubsSize() {
     return publisher.getSubsSize();
   }
 
+  /** {@return o mapa de curtidas por id de filme} */
   public Map<Integer, Integer> getLikedMovies() {
     return likedMovies;
   }
 
+  /** {@return a imagem de perfil do grupo, ou {@code null} se nao definida} */
   public ImageIcon getProfileImage() {
     return profileImage;
   }
 
+  /**
+   * Define a imagem de perfil do grupo.
+   *
+   * @param profileImage nova imagem de perfil.
+   */
   public void setProfileImage(ImageIcon profileImage) {
     this.profileImage = profileImage;
   }
 
+  /**
+   * Carrega a imagem de perfil do grupo a partir de um arquivo, redimensionando-a.
+   * Se o arquivo nao existir, a imagem nao e alterada.
+   *
+   * @param path caminho do arquivo de imagem.
+   */
   public void loadProfileImage(String path) {
     File file = new File(path);
 

@@ -6,6 +6,8 @@ package exception;
 public class EmptyFieldException extends Exception {
 
     /**
+     * Cria a exceção para o campo obrigatório informado.
+     *
      * @param field nome do campo obrigatório que ficou vazio.
      */
     public EmptyFieldException(String field) {

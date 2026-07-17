@@ -6,6 +6,8 @@ package exception;
 public class UserAlreadyExistsException extends Exception {
 
     /**
+     * Cria a exceção para o email em conflito.
+     *
      * @param email email já cadastrado que gerou o conflito.
      */
     public UserAlreadyExistsException(String email) {

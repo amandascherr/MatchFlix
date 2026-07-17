@@ -20,21 +20,34 @@ import model.User;
  */
 public class InvitationServiceTest {
 
+  /** Limpa a lista estatica de convites antes e depois de cada teste. */
   @BeforeEach
   @AfterEach
   public void clearInvitations() {
     InvitationService.getInvitations().clear();
   }
 
+  /**
+   * Cria um convite de teste para o destinatario informado.
+   *
+   * @param receiver nome do usuario destinatario.
+   * @return um {@link Invite} com remetente e grupo ficticios.
+   */
   private Invite invite(String receiver) {
     return new Invite(new User("Bixao", "nobrega"), receiver, new Group("Conpecs"));
   }
 
+  /**
+   * Verifica que o servico comeca sem convites registrados.
+   */
   @Test
   public void startsEmpty() {
     assertTrue(InvitationService.getInvitations().isEmpty());
   }
 
+  /**
+   * Verifica que enviar um convite o armazena no servico.
+   */
   @Test
   public void sendInvitationStoresIt() {
     Invite invite = invite("amanda");
@@ -45,6 +58,9 @@ public class InvitationServiceTest {
     assertEquals(invite, InvitationService.getInvitations().get(0));
   }
 
+  /**
+   * Verifica que multiplos convites sao acumulados na ordem de envio.
+   */
   @Test
   public void invitationsAccumulateInOrder() {
     Invite first = invite("amanda");
