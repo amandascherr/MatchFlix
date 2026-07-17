@@ -6,6 +6,10 @@ import service.dataManager.DataManager;
 import util.Dialogs;
 import view.screens.CreateGroupScreen;
 
+/**
+ * Controla a tela de criação de grupo, validando a entrada e criando o grupo
+ * para o usuário logado.
+ */
 public class CreateGroupController {
 
     private final CreateGroupScreen screen;
@@ -13,7 +17,12 @@ public class CreateGroupController {
 
     private final DataManager manager = Services.getManager();
 
-    // É chamado em HomeScreen enquanto está criando grupo
+    /**
+     * Liga o controlador à tela de criação de grupo.
+     *
+     * @param screen    tela de criação de grupo.
+     * @param onSuccess ação executada após a criação bem-sucedida.
+     */
     public CreateGroupController(CreateGroupScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
@@ -21,7 +30,11 @@ public class CreateGroupController {
         screen.setOnCreate(this::createGroup);
     }
 
-    // É chamado ao apertar o botão de criar grupo.
+    /**
+     * Cria o grupo com o nome informado na tela. Exige nome não vazio; em
+     * seguida faz o usuário logado ingressar no novo grupo e dispara
+     * {@code onSuccess}.
+     */
     private void createGroup() {
 
         String groupName = screen.getGroupName();

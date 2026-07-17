@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * Entidade que representa um filme obtido da API TMDB. É a unidade curtida
+ * pelos usuários e contabilizada pelos grupos na regra de match.
+ */
 public class Movie {
 
     private int id;
@@ -7,9 +11,20 @@ public class Movie {
     private String description;
     private String posterPath;
 
+    /**
+     * Cria um filme vazio, para preenchimento posterior via setters.
+     */
     public Movie() {
     }
 
+    /**
+     * Cria um filme com todos os seus atributos.
+     *
+     * @param id          identificador do filme na TMDB.
+     * @param title       título do filme.
+     * @param description sinopse do filme.
+     * @param posterPath  caminho do pôster na TMDB.
+     */
     public Movie(
             int id,
             String title,

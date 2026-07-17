@@ -15,6 +15,16 @@ import model.observer.Subscriber;
 import service.Services;
 import service.dataManager.DataManager;
 
+/**
+ * Representa um grupo de usuários e concentra a regra de match do aplicativo.
+ * <p>
+ * No padrão Observer, o grupo é {@link Subscriber} das curtidas dos usuários e
+ * mantém um {@link Publisher} para notificar seus membros quando ocorre um
+ * match. Para cada filme, o grupo contabiliza quantos membros o curtiram; um
+ * match acontece quando todos os membros ({@code numOfUsers}) curtem o mesmo
+ * filme.
+ * </p>
+ */
 public class Group implements Subscriber {
 
   private final Publisher publisher;
@@ -25,6 +35,12 @@ public class Group implements Subscriber {
   private final String name;
   private ImageIcon profileImage;
 
+  /**
+   * Cria um grupo vazio com o nome informado. O {@code id} é gerado
+   * concatenando o nome com o instante de criação, garantindo unicidade.
+   *
+   * @param name nome do grupo.
+   */
   public Group(String name) {
     publisher = new Publisher();
     numOfUsers = 0;
@@ -71,6 +87,17 @@ public class Group implements Subscriber {
     manager.createData("group", this.id, this.toDTO());
   }
 
+  /**
+   * Reage a uma curtida ou rejeição de filme feita por um membro.
+   * <p>
+   * Numa curtida ({@code "like"}) de um filme que ainda não deu match, o voto é
+   * contabilizado e {@link #checkMatch(Integer)} é avaliado. Ao final, o estado
+   * do grupo é persistido.
+   * </p>
+   *
+   * @param action ação notificada ({@code "like"} ou {@code "dislike"}).
+   * @param object o {@link Movie} alvo da ação.
+   */
   @Override
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
@@ -83,6 +110,13 @@ public class Group implements Subscriber {
     saveGroup();
   }
 
+  /**
+   * Verifica se um filme atingiu o match, ou seja, se todos os membros do grupo
+   * o curtiram. Havendo match, cria um {@link Match}, notifica os membros e
+   * registra o filme em {@code groupMatches} para não repetir o match.
+   *
+   * @param movieId id do filme a ser avaliado.
+   */
   public void checkMatch(Integer movieId) {
     int numOfLikes = likedMovies.get(movieId);
     if (numOfLikes == numOfUsers) {
@@ -98,6 +132,12 @@ public class Group implements Subscriber {
     }
   }
 
+  /**
+   * Adiciona um usuário ao grupo: contabiliza os filmes que ele já curtiu,
+   * inscreve-o no publisher do grupo e incrementa o total de membros.
+   *
+   * @param user usuário que entra no grupo.
+   */
   public void addUser(User user) {
     for (Movie movie : user.getLikedMovies()){
       addLikedMovies(movie);
@@ -106,6 +146,12 @@ public class Group implements Subscriber {
     numOfUsers += 1;
   }
 
+  /**
+   * Incrementa a contagem de curtidas de um filme no grupo, criando a entrada
+   * quando for o primeiro voto.
+   *
+   * @param movie filme curtido.
+   */
   private void addLikedMovies(Movie movie){
     if (likedMovies.containsKey(movie.getId())) {
       likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);

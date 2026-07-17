@@ -9,12 +9,22 @@ import service.dataManager.DataManager;
 import util.Dialogs;
 import view.screens.LoginScreen;
 
+/**
+ * Controla a tela de login, validando as credenciais e iniciando a sessão do
+ * usuário autenticado.
+ */
 public class LoginController {
 
     private final LoginScreen screen;
     private final Runnable onSuccess;
     private final DataManager manager = Services.getManager();
 
+    /**
+     * Liga o controlador à tela de login.
+     *
+     * @param screen    tela de login.
+     * @param onSuccess ação executada após a autenticação bem-sucedida.
+     */
     public LoginController(LoginScreen screen, Runnable onSuccess) {
         this.screen = screen;
         this.onSuccess = onSuccess;
@@ -22,6 +32,11 @@ public class LoginController {
         screen.setOnLogin(this::login);
     }
 
+    /**
+     * Valida que email e senha foram preenchidos.
+     *
+     * @throws EmptyFieldException se algum campo obrigatório estiver vazio.
+     */
     private void validateFields() throws EmptyFieldException {
         if (screen.getEmail().isBlank()) {
             throw new EmptyFieldException("Email");
@@ -32,6 +47,11 @@ public class LoginController {
         }
     }
     
+    /**
+     * Executa o login: valida os campos, verifica a senha do usuário e, em caso
+     * de sucesso, carrega o perfil, define o usuário da sessão e dispara
+     * {@code onSuccess}. Erros são exibidos como diálogos.
+     */
     private void login() {
 
         try {

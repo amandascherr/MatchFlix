@@ -6,6 +6,10 @@ import view.screens.HomeScreen;
 import view.screens.LoginScreen;
 import view.screens.RegisterScreen;
 
+/**
+ * Orquestra a navegação entre as telas da aplicação (login, cadastro e home),
+ * criando cada tela junto do seu controlador.
+ */
 public class NavigationController {
 
     private final TMDBService tmdbService;
@@ -14,7 +18,10 @@ public class NavigationController {
         this.tmdbService = Services.getTMDBService();
     }
 
-    // Tela de login
+    /**
+     * Exibe a tela de login, encaminhando para a home após autenticar e para o
+     * cadastro quando solicitado.
+     */
     public void showLogin() {
         LoginScreen loginScreen = new LoginScreen();
         LoginController loginController = new LoginController(loginScreen, () -> {
@@ -32,7 +39,10 @@ public class NavigationController {
         loginScreen.setVisible(true);
     }
 
-    // Tela de cadastro
+    /**
+     * Exibe a tela de cadastro, voltando ao login após o cadastro ou quando
+     * solicitado.
+     */
     public void showRegister() {
         RegisterScreen registerScreen = new RegisterScreen();
         RegisterController registerController = new RegisterController(registerScreen, () -> {
@@ -50,7 +60,9 @@ public class NavigationController {
         registerScreen.setVisible(true);
     }
 
-    // Home
+    /**
+     * Exibe a tela principal, onde o usuário logado avalia filmes.
+     */
     public void showHome() {
         HomeScreen homeScreen = new HomeScreen();
         HomeController homeController = new HomeController(homeScreen, tmdbService);

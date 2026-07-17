@@ -16,10 +16,21 @@ public final class Services {
     private Services() {
     }
 
+    /**
+     * Inicializa a instância compartilhada de {@link TMDBService} com a chave
+     * de API informada.
+     *
+     * @param apiKey chave de acesso à API TMDB.
+     */
     public static void initializeTMDB(String apiKey) {
         tmdbService = new TMDBService(apiKey);
     }
 
+    /**
+     * Devolve a instância compartilhada de {@link TMDBService}.
+     *
+     * @return o serviço da TMDB, ou {@code null} se ainda não inicializado.
+     */
     public static TMDBService getTMDBService() {
         return tmdbService;
     }
