@@ -37,34 +37,58 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
+    /** {@return o id do filme na TMDB} */
     public int getId() {
         return id;
     }
 
+    /** {@return o titulo do filme} */
     public String getTitle() {
         return title;
     }
 
+    /** {@return a sinopse do filme} */
     public String getDescription() {
         return description;
     }
 
+    /** {@return o caminho do poster do filme na TMDB} */
     public String getPosterPath() {
         return posterPath;
     }
 
+    /**
+     * Define o id do filme.
+     *
+     * @param id id do filme na TMDB.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Define o titulo do filme.
+     *
+     * @param title titulo do filme.
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Define a sinopse do filme.
+     *
+     * @param description sinopse do filme.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Define o caminho do poster do filme.
+     *
+     * @param posterPath caminho do poster na TMDB.
+     */
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }

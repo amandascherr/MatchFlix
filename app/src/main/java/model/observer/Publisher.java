@@ -17,6 +17,12 @@ public class Publisher {
     private final ArrayList<Subscriber> subscribers = new ArrayList<>();
 
     /**
+     * Cria um publicador sem inscritos.
+     */
+    public Publisher() {
+    }
+
+    /**
      * Notifica todos os inscritos sobre uma ação ocorrida.
      * <p>
      * Para cada {@link Subscriber} registrado, o método
@@ -49,6 +55,7 @@ public class Publisher {
       subscribers.remove(subscriber);
     }
 
+    /** {@return o numero de inscritos registrados no publicador} */
     public int getSubsSize(){
       return subscribers.size();
     }
