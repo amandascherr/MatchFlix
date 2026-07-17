@@ -43,9 +43,8 @@ public class Match extends Notification {
 
     @Override
     public String getMessage() {
-        return "\""  + movieId +
-                "\" foi um match para \"" +
-                group + "\"!";
+        return "Ocorreu um match em \"" +
+                group + "\"! Vá verificar!";
     }
 
     /**
