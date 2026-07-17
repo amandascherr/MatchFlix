@@ -37,7 +37,7 @@ public class InviteScreen extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(new EmptyBorder(28, 32, 28, 32));
 
-        usernameField = new FormField("Nome do usuário", false);
+        usernameField = new FormField("Email do usuário", false);
         usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         sendButton = new PrimaryButton("Enviar convite");

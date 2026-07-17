@@ -75,11 +75,7 @@ public class Group implements Subscriber {
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
     if (action.equals("like") && !groupMatches.contains(movie.getId())) {
-      if (likedMovies.containsKey(movie.getId())) {
-        likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);
-      } else {
-        likedMovies.put(movie.getId(), 1);
-      }
+      addLikedMovies(movie);
       checkMatch(movie.getId());
     } else if (action.equals("dislike")) {
       System.out.println("disliked");
@@ -103,8 +99,19 @@ public class Group implements Subscriber {
   }
 
   public void addUser(User user) {
+    for (Movie movie : user.getLikedMovies()){
+      addLikedMovies(movie);
+    }
     addToPublisher(user);
     numOfUsers += 1;
+  }
+
+  private void addLikedMovies(Movie movie){
+    if (likedMovies.containsKey(movie.getId())) {
+      likedMovies.put(movie.getId(), likedMovies.get(movie.getId()) + 1);
+    } else {
+      likedMovies.put(movie.getId(), 1);
+    }
   }
 
   public void addToPublisher(User user){
