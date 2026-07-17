@@ -119,7 +119,7 @@ public class Group implements Subscriber {
    */
   public void checkMatch(Integer movieId) {
     int numOfLikes = likedMovies.get(movieId);
-    if (numOfLikes == numOfUsers) {
+    if (numOfLikes >= numOfUsers && numOfUsers >= 2) {
       // Passar o filme no match
       Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
@@ -139,11 +139,12 @@ public class Group implements Subscriber {
    * @param user usuário que entra no grupo.
    */
   public void addUser(User user) {
+    numOfUsers += 1;
+    addToPublisher(user);
+
     for (Movie movie : user.getLikedMovies()){
       addLikedMovies(movie);
     }
-    addToPublisher(user);
-    numOfUsers += 1;
   }
 
   /**
@@ -160,7 +161,7 @@ public class Group implements Subscriber {
     }
 
     if (!groupMatches.contains(movie.getId())){
-        
+        checkMatch(movie.getId());
     }
 
   }
