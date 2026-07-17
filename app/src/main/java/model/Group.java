@@ -101,9 +101,8 @@ public class Group implements Subscriber {
   @Override
   public void beNotified(String action, Object object) {
     Movie movie = (Movie) object;
-    if (action.equals("like") && !groupMatches.contains(movie.getId())) {
+    if (action.equals("like")) {
       addLikedMovies(movie);
-      checkMatch(movie.getId());
     } else if (action.equals("dislike")) {
       System.out.println("disliked");
     }
