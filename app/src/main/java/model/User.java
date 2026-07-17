@@ -76,6 +76,7 @@ public class User implements Subscriber{
       System.out.println("Filmes curtidos carredados");
     });
 
+
     if (userInfo.groups() != null) {
       DataManager manager = Services.getManager();
       for (String groupId : userInfo.groups()) {
