@@ -124,9 +124,8 @@ public class Group implements Subscriber {
       Match match = new Match(movieId, this.getName());
       publisher.toNotify("match", match);
       Session.logAction = "match";
-      if (!groupMatches.contains(movieId)){
-        groupMatches.add(movieId);
-      }
+      groupMatches.add(movieId);
+      
     } else {
       Session.logAction = "check_match";
     }

@@ -86,6 +86,9 @@ public class User implements Subscriber{
           group.addToPublisher(this);
           this.groups.add(group);
           this.publisher.addSubscriber(group);
+          for (int movieId : group.getMatches()){
+            notifications.add(new Match(movieId, group.getName()));
+          }
           
         }
       }
@@ -222,6 +225,7 @@ public class User implements Subscriber{
   public void beNotified(String action, Object object) {
     Match match = (Match) object;
     notifications.add(match);
+    System.out.println("happend");
     MatchController.saveMatch(this);
   }
 
