@@ -8,18 +8,35 @@ import dto.UserProfileDTO;
 import service.Services;
 import service.dataManager.DataManager;
 
+/**
+ * Notificação de convite para um usuário ingressar em um grupo. Guarda quem
+ * enviou o convite, o destinatário e o grupo de destino.
+ */
 public class Invite extends Notification {
 
     private final User sender;
     private final String receiver;
     private final Group group;
 
+    /**
+     * Cria um convite.
+     *
+     * @param sender   usuário que envia o convite.
+     * @param receiver nome do usuário destinatário.
+     * @param group    grupo ao qual o destinatário é convidado.
+     */
     public Invite(User sender, String receiver, Group group) {
         this.sender = sender;
         this.receiver = receiver;
         this.group = group;
     }
 
+    /**
+     * Reconstrói um convite a partir do seu {@link InviteDTO} persistido,
+     * reinstanciando o remetente e o grupo.
+     *
+     * @param inviteInfo representação serializada do convite.
+     */
     public Invite(InviteDTO inviteInfo){
         this.sender = new User(inviteInfo.sender());
         this.receiver = inviteInfo.receiver();
@@ -43,6 +60,13 @@ public class Invite extends Notification {
         return "Convite para participar de \"" + group.getName() + "\"";
     }
 
+    /**
+     * Converte este convite na sua representação serializável, lendo o perfil
+     * atual do remetente para compor o DTO.
+     *
+     * @return um {@link InviteDTO} do convite, ou {@code null} se o perfil do
+     *         remetente não for encontrado.
+     */
     @Override
     public InviteDTO toDTO() {
         DataManager manager = Services.getManager();

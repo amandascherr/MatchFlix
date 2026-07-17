@@ -92,7 +92,7 @@ public class ProfileScreen extends JFrame {
         // Filmes curtidos
         root.add(Box.createVerticalStrut(36));
 
-        JLabel likedMoviesTitle = Theme.title("Filmes Curtidos", 17);
+        JLabel likedMoviesTitle = Theme.title("Últimos Filmes Curtidos", 17);
         likedMoviesTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         root.add(likedMoviesTitle);
@@ -101,7 +101,7 @@ public class ProfileScreen extends JFrame {
         ArrayList<Movie> likedMovies = user.getLikedMovies();
         int limitMovies = Math.max(likedMovies.size() - 15, 0);
 
-        MoviesPanel moviesPanel = new MoviesPanel(likedMovies.subList(limitMovies, likedMovies.size()));
+        MoviesPanel moviesPanel = new MoviesPanel(likedMovies.subList(limitMovies, likedMovies.size()).reversed());
         moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         root.add(moviesPanel);
 

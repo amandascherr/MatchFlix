@@ -21,8 +21,17 @@ import service.dataManager.DataManager;
 import util.Loader;
  
 
+/**
+ * Representa um usuário da aplicação e centraliza suas regras de negócio.
+ * <p>
+ * Um usuário mantém seus filmes curtidos, os grupos dos quais participa e as
+ * notificações recebidas. No padrão Observer, atua como {@link Subscriber}
+ * (recebe matches via {@link #beNotified(String, Object)}) e possui um
+ * {@link Publisher} próprio para propagar suas curtidas aos grupos inscritos.
+ * </p>
+ */
 public class User implements Subscriber{
-  
+
   private final Publisher publisher;
   private final String name;
   private final String email;
@@ -33,6 +42,12 @@ public class User implements Subscriber{
   private final DataManager manager = Services.getManager();
   private CompletableFuture<Void> loadMoviesFuture;
 
+  /**
+   * Cria um usuário novo, com listas de filmes, grupos e notificações vazias.
+   *
+   * @param name  nome do usuário.
+   * @param email email do usuário, usado como identificador único.
+   */
   public User(String name, String email){
     this.name = name;
     this.email = email;
@@ -43,6 +58,17 @@ public class User implements Subscriber{
     publisher = new Publisher();  
   }
 
+  /**
+   * Reconstrói um usuário a partir do seu perfil persistido.
+   * <p>
+   * Os filmes curtidos são recarregados de forma assíncrona pela API (TMDB),
+   * os grupos e notificações são reinstanciados a partir dos seus DTOs e o
+   * usuário volta a se inscrever no {@link Publisher} de cada grupo. A foto de
+   * perfil só é carregada quando há um caminho de arquivo válido.
+   * </p>
+   *
+   * @param userInfo perfil serializado do usuário.
+   */
   public User(UserProfileDTO userInfo){
     this(userInfo.name(), userInfo.email());
 
@@ -79,6 +105,14 @@ public class User implements Subscriber{
     }
   }
 
+  /**
+   * Carrega de forma assíncrona os filmes curtidos a partir dos seus ids,
+   * consultando o {@link TMDBService}. Ids que falharem na consulta interrompem
+   * o carregamento restante.
+   *
+   * @param likedMoviesIds ids dos filmes previamente curtidos.
+   * @return um {@link CompletableFuture} concluído quando o carregamento termina.
+   */
   private CompletableFuture<Void> loadMoviesByAPI(List<Integer> likedMoviesIds){
     TMDBService service = Services.getTMDBService();
 
@@ -102,6 +136,12 @@ public class User implements Subscriber{
       return email;
   }
 
+  /**
+   * Devolve uma cópia da lista de filmes curtidos. O acesso é sincronizado
+   * porque a lista pode ser preenchida em paralelo pelo carregamento assíncrono.
+   *
+   * @return uma nova lista com os filmes curtidos pelo usuário.
+   */
   public ArrayList<Movie> getLikedMovies() {
     synchronized(likedMovies){
       return new ArrayList<>(likedMovies);
@@ -122,6 +162,16 @@ public class User implements Subscriber{
   }
 
  
+  /**
+   * Registra a curtida de um filme pelo usuário.
+   * <p>
+   * A operação espera o carregamento inicial dos filmes concluir e então, na
+   * thread de UI, adiciona o filme, persiste o perfil e notifica os grupos
+   * inscritos com a ação {@code "like"} — o que pode disparar um match.
+   * </p>
+   *
+   * @param movie filme curtido.
+   */
   public void userLike(Movie movie){
     loadMoviesFuture.thenRun( () -> {
       SwingUtilities.invokeLater(()->{
@@ -132,10 +182,23 @@ public class User implements Subscriber{
     });
   }
 
+  /**
+   * Registra a rejeição de um filme, notificando os grupos com a ação
+   * {@code "dislike"}. Não altera a lista de curtidos.
+   *
+   * @param movie filme rejeitado.
+   */
   public void userDislike(Movie movie){
     publisher.toNotify("dislike", movie);
   }
 
+  /**
+   * Faz o usuário ingressar em um grupo, ignorando a operação se ele já for
+   * membro (mesmo {@code id}). Inscreve o grupo no publisher do usuário e
+   * adiciona o usuário ao grupo.
+   *
+   * @param group grupo a ser ingressado.
+   */
   public void joinGroup(Group group){
     for (Group existing : groups) {
       if (existing.getId().equals(group.getId())) {
@@ -147,6 +210,13 @@ public class User implements Subscriber{
     group.addUser(this);
   }
 
+  /**
+   * Recebe a notificação de um match originada por um grupo: registra o
+   * {@link Match} entre as notificações do usuário e persiste o perfil.
+   *
+   * @param action ação notificada (esperado {@code "match"}).
+   * @param object o {@link Match} ocorrido.
+   */
   @Override
   public void beNotified(String action, Object object) {
     Match match = (Match) object;
@@ -158,6 +228,10 @@ public class User implements Subscriber{
     return this.notifications;
   }
 
+  /**
+   * Persiste o perfil do usuário, preservando senha e foto já gravados e
+   * atualizando filmes curtidos, grupos e notificações a partir do estado atual.
+   */
   public void saveUser() {
     UserProfileDTO actualUserInfo = manager.readData("user", email, UserProfileDTO.class).get(0);
 

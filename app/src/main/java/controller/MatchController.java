@@ -10,6 +10,9 @@ import model.User;
 import service.Services;
 import service.dataManager.DataManager;
 
+/**
+ * Coordena a persistência das notificações de match no perfil do usuário.
+ */
 public class MatchController {
 
 

@@ -124,7 +124,13 @@ public class ViewGroupDetailsScreen extends JFrame {
 
         ArrayList<Movie> moviesMatch = new ArrayList<>();
         MoviesPanel moviePanel;
-        loadMoviesByAPI(group.getMatches(), moviesMatch)
+
+        List<Integer> matches = group.getMatches();
+        int limitMatches = Math.max(matches.size() - 15, 0);
+        List<Integer> lastMatches = new ArrayList<>(matches.subList(limitMatches, matches.size()));
+        java.util.Collections.reverse(lastMatches);
+
+        loadMoviesByAPI(lastMatches, moviesMatch)
         .thenRun(() -> SwingUtilities.invokeLater(() -> {
             MoviesPanel moviesPanel = new MoviesPanel(moviesMatch);
             moviesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
