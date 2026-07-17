@@ -158,6 +158,11 @@ public class Group implements Subscriber {
     } else {
       likedMovies.put(movie.getId(), 1);
     }
+
+    if (!groupMatches.contains(movie.getId())){
+        
+    }
+
   }
 
   public void addToPublisher(User user){
