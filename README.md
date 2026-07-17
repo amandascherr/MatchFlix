@@ -86,6 +86,16 @@ O relatório de cobertura (JaCoCo) é gerado em
 
 ---
 
+## Como rodar a documentação Javadoc
+
+```bash
+./gradlew javadoc
+```
+
+A documentação completa estará em app/build/docs/javadoc/index.html
+
+---
+
 ## Fluxo básico de uso
 
 1. **Cadastre-se** e faça **login**.
